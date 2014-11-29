@@ -69,6 +69,29 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue(KeyClip.load(key) == nil)
     }
     
+    func testReadmeCode() {
+        save(["name": "aska"])
+        if let dic = load() {
+            XCTAssertEqual(dic["name"] as String, "aska")
+        }
+    }
+    
+}
+
+// save
+func save(account: NSDictionary) -> Bool {
+    let data = NSJSONSerialization.dataWithJSONObject(account, options: nil, error: nil)!
+    return KeyClip.save("testKey", data: data)
+}
+
+// load
+func load() -> NSDictionary? {
+    if let data = KeyClip.load("testKey") {
+        if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
+            return json as? NSDictionary
+        }
+    }
+    return nil
 }
 
 extension String {

@@ -48,16 +48,16 @@ And if you want to save only the password, there is a case in which you want to 
     let key = "account"
 
     // save
-    func save(account: [String: String]) -> Bool {
+    func save(account: NSDictionary) -> Bool {
         let data = NSJSONSerialization.dataWithJSONObject(account, options: nil, error: nil)!
         return KeyClip.save(key, data: data)
     }
 
     // load
-    func load() -> [String: String]? {
+    func load() -> NSDictionary? {
         if let data = KeyClip.load(key) {
             if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
-                return json as? [String: String]
+                return json as? NSDictionary
             }
         }
         return nil

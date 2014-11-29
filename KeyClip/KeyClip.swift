@@ -18,7 +18,7 @@ public class KeyClip {
     public class func save(key: String, data: NSData) -> Bool {
         let query = [
             kSecAttrService as String : service(),
-            kSecClass as String       : kSecClassGenericPassword as String,
+            kSecClass as String       : kSecClassGenericPassword,
             kSecAttrAccount as String : key,
             kSecAttrGeneric as String : key,
             kSecValueData as String   : data ]
