@@ -23,19 +23,24 @@ On your application targets’ “General” settings tab, in the “Embedded Bi
 
 ### Minimum
 
+    KeyClip.save("access_token", data: data) // -> Bool
+
+    KeyClip.load("access_token") // -> NSData?
+
+    KeyClip.delete("access_token") // Remove the data
+
+    KeyClip.clear() // Remove all the data
+
+
+### Why NSData?
+
+And if you want to save only the password, there is a case in which you want to save the account information.
+
     // Save String
     let data = "********".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
 
     // Save JSON
     let data = NSJSONSerialization.dataWithJSONObject(["access_token": "********"], options: nil, error: nil)!
-
-    let success = KeyClip.save("access_token", data: data) // -> Bool
-
-    let loadData = KeyClip.load("access_token") // -> NSData?
-
-    KeyClip.delete("access_token") // Remove data
-
-    KeyClip.clear() // Remove all the data
 
 
 ### Usuful
