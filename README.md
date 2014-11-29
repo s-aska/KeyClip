@@ -1,0 +1,64 @@
+# KeyClip [![Build Status](https://travis-ci.org/s-aska/KeyClip.svg)](https://travis-ci.org/s-aska/KeyClip)
+
+KeyClip is yet another Keychain library written in Swift.
+
+## Requirements
+
+- iOS 8+
+- Xcode 6.1
+
+## Installation
+
+Create a Cartfile that lists the frameworks you’d like to use in your project.
+
+    $ echo 'github "s-aska/KeyClip"' >> Cartfile
+
+Run `carthage update`
+
+    $ carthage update
+
+On your application targets’ “General” settings tab, in the “Embedded Binaries” section, drag and drop each framework you want to use from the Carthage.build folder on disk.
+
+## Usage
+
+### Minimum
+
+    // Save String
+    let data = "********".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+
+    // Save JSON
+    let data = NSJSONSerialization.dataWithJSONObject(["access_token": "********"], options: nil, error: nil)!
+
+    let success = KeyClip.save("access_token", data: data) // -> Bool
+
+    let loadData = KeyClip.load("access_token") // -> NSData?
+
+    KeyClip.delete("access_token") // Remove data
+
+    KeyClip.clear() // Remove all the data
+
+
+### Usuful
+
+    let key = "account"
+
+    // save
+    func save(account: [String: String]) -> Bool {
+        let data = NSJSONSerialization.dataWithJSONObject(account, options: nil, error: nil)!
+        return KeyClip.save(key, data: data)
+    }
+
+    // load
+    func load() -> [String: String]? {
+        if let data = KeyClip.load(key) {
+            if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
+                return json as? [String: String]
+            }
+        }
+        return nil
+    }
+
+
+## License
+
+KeyClip is released under the MIT license. See LICENSE for details.

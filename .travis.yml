@@ -1,0 +1,4 @@
+language: objective-c
+xcode_project: KeyClip.xcodeproj
+xcode_scheme: KeyClipTests
+xcode_sdk: iphonesimulator
