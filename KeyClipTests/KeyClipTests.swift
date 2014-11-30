@@ -22,101 +22,110 @@ class KeyClipTests: XCTestCase {
         super.tearDown()
     }
     
-    func testSaveLoad() {
+    func testString() {
         let key1 = "testSaveLoadKey1"
         let key2 = "testSaveLoadKey2"
-        let saveData = "data".dataValue
+        let saveData = "data"
         
-        XCTAssertTrue(KeyClip.load(key1) == nil)
-        XCTAssertTrue(KeyClip.load(key2) == nil)
+        XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
+        XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
         
-        XCTAssertTrue(KeyClip.save(key1, data: saveData))
+        XCTAssertTrue(KeyClip.save(key1, string: saveData))
+
+        XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
+        XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
         
-        XCTAssertTrue(KeyClip.load(key1) != nil)
-        XCTAssertTrue(KeyClip.load(key2) == nil)
+        let loadData = KeyClip.load(key1) ?? ""
         
-        let loadData = KeyClip.load(key1)!
-        
-        XCTAssertEqual(loadData.stringValue, saveData.stringValue)
+        XCTAssertEqual(loadData, saveData)
     }
     
+    func testDictionary() {
+        
+        class Account {
+            
+            struct Constants {
+                static let name = "name"
+                static let password = "password"
+            }
+            
+            let name: String
+            let password: String
+            
+            init(_ dictionary: NSDictionary) {
+                self.name = dictionary[Constants.name] as String
+                self.password = dictionary[Constants.password] as String
+            }
+            
+            var dictionaryValue: [String: String] {
+                return [Constants.name: name, Constants.password: password]
+            }
+        }
+        
+        let key1 = "testSaveLoadKey1"
+        let key2 = "testSaveLoadKey2"
+        let saveAccount = Account(["name": "aska", "password": "********"])
+        
+        XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
+        XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
+        
+        XCTAssertTrue(KeyClip.save(key1, dictionary: saveAccount.dictionaryValue))
+        
+        XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
+        XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
+        
+        let loadAccount: Account? = {
+            if let dictionary = KeyClip.load(key1) as NSDictionary? {
+                return Account(dictionary)
+            } else {
+                return nil
+            }
+        }()
+        
+        XCTAssertEqual(loadAccount!.name, saveAccount.name)
+    }
     
     func testDelete() {
         let key1 = "testDeleteKey1"
         let key2 = "testDeleteKey2"
-        let saveData = "testDeleteData".dataValue
+        let saveData = "testDeleteData"
         
-        XCTAssertTrue(KeyClip.save(key1, data: saveData))
-        XCTAssertTrue(KeyClip.save(key2, data: saveData))
+        XCTAssertTrue(KeyClip.save(key1, string: saveData))
+        XCTAssertTrue(KeyClip.save(key2, string: saveData))
         
-        XCTAssertTrue(KeyClip.load(key1) != nil)
-        XCTAssertTrue(KeyClip.load(key2) != nil)
+        XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
+        XCTAssertTrue((KeyClip.load(key2) as String?) != nil)
         
         XCTAssertTrue(KeyClip.delete(key1))
         
-        XCTAssertTrue(KeyClip.load(key1) == nil)
-        XCTAssertTrue(KeyClip.load(key2) != nil)
+        XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
+        XCTAssertTrue((KeyClip.load(key2) as String?) != nil)
     }
-    
+
     func testClear() {
         let key = "testClearKey"
-        let data = "testClearData".dataValue
+        let saveData = "testClearData"
         
-        KeyClip.save(key, data: data)
-        XCTAssertTrue(KeyClip.load(key) != nil)
+        KeyClip.save(key, string: saveData)
+        XCTAssertTrue((KeyClip.load(key) as String?) != nil)
         
         KeyClip.clear()
-        XCTAssertTrue(KeyClip.load(key) == nil)
-    }
-    
-    func testReadmeCode() {
-        save(["name": "aska"])
-        if let dic = load() {
-            XCTAssertEqual(dic["name"] as String, "aska")
-        }
+        XCTAssertTrue((KeyClip.load(key) as String?) == nil)
     }
     
     func testSetService() {
         let key = "testSetServiceKey"
-        let val1 = "testSetServiceVal1".dataValue
-        let val2 = "testSetServiceVal2".dataValue
+        let val1 = "testSetServiceVal1"
+        let val2 = "testSetServiceVal2"
         
         KeyClip.setService("Service1")
-        KeyClip.save(key, data: val1)
+        KeyClip.save(key, string: val1)
         
         KeyClip.setService("Service2")
-        KeyClip.save(key, data: val2)
+        KeyClip.save(key, string: val2)
         
         KeyClip.setService("Service1")
         XCTAssertTrue(KeyClip.load(key) == val1)
     }
     
-}
-
-// save
-func save(account: NSDictionary) -> Bool {
-    let data = NSJSONSerialization.dataWithJSONObject(account, options: nil, error: nil)!
-    return KeyClip.save("testKey", data: data)
-}
-
-// load
-func load() -> NSDictionary? {
-    if let data = KeyClip.load("testKey") {
-        if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
-            return json as? NSDictionary
-        }
-    }
-    return nil
-}
-
-extension String {
-    public var dataValue: NSData {
-        return dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
-    }
-}
-
-extension NSData {
-    public var stringValue: String {
-        return NSString(data: self, encoding: NSUTF8StringEncoding)!
-    }
 }

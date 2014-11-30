@@ -34,6 +34,20 @@ public class KeyClip {
         return status == noErr
     }
     
+    public class func save(key: String, string: String) -> Bool {
+        if let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+            return save(key, data: data)
+        }
+        return false
+    }
+    
+    public class func save(key: String, dictionary: NSDictionary) -> Bool {
+        if let data = NSJSONSerialization.dataWithJSONObject(dictionary, options: nil, error: nil) {
+            return save(key, data: data)
+        }
+        return false
+    }
+    
     public class func load(key: String) -> NSData? {
         let query: [String: AnyObject] = [
             kSecAttrService : Settings.service,
@@ -52,6 +66,24 @@ public class KeyClip {
         } else {
             return nil
         }
+    }
+    
+    public class func load(key: String) -> NSDictionary? {
+        if let data: NSData = load(key) {
+            if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
+                return json as? NSDictionary
+            }
+        }
+        return nil
+    }
+    
+    public class func load(key: String) -> String? {
+        if let data: NSData = load(key) {
+            if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
+                return string
+            }
+        }
+        return nil
     }
     
     public class func delete(key: String) -> Bool {

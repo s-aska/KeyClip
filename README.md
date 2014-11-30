@@ -2,15 +2,19 @@
 
 KeyClip is yet another Keychain library written in Swift.
 
+
 ## Features
 
 - [x] Comprehensive Unit Test Coverage
 - [x] Carthage support
+- [x] NSDictionary / String support
+
 
 ## Requirements
 
 - iOS 8+
 - Xcode 6.1
+
 
 ## Installation
 
@@ -24,30 +28,35 @@ Run `carthage update`
 
 On your application targets’ “General” settings tab, in the “Embedded Binaries” section, drag and drop each framework you want to use from the Carthage.build folder on disk.
 
+
 ## Usage
 
 ### Minimum
 
 ```swift
-KeyClip.save("access_token", data: data) // -> Bool
+KeyClip.save("access_token", string: "********") // -> Bool
 
-KeyClip.load("access_token") // -> NSData?
+let token: String? = KeyClip.load("access_token")
 
 KeyClip.delete("access_token") // Remove the data
 
 KeyClip.clear() // Remove all the data
 ```
 
-### Why NSData?
-
-And if you want to save only the password, there is a case in which you want to save the account information.
+### NSDictionary
 
 ```swift
-// Save String
-let data = "********".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+KeyClip.save("account", dictionary: ["name": "aska", "password": "********"]) // -> Bool
 
-// Save JSON
-let data = NSJSONSerialization.dataWithJSONObject(["access_token": "********"], options: nil, error: nil)!
+let dictionary = KeyClip.load("access_token") as NSDictionary?
+```
+
+### NSData
+
+```swift
+KeyClip.save("account", data: NSData()) // -> Bool
+
+let data = KeyClip.load("access_token") as NSData?
 ```
 
 ### Usuful
@@ -55,20 +64,37 @@ let data = NSJSONSerialization.dataWithJSONObject(["access_token": "********"], 
 ```swift
 let key = "account"
 
-// save
-func save(account: NSDictionary) -> Bool {
-    let data = NSJSONSerialization.dataWithJSONObject(account, options: nil, error: nil)!
-    return KeyClip.save(key, data: data)
+func save(account: Account) -> Bool {
+    return KeyClip.save(key, account.dictionaryValue)
 }
 
-// load
-func load() -> NSDictionary? {
-    if let data = KeyClip.load(key) {
-        if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
-            return json as? NSDictionary
-        }
+func load() -> Account? {
+    if let dictionary = KeyClip.load(key) as NSDictionary? {
+        return Account(dictionary)
+    } else {
+        return nil
     }
-    return nil
+}
+
+class Account {
+
+    struct Constants {
+        static let name = "name"
+        static let password = "password"
+    }
+
+    let name: String
+    let password: String
+
+    init(_ dictionary: NSDictionary) {
+        self.name = dictionary[Constants.name] as String
+        self.password = dictionary[Constants.password] as String
+    }
+
+    var dictionaryValue: [String: String] {
+        return [Constants.name: name, Constants.password: password]
+    }
+
 }
 ```
 
@@ -84,6 +110,7 @@ KeyClip.setService("YourService") // default is NSBundle.mainBundle().bundleIden
 The Release Optimization level to `-O` when resolved Swift compiler bugs.
 
 http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-profiles
+
 
 ## License
 
