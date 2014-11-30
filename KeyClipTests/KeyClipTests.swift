@@ -76,6 +76,21 @@ class KeyClipTests: XCTestCase {
         }
     }
     
+    func testSetService() {
+        let key = "testSetServiceKey"
+        let val1 = "testSetServiceVal1".dataValue
+        let val2 = "testSetServiceVal2".dataValue
+        
+        KeyClip.setService("Service1")
+        KeyClip.save(key, data: val1)
+        
+        KeyClip.setService("Service2")
+        KeyClip.save(key, data: val2)
+        
+        KeyClip.setService("Service1")
+        XCTAssertTrue(KeyClip.load(key) == val1)
+    }
+    
 }
 
 // save

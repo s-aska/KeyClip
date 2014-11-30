@@ -2,6 +2,11 @@
 
 KeyClip is yet another Keychain library written in Swift.
 
+## Features
+
+- [x] Comprehensive Unit Test Coverage
+- [x] Carthage support
+
 ## Requirements
 
 - iOS 8+
@@ -63,6 +68,11 @@ And if you want to save only the password, there is a case in which you want to 
         return nil
     }
 
+## Todo
+
+The Release Optimization level to `-O` when resolved Swift compiler bugs.
+
+http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-profiles
 
 ## License
 

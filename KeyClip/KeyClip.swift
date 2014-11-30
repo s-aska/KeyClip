@@ -6,22 +6,26 @@
 //  Copyright (c) 2014 Shinichiro Aska. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import Security
 
 public class KeyClip {
     
-    class func service() -> String {
-        return NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
+    private struct Settings {
+        private static var service = NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
+    }
+    
+    public class func setService(service: String) {
+        Settings.service = service
     }
     
     public class func save(key: String, data: NSData) -> Bool {
-        let query = [
-            kSecAttrService as String : service(),
-            kSecClass as String       : kSecClassGenericPassword,
-            kSecAttrAccount as String : key,
-            kSecAttrGeneric as String : key,
-            kSecValueData as String   : data ]
+        let query: [String: AnyObject] = [
+            kSecAttrService : Settings.service,
+            kSecClass       : kSecClassGenericPassword,
+            kSecAttrAccount : key,
+            kSecAttrGeneric : key,
+            kSecValueData   : data ]
         
         SecItemDelete(query as CFDictionaryRef)
         
@@ -31,13 +35,13 @@ public class KeyClip {
     }
     
     public class func load(key: String) -> NSData? {
-        let query = [
-            kSecAttrService as String : service(),
-            kSecClass as String       : kSecClassGenericPassword,
-            kSecAttrAccount as String : key,
-            kSecAttrGeneric as String : key,
-            kSecReturnData as String  : kCFBooleanTrue,
-            kSecMatchLimit as String  : kSecMatchLimitOne ]
+        let query: [String: AnyObject] = [
+            kSecAttrService : Settings.service,
+            kSecClass       : kSecClassGenericPassword,
+            kSecAttrAccount : key,
+            kSecAttrGeneric : key,
+            kSecReturnData  : kCFBooleanTrue,
+            kSecMatchLimit  : kSecMatchLimitOne ]
         
         var dataTypeRef :Unmanaged<AnyObject>?
         
@@ -51,11 +55,11 @@ public class KeyClip {
     }
     
     public class func delete(key: String) -> Bool {
-        let query = [
-            kSecAttrService as String : service(),
-            kSecClass as String       : kSecClassGenericPassword,
-            kSecAttrAccount as String : key,
-            kSecAttrGeneric as String : key ]
+        let query: [String: AnyObject] = [
+            kSecAttrService : Settings.service,
+            kSecClass       : kSecClassGenericPassword,
+            kSecAttrAccount : key,
+            kSecAttrGeneric : key ]
         
         let status: OSStatus = SecItemDelete(query as CFDictionaryRef)
         
@@ -63,9 +67,9 @@ public class KeyClip {
     }
     
     public class func clear() -> Bool {
-        let query = [
-            kSecAttrService as String : service(),
-            kSecClass as String : kSecClassGenericPassword
+        let query: [String: AnyObject] = [
+            kSecAttrService : Settings.service,
+            kSecClass       : kSecClassGenericPassword
         ]
         
         let status: OSStatus = SecItemDelete(query as CFDictionaryRef)
