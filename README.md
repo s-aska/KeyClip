@@ -46,7 +46,7 @@ KeyClip.clear() // Remove all the data
 ### NSDictionary (compatible to NSJSONSerialization)
 
 ```swift
-KeyClip.save("account", dictionary: ["name": "aska", "password": "********"]) // -> Bool
+KeyClip.save("account", dictionary: ["name": "aska", "token": "******"]) // -> Bool
 
 let dictionary = KeyClip.load("access_token") as NSDictionary?
 ```
