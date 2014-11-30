@@ -36,14 +36,14 @@ On your application targets’ “General” settings tab, in the “Embedded Bi
 ```swift
 KeyClip.save("access_token", string: "********") // -> Bool
 
-let token: String? = KeyClip.load("access_token")
+let token = KeyClip.load("access_token") as String?
 
 KeyClip.delete("access_token") // Remove the data
 
 KeyClip.clear() // Remove all the data
 ```
 
-### NSDictionary
+### NSDictionary (compatible to NSJSONSerialization)
 
 ```swift
 KeyClip.save("account", dictionary: ["name": "aska", "password": "********"]) // -> Bool
@@ -101,7 +101,7 @@ class Account {
 ### Specify the kSecAttrService
 
 ```swift
-KeyClip.setService("YourService") // default is NSBundle.mainBundle().bundleIdentifier
+KeyClip.setService("com...") // default is NSBundle.mainBundle().bundleIdentifier
 ```
 
 
