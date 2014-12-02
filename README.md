@@ -6,9 +6,9 @@ KeyClip is yet another Keychain library written in Swift.
 
 Swift compiler can't read correctly the data of Keychain when Optimization Level is `Fastest`.
 
-So, build setting for the Carthage is `None`.
+So, Optimization Level for the Carthage is `None`.
 
-However, Build setting of your application may be the `Fastest`.
+However, Optimization Level for the your application usable the `Fastest`.
 
 See http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-profiles
 
