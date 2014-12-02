@@ -2,13 +2,22 @@
 
 KeyClip is yet another Keychain library written in Swift.
 
+### !!! warning !!!
+
+Swift compiler can't read correctly the data of Keychain when Optimization Level is `Fastest`.
+
+So, build setting for the Carthage is `None`.
+
+However, Build setting of your application may be the `Fastest`.
+
+See http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-profiles
 
 ## Features
 
 - [x] Comprehensive Unit Test Coverage
 - [x] Carthage support
 - [x] NSDictionary / String support
-
+- [ ] The Release Optimization level to `Fastest [-O]` when resolved Swift compiler bugs.
 
 ## Requirements
 
@@ -107,13 +116,6 @@ class Account {
 ```swift
 KeyClip.setService("com...") // default is NSBundle.mainBundle().bundleIdentifier
 ```
-
-
-## Todo
-
-The Release Optimization level to `-O` when resolved Swift compiler bugs.
-
-http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-profiles
 
 
 ## License
