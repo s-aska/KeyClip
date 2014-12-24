@@ -136,6 +136,14 @@ KeyClip.setAccessGroup("com...share") // default is nil
 ### Multi Instance
 
 ```swift
+let ring = KeyClip.Builder()
+                .accessGroup("com...") // kSecAttrAccessGroup
+                .service("Service") // kSecAttrService
+                .accessible(kSecAttrAccessibleAfterFirstUnlock) // kSecAttrAccessible
+                .build()
+
+
+// eg.
 let background = KeyClip.Builder()
                 .service("BackgroundService")
                 .accessible(kSecAttrAccessibleAfterFirstUnlock)
