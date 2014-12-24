@@ -16,15 +16,15 @@ public class KeyClip {
     }
     
     public class func setService(service: String) {
-        Singleton.defaultRing = Ring(group: Singleton.defaultRing.group, service: service, accessible: Singleton.defaultRing.accessible)
+        Singleton.defaultRing = Ring(accessGroup: Singleton.defaultRing.accessGroup, service: service, accessible: Singleton.defaultRing.accessible)
     }
     
     public class func setAccessible(accessible: String) {
-        Singleton.defaultRing = Ring(group: Singleton.defaultRing.group, service: Singleton.defaultRing.service, accessible: accessible)
+        Singleton.defaultRing = Ring(accessGroup: Singleton.defaultRing.accessGroup, service: Singleton.defaultRing.service, accessible: accessible)
     }
     
-    public class func setGroup(group: String) {
-        Singleton.defaultRing = Ring(group: group, service: Singleton.defaultRing.service, accessible: Singleton.defaultRing.accessible)
+    public class func setAccessGroup(accessGroup: String) {
+        Singleton.defaultRing = Ring(accessGroup: accessGroup, service: Singleton.defaultRing.service, accessible: Singleton.defaultRing.accessible)
     }
     
     public class func save(key: String, data: NSData) -> Bool {
@@ -60,14 +60,14 @@ public class KeyClip {
     }
     
     public class Builder {
-        var group: String?
+        var accessGroup: String?
         var service: String = NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
         var accessible: String = kSecAttrAccessibleWhenUnlocked
         
         public init() {}
         
-        public func group(group: String) -> Builder {
-            self.group = group
+        public func accessGroup(accessGroup: String) -> Builder {
+            self.accessGroup = accessGroup
             return self
         }
         
@@ -82,18 +82,18 @@ public class KeyClip {
         }
         
         public func build() -> Ring {
-            return Ring(group: group, service: service, accessible: accessible)
+            return Ring(accessGroup: accessGroup, service: service, accessible: accessible)
         }
     }
     
     public class Ring {
         
-        let group: String?
+        let accessGroup: String?
         let service: String
         let accessible: String
         
-        init(group: String?, service: String, accessible: String) {
-            self.group = group
+        init(accessGroup: String?, service: String, accessible: String) {
+            self.accessGroup = accessGroup
             self.service = service
             self.accessible = accessible
         }
@@ -107,8 +107,8 @@ public class KeyClip {
                 kSecAttrGeneric    : key,
                 kSecValueData      : data ]
             
-            if let group = self.group {
-                query[kSecAttrAccessGroup] = group
+            if let accessGroup = self.accessGroup {
+                query[kSecAttrAccessGroup] = accessGroup
             }
             
             SecItemDelete(query as CFDictionaryRef)
@@ -141,8 +141,8 @@ public class KeyClip {
                 kSecReturnData  : kCFBooleanTrue,
                 kSecMatchLimit  : kSecMatchLimitOne ]
             
-            if let group = self.group {
-                query[kSecAttrAccessGroup] = group
+            if let accessGroup = self.accessGroup {
+                query[kSecAttrAccessGroup] = accessGroup
             }
             
             var dataTypeRef :Unmanaged<AnyObject>?
@@ -181,8 +181,8 @@ public class KeyClip {
                 kSecAttrAccount : key,
                 kSecAttrGeneric : key ]
             
-            if let group = self.group {
-                query[kSecAttrAccessGroup] = group
+            if let accessGroup = self.accessGroup {
+                query[kSecAttrAccessGroup] = accessGroup
             }
             
             let status: OSStatus = SecItemDelete(query as CFDictionaryRef)
@@ -196,8 +196,8 @@ public class KeyClip {
                 kSecClass       : kSecClassGenericPassword
             ]
             
-            if let group = self.group {
-                query[kSecAttrAccessGroup] = group
+            if let accessGroup = self.accessGroup {
+                query[kSecAttrAccessGroup] = accessGroup
             }
             
             let status: OSStatus = SecItemDelete(query as CFDictionaryRef)

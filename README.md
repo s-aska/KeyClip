@@ -130,7 +130,7 @@ KeyClip.setAccessible(kSecAttrAccessibleAfterFirstUnlock) // default is kSecAttr
 :warning: There are many constraints to kSecAttrAccessGroup. https://developer.apple.com/library/mac/documentation/Security/Reference/keychainservices/index.html
 
 ```swift
-KeyClip.setGroup("com...share") // default is nil
+KeyClip.setAccessGroup("com...share") // default is nil
 ```
 
 ### Multi Instance
@@ -147,7 +147,7 @@ let foreground = KeyClip.Builder()
                 .build()
 
 let shared = KeyClip.Builder()
-                .group("com...share")
+                .accessGroup("com...share")
                 .service("ShearedService")
                 .build()
 ```

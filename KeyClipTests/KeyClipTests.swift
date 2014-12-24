@@ -141,18 +141,18 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue(ring.load(key) == val)
     }
     
-    func testGroup() {
+    func testAccessGroup() {
         let key = "testSetServiceKey"
         let val1 = "testSetServiceVal1"
         let val2 = "testSetServiceVal2"
         let val3 = "testSetServiceVal3"
         
         // kSecAttrAccessGroup is always "test" on simulator's keychain
-        let ring1 = KeyClip.Builder().group("test").build()
-        let ring2 = KeyClip.Builder().group("test").service("Service1").build()
-        let ring3 = KeyClip.Builder().group("test").accessible(kSecAttrAccessibleAfterFirstUnlock).build()
+        let ring1 = KeyClip.Builder().accessGroup("test").build()
+        let ring2 = KeyClip.Builder().accessGroup("test").service("Service1").build()
+        let ring3 = KeyClip.Builder().accessGroup("test").accessible(kSecAttrAccessibleAfterFirstUnlock).build()
         let ring4 = KeyClip.Builder()
-            .group("test.dummy") // always failure
+            .accessGroup("test.dummy") // always failure
             .service("Service1")
             .accessible(kSecAttrAccessibleAfterFirstUnlock)
             .build()
