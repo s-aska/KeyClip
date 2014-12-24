@@ -167,4 +167,38 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue(ring3.load(key) == val3)
         XCTAssertTrue((ring4.load(key) as String?) == nil)
     }
+    
+    func testDefaultAccessGroup() {
+        XCTAssertTrue(KeyClip.defaultAccessGroup() == "test")
+    }
+    
+    func testUsage() {
+        KeyClip.save("account_data", data: NSData()) // Bool
+        KeyClip.save("access_token", string: "********") // Bool
+        KeyClip.save("account", dictionary: ["name": "Aska"]) // Bool
+        
+        let data: NSData? = KeyClip.load("account_data")
+        let access_token: String? = KeyClip.load("access_token")
+        let account: NSDictionary? = KeyClip.load("account")
+        
+        let ring = KeyClip.Builder()
+            .accessGroup("test") // kSecAttrAccessGroup
+            .service("Service1") // kSecAttrService
+            .accessible(kSecAttrAccessibleAfterFirstUnlock) // kSecAttrAccessible
+            .build()
+        
+        KeyClip.Builder()
+            
+            // kSecAttrAccessGroup, default is nil
+            .accessGroup("XXXX23F3DC53.com.example")
+            
+            // kSecAttrService, default is NSBundle.mainBundle().bundleIdentifier
+            .service("Service")
+            
+            // kSecAttrAccessible, default is kSecAttrAccessibleWhenUnlocked
+            .accessible(kSecAttrAccessibleWhenUnlocked)
+            
+            // update for default instance
+            .buildDefault()
+    }
 }

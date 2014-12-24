@@ -59,6 +59,34 @@ public class KeyClip {
         return Singleton.defaultRing.clear()
     }
     
+    // for DEBUG
+    public class func defaultAccessGroup() -> String {
+        var query: [String: AnyObject] = [
+            kSecClass            : kSecClassGenericPassword,
+            kSecAttrAccount      : "application-identifier-check",
+            kSecReturnAttributes : kCFBooleanTrue ]
+        
+        var dataTypeRef :Unmanaged<AnyObject>?
+        var status: OSStatus = SecItemCopyMatching(query as CFDictionaryRef, &dataTypeRef)
+        
+        if status == errSecItemNotFound {
+            status = SecItemAdd(query as CFDictionaryRef, &dataTypeRef);
+        }
+        
+        if status == noErr {
+            if let op = dataTypeRef?.toOpaque() {
+                let resultDict: NSDictionary = Unmanaged<NSDictionary>.fromOpaque(op).takeUnretainedValue()
+                
+                if let accessGroup = resultDict[kSecAttrAccessGroup as NSString] as? NSString {
+                    remove("application-identifier-check")
+                    return accessGroup
+                }
+            }
+        }
+        
+        assertionFailure("failure get application-identifier")
+    }
+    
     public class Builder {
         var accessGroup: String?
         var service: String = NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
@@ -83,6 +111,10 @@ public class KeyClip {
         
         public func build() -> Ring {
             return Ring(accessGroup: accessGroup, service: service, accessible: accessible)
+        }
+        
+        public func buildDefault() {
+            Singleton.defaultRing = build()
         }
     }
     

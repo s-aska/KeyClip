@@ -111,35 +111,35 @@ class Account {
 }
 ```
 
-### Specify the kSecAttrService
+### Single Instance Settings
+
+:warning: iOS Simulator's keychain implementation does not support kSecAttrAccessGroup. (always "test")
+
+:warning: kSecAttrAccessGroup must match the App Identifier prefix. https://developer.apple.com/library/mac/documentation/Security/Reference/keychainservices/index.html
 
 ```swift
-KeyClip.setService("com...") // default is NSBundle.mainBundle().bundleIdentifier
+KeyClip.Builder()
+
+        // kSecAttrAccessGroup, default is nil
+        .accessGroup("XXXX23F3DC53.com.example")
+
+        // kSecAttrService, default is NSBundle.mainBundle().bundleIdentifier
+        .service("Service")
+
+        // kSecAttrAccessible, default is kSecAttrAccessibleWhenUnlocked
+        .accessible(kSecAttrAccessibleWhenUnlocked)
+
+        // update for default instance
+        .buildDefault()
 ```
 
-### Specify the kSecAttrAccessible
-
-```swift
-KeyClip.setAccessible(kSecAttrAccessibleAfterFirstUnlock) // default is kSecAttrAccessibleWhenUnlocked
-```
-
-### Specify the kSecAttrAccessGroup
-
-:warning: Note that the iOS Simulator's keychain implementation does not support kSecAttrAccessGroup.
-
-:warning: There are many constraints to kSecAttrAccessGroup. https://developer.apple.com/library/mac/documentation/Security/Reference/keychainservices/index.html
-
-```swift
-KeyClip.setAccessGroup("com...share") // default is nil
-```
-
-### Multi Instance
+### Multi Instance Settings
 
 ```swift
 let ring = KeyClip.Builder()
-                .accessGroup("com...") // kSecAttrAccessGroup
-                .service("Service") // kSecAttrService
-                .accessible(kSecAttrAccessibleAfterFirstUnlock) // kSecAttrAccessible
+                .accessGroup("XXXX23F3DC53.com.example")
+                .service("Service")
+                .accessible(kSecAttrAccessibleWhenUnlocked)
                 .build()
 
 
@@ -155,9 +155,17 @@ let foreground = KeyClip.Builder()
                 .build()
 
 let shared = KeyClip.Builder()
-                .accessGroup("com...share")
+                .accessGroup("XXXX23F3DC53.com.example.share")
                 .service("ShearedService")
                 .build()
+```
+
+### How to check the App Identifier (for Debug)
+
+:warning: iOS Simulator's keychain implementation does not support kSecAttrAccessGroup. (always "test")
+
+```swift
+println(KeyClip.defaultAccessGroup()) // -> String (eg. XXXX23F3DC53.*)
 ```
 
 
