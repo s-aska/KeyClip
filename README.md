@@ -117,6 +117,41 @@ class Account {
 KeyClip.setService("com...") // default is NSBundle.mainBundle().bundleIdentifier
 ```
 
+### Specify the kSecAttrAccessible
+
+```swift
+KeyClip.setAccessible(kSecAttrAccessibleAfterFirstUnlock) // default is kSecAttrAccessibleWhenUnlocked
+```
+
+### Specify the kSecAttrAccessGroup
+
+:warning: Note that the iOS Simulator's keychain implementation does not support kSecAttrAccessGroup.
+
+:warning: There are many constraints to kSecAttrAccessGroup. https://developer.apple.com/library/mac/documentation/Security/Reference/keychainservices/index.html
+
+```swift
+KeyClip.setGroup("com...share") // default is nil
+```
+
+### Multi Instance
+
+```swift
+let background = KeyClip.Builder()
+                .service("BackgroundService")
+                .accessible(kSecAttrAccessibleAfterFirstUnlock)
+                .build()
+
+let foreground = KeyClip.Builder()
+                .service("ForegroundService")
+                .accessible(kSecAttrAccessibleWhenUnlocked)
+                .build()
+
+let shared = KeyClip.Builder()
+                .group("com...share")
+                .service("ShearedService")
+                .build()
+```
+
 
 ## License
 

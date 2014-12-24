@@ -118,14 +118,53 @@ class KeyClipTests: XCTestCase {
         let val1 = "testSetServiceVal1"
         let val2 = "testSetServiceVal2"
         
-        KeyClip.setService("Service1")
-        KeyClip.save(key, string: val1)
+        let ring1 = KeyClip.Builder().service("Service1").build()
+        let ring2 = KeyClip.Builder().service("Service2").build()
         
-        KeyClip.setService("Service2")
-        KeyClip.save(key, string: val2)
+        ring1.save(key, string: val1)
+        ring2.save(key, string: val2)
         
-        KeyClip.setService("Service1")
-        XCTAssertTrue(KeyClip.load(key) == val1)
+        XCTAssertTrue(ring1.load(key) == val1)
+        XCTAssertTrue(ring2.load(key) == val2)
     }
     
+    func testSetAccessible() {
+        let key = "testSetServiceKey"
+        let val = "testSetServiceVal"
+        
+        KeyClip.setAccessible(kSecAttrAccessibleAfterFirstUnlock)
+        
+        let ring = KeyClip.Builder().accessible(kSecAttrAccessibleAfterFirstUnlock).build()
+        
+        ring.save(key, string: val)
+        
+        XCTAssertTrue(ring.load(key) == val)
+    }
+    
+    func testGroup() {
+        let key = "testSetServiceKey"
+        let val1 = "testSetServiceVal1"
+        let val2 = "testSetServiceVal2"
+        let val3 = "testSetServiceVal3"
+        
+        // kSecAttrAccessGroup is always "test" on simulator's keychain
+        let ring1 = KeyClip.Builder().group("test").build()
+        let ring2 = KeyClip.Builder().group("test").service("Service1").build()
+        let ring3 = KeyClip.Builder().group("test").accessible(kSecAttrAccessibleAfterFirstUnlock).build()
+        let ring4 = KeyClip.Builder()
+            .group("test.dummy") // always failure
+            .service("Service1")
+            .accessible(kSecAttrAccessibleAfterFirstUnlock)
+            .build()
+        
+        ring1.save(key, string: val1)
+        ring2.save(key, string: val2)
+        ring3.save(key, string: val3)
+        ring4.save(key, string: val3)
+        
+        XCTAssertTrue(ring1.load(key) == val1)
+        XCTAssertTrue(ring2.load(key) == val2)
+        XCTAssertTrue(ring3.load(key) == val3)
+        XCTAssertTrue((ring4.load(key) as String?) == nil)
+    }
 }
