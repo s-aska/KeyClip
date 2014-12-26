@@ -14,9 +14,10 @@ See http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-
 
 ## Features
 
-- [x] Comprehensive Unit Test Coverage
-- [x] Carthage support
-- [x] NSDictionary / String support
+- [x] Multi Types ( String / NSDictionary / NSData )
+- [x] Error Handling
+- [x] Settings ( kSecAttrAccessGroup / kSecAttrService / kSecAttrAccessible )
+- [x] Instance
 - [ ] The Release Optimization level to `Fastest [-O]` when resolved Swift compiler bugs.
 
 ## Requirements
@@ -44,7 +45,7 @@ On your application targets’ “General” settings tab, in the “Embedded Bi
 
 ## Usage
 
-### Minimum
+### String
 
 ```swift
 KeyClip.save("access_token", string: "********") // -> Bool
@@ -76,7 +77,7 @@ KeyClip.save("account", data: NSData()) // -> Bool
 let data = KeyClip.load("access_token") as NSData?
 ```
 
-### Usuful
+### Your Class
 
 ```swift
 func save(account: Account) -> Bool {
@@ -106,9 +107,9 @@ class Account {
 }
 ```
 
-### Error Handling
+## Error Handling
 
-#### Return value
+### By Return value
 
 Usually this is enough.
 
@@ -119,7 +120,7 @@ if !success {
 }
 ```
 
-#### Temporary specifies
+### By Temporary specifies
 
 handleError is possible to change the error message by OSStatus.
 
@@ -132,7 +133,7 @@ KeyClip
     .save("hoge", string: "bar")
 ```
 
-#### Instances settings
+### By Settings
 
 Always enable. (eg. Send crash report.)
 
@@ -153,11 +154,13 @@ KeyClip.Builder()
     .buildDefault()
 ```
 
-### Single Instance Settings
+## Settings
 
-:warning: iOS Simulator's keychain implementation does not support kSecAttrAccessGroup. (always "test")
+### For class methods
 
-:warning: kSecAttrAccessGroup must match the App Identifier prefix. https://developer.apple.com/library/mac/documentation/Security/Reference/keychainservices/index.html
+Setting of class methods.
+
+`KeyClip.save()` `KeyClip.load()` `KeyClip.delete()` `KeyClip.clear()`
 
 ```swift
 KeyClip.Builder()
@@ -183,7 +186,11 @@ KeyClip.Builder()
     .buildDefault()
 ```
 
-### Multi Instance Settings
+### Get Instance
+
+Setting of instance methods.
+
+`clip.save()` `clip.load()` `clip.delete()` `clip.clear()`
 
 ```swift
 let background = KeyClip.Builder()
@@ -198,17 +205,31 @@ let foreground = KeyClip.Builder()
 
 let shared = KeyClip.Builder()
                 .printError(true)
+                .handleError({ error in
+                    let status = error.code // OSStatus
+
+                    // Entitlement.plist's keychain-access-groups or App Identifier.
+                    let defaultAccessGroup = KeyClip.defaultAccessGroup()
+
+                    NSLog("[KeyClip] Error status:\(status) defaultAccessGroup:\(defaultAccessGroup)")
+                })
                 .service("ShearedService")
                 .accessGroup("XXXX23F3DC53.com.example.share")
                 .build()
 ```
 
-### How to check the App Identifier (for Debug)
+### kSecAttrAccessGroup
 
 :warning: iOS Simulator's keychain implementation does not support kSecAttrAccessGroup. (always "test")
 
+:warning: kSecAttrAccessGroup must match the App Identifier prefix. https://developer.apple.com/library/mac/documentation/Security/Reference/keychainservices/index.html
+
+#### How to check the App Identifier
+
+Entitlement.plist's keychain-access-groups or App Identifier.
+
 ```swift
-println(KeyClip.defaultAccessGroup()) // -> String (eg. XXXX23F3DC53.*)
+KeyClip.defaultAccessGroup() // -> String (eg. XXXX23F3DC53.*)
 ```
 
 

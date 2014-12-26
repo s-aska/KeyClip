@@ -191,10 +191,13 @@ class KeyClipTests: XCTestCase {
             .handleError({ error in
                 errorCount++
                 XCTAssertEqual(error.code, -25243)
+                let status = error.code // OSStatus
+                let defaultAccessGroup = KeyClip.defaultAccessGroup()
+                NSLog("[KeyClip] Error status:\(status) App Identifier:\(defaultAccessGroup)")
             })
             .accessGroup("test.dummy")
             .build()
-        
+
         ring.save("hoge", string: "bar")
         
         KeyClip.Builder().accessGroup("test.dummy").buildDefault()
