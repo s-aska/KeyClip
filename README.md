@@ -171,7 +171,7 @@ KeyClip.Builder()
     // kSecAttrAccessible, default is kSecAttrAccessibleWhenUnlocked
     .accessible(kSecAttrAccessibleWhenUnlocked)
 
-    // Casual Debug
+    // Debug print
     .printError(true)
 
     // Error Handler
