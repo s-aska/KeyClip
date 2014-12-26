@@ -108,7 +108,35 @@ class Account {
 
 ### Error Handling
 
-`errSecItemNotFound` is ignored.
+#### Return value
+
+Usually this is enough.
+
+```swift
+let success = KeyClip.save("hoge", string: "bar")
+if !success {
+    // Show Alert "failed to save to KeyChain"
+}
+```
+
+#### Temporary specifies
+
+handleError is possible to change the error message by OSStatus.
+
+```swift
+KeyClip
+    .handleError { error in
+        let status = error.code // OSStatus
+        // Show Alert "failed to save to KeyChain code:\(error.code)"
+    }
+    .save("hoge", string: "bar")
+```
+
+#### Instances settings
+
+Always enable. (eg. Send crash report.)
+
+Instances's settings and temporary specifies can be combined.
 
 ```swift
 KeyClip.Builder()
@@ -117,10 +145,8 @@ KeyClip.Builder()
     .printError(true)
 
     // Error Handler
-    .onError({ (error: NSError) in
+    .handleError({ error in
         let status = error.code // OSStatus
-        // Send crash report
-        // Display of Alert ..etc
     })
 
     // apply to default settings
@@ -149,7 +175,7 @@ KeyClip.Builder()
     .printError(true)
 
     // Error Handler
-    .onError({ (error: NSError) in
+    .handleError({ error in
         let status = error.code // OSStatus
     })
 
@@ -171,8 +197,9 @@ let foreground = KeyClip.Builder()
                 .build()
 
 let shared = KeyClip.Builder()
-                .accessGroup("XXXX23F3DC53.com.example.share")
+                .printError(true)
                 .service("ShearedService")
+                .accessGroup("XXXX23F3DC53.com.example.share")
                 .build()
 ```
 

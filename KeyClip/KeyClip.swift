@@ -47,6 +47,10 @@ public class KeyClip {
         return Singleton.instance.clear()
     }
     
+    public class func handleError(handleError: ((NSError) -> Void)) -> Ring {
+        return Singleton.instance.handleError(handleError)
+    }
+    
     // for debug
     public class func defaultAccessGroup() -> String {
         var query: [String: AnyObject] = [
@@ -79,7 +83,7 @@ public class KeyClip {
         var service: String = NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
         var accessible: String = kSecAttrAccessibleWhenUnlocked
         var printError = false
-        var onError: ((NSError) -> ())? = nil
+        var handleErrors: [(NSError) -> Void] = []
         
         public init() {}
         
@@ -103,13 +107,13 @@ public class KeyClip {
             return self
         }
         
-        public func onError(onError: ((NSError) -> ())?) -> Builder {
-            self.onError = onError
+        public func handleError(handleError: ((NSError) -> Void)) -> Builder {
+            self.handleErrors.append(handleError)
             return self
         }
         
         public func build() -> Ring {
-            return Ring(accessGroup: accessGroup, service: service, accessible: accessible, printError: printError, onError: onError)
+            return Ring(accessGroup: accessGroup, service: service, accessible: accessible, printError: printError, handleErrors: handleErrors)
         }
         
         public func buildDefault() {
@@ -123,14 +127,18 @@ public class KeyClip {
         let service: String
         let accessible: String
         let printError = false
-        let onError: ((NSError) -> ())? = nil
+        let handleErrors: [(NSError) -> Void]
         
-        init(accessGroup: String?, service: String, accessible: String, printError: Bool, onError: ((NSError) -> ())?) {
+        init(accessGroup: String?, service: String, accessible: String, printError: Bool, handleErrors: [((NSError) -> Void)]) {
             self.accessGroup = accessGroup
             self.service = service
             self.accessible = accessible
             self.printError = printError
-            self.onError = onError
+            self.handleErrors = handleErrors
+        }
+        
+        public func handleError(handleError: ((NSError) -> Void)) -> Ring {
+            return Ring(accessGroup: accessGroup, service: service, accessible: accessible, printError: printError, handleErrors: handleErrors + [handleError])
         }
         
         public func save(key: String, data: NSData) -> Bool {
@@ -157,7 +165,7 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else {
-                failure(error(status))
+                failure(status: status)
             }
             return false
         }
@@ -173,7 +181,7 @@ public class KeyClip {
             var error: NSError?
             if let data = NSJSONSerialization.dataWithJSONObject(dictionary, options: nil, error: &error) {
                 if let e = error {
-                    failure(e)
+                    failure(error: e)
                 }
                 return save(key, data: data)
             }
@@ -201,14 +209,18 @@ public class KeyClip {
                     return data
                 }
             } else if status != errSecItemNotFound {
-                failure(error(status))
+                failure(status: status)
             }
             return nil
         }
         
         public func load(key: String) -> NSDictionary? {
+            var error: NSError?
             if let data: NSData = load(key) {
-                if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
+                if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
+                    if let e = error {
+                        failure(error: e)
+                    }
                     return json as? NSDictionary
                 }
             }
@@ -240,7 +252,7 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else  if status != errSecItemNotFound {
-                failure(error(status))
+                failure(status: status)
             }
             return false
         }
@@ -248,8 +260,7 @@ public class KeyClip {
         public func clear() -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService : self.service,
-                kSecClass       : kSecClassGenericPassword
-            ]
+                kSecClass       : kSecClassGenericPassword ]
             
             if let accessGroup = self.accessGroup {
                 query[kSecAttrAccessGroup] = accessGroup
@@ -260,17 +271,19 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else {
-                failure(error(status))
+                failure(status: status)
             }
             return false
         }
         
-        func error(status: OSStatus) -> NSError {
-            return NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: nil)
+        private func failure(#status: OSStatus, function: String = __FUNCTION__, line: Int = __LINE__) {
+            failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: nil), function: function, line: line)
         }
         
-        func failure(error: NSError, function: String = __FUNCTION__, line: Int = __LINE__) {
-            onError?(error)
+        private func failure(#error: NSError, function: String = __FUNCTION__, line: Int = __LINE__) {
+            for handle in handleErrors {
+                handle(error)
+            }
             
             if printError {
                 NSLog("[KeyClip] function:\(function) line:\(line) \(error.debugDescription)")

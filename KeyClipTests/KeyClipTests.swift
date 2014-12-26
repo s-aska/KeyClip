@@ -14,10 +14,12 @@ class KeyClipTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        KeyClip.Builder().buildDefault()
         KeyClip.clear()
     }
     
     override func tearDown() {
+        KeyClip.Builder().buildDefault()
         KeyClip.clear()
         super.tearDown()
     }
@@ -165,7 +167,11 @@ class KeyClipTests: XCTestCase {
             .build()
         
         ring1.save(key, string: val1)
-        ring2.save(key, string: val1)
+        ring2
+            .handleError { error in
+                XCTAssertTrue(error.code == -25243) // errSecNoAccessForItem
+        }
+            .save(key, string: val1)
         
         XCTAssertTrue(ring1.load(key) == val1)
         XCTAssertNil(ring2.load(key) as String?)
@@ -179,11 +185,11 @@ class KeyClipTests: XCTestCase {
     }
     
     func testError() {
-        var hasError = false
+        var errorCount = 0
         let ring = KeyClip.Builder()
             .printError(true)
-            .onError({ error in
-                hasError = true
+            .handleError({ error in
+                errorCount++
                 XCTAssertEqual(error.code, -25243)
             })
             .accessGroup("test.dummy")
@@ -191,7 +197,16 @@ class KeyClipTests: XCTestCase {
         
         ring.save("hoge", string: "bar")
         
-        XCTAssertTrue(hasError)
+        KeyClip.Builder().accessGroup("test.dummy").buildDefault()
+        
+        KeyClip
+            .handleError { error in
+                errorCount++
+                XCTAssertEqual(error.code, -25243)
+            }
+            .save("hoge", string: "bar")
+        
+        XCTAssertTrue(errorCount == 2)
     }
     
     func testUsage() {
@@ -224,7 +239,7 @@ class KeyClipTests: XCTestCase {
             .printError(true)
             
             // Error Handler
-            .onError({ (error: NSError) in
+            .handleError({ (error: NSError) in
                 let status: OSStatus = Int32(error.code)
             })
             
