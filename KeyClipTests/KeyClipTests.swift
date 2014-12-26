@@ -31,7 +31,7 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
         
         XCTAssertTrue(KeyClip.save(key1, string: saveData))
-
+        
         XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
         XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
         
@@ -80,7 +80,7 @@ class KeyClipTests: XCTestCase {
             } else {
                 return nil
             }
-        }()
+            }()
         
         XCTAssertEqual(loadAccount!.name, saveAccount.name)
     }
@@ -101,7 +101,7 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
         XCTAssertTrue((KeyClip.load(key2) as String?) != nil)
     }
-
+    
     func testClear() {
         let key = "testClearKey"
         let saveData = "testClearData"
@@ -113,7 +113,7 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue((KeyClip.load(key) as String?) == nil)
     }
     
-    func testSetService() {
+    func testService() {
         let key = "testSetServiceKey"
         let val1 = "testSetServiceVal1"
         let val2 = "testSetServiceVal2"
@@ -126,19 +126,30 @@ class KeyClipTests: XCTestCase {
         
         XCTAssertTrue(ring1.load(key) == val1)
         XCTAssertTrue(ring2.load(key) == val2)
+        
+        XCTAssertEqual(ring1.service, "Service1")
+        XCTAssertEqual(ring2.service, "Service2")
     }
     
-    func testSetAccessible() {
+    func testAccessible() {
         let key = "testSetServiceKey"
         let val = "testSetServiceVal"
         
-        KeyClip.setAccessible(kSecAttrAccessibleAfterFirstUnlock)
+        KeyClip.Builder().accessible(kSecAttrAccessibleAfterFirstUnlock).buildDefault()
         
         let ring = KeyClip.Builder().accessible(kSecAttrAccessibleAfterFirstUnlock).build()
         
         ring.save(key, string: val)
         
         XCTAssertTrue(ring.load(key) == val)
+        
+        XCTAssertEqual(ring.accessible, kSecAttrAccessibleAfterFirstUnlock)
+        
+        let foreground = KeyClip.Builder().accessible(kSecAttrAccessibleWhenUnlocked).build()
+        let always = KeyClip.Builder().accessible(kSecAttrAccessibleAlways).build()
+        
+        XCTAssertEqual(foreground.accessible, kSecAttrAccessibleWhenUnlocked)
+        XCTAssertEqual(always.accessible, kSecAttrAccessibleAlways)
     }
     
     func testAccessGroup() {
@@ -149,27 +160,38 @@ class KeyClipTests: XCTestCase {
         
         // kSecAttrAccessGroup is always "test" on simulator's keychain
         let ring1 = KeyClip.Builder().accessGroup("test").build()
-        let ring2 = KeyClip.Builder().accessGroup("test").service("Service1").build()
-        let ring3 = KeyClip.Builder().accessGroup("test").accessible(kSecAttrAccessibleAfterFirstUnlock).build()
-        let ring4 = KeyClip.Builder()
+        let ring2 = KeyClip.Builder()
             .accessGroup("test.dummy") // always failure
-            .service("Service1")
-            .accessible(kSecAttrAccessibleAfterFirstUnlock)
             .build()
         
         ring1.save(key, string: val1)
-        ring2.save(key, string: val2)
-        ring3.save(key, string: val3)
-        ring4.save(key, string: val3)
+        ring2.save(key, string: val1)
         
         XCTAssertTrue(ring1.load(key) == val1)
-        XCTAssertTrue(ring2.load(key) == val2)
-        XCTAssertTrue(ring3.load(key) == val3)
-        XCTAssertTrue((ring4.load(key) as String?) == nil)
+        XCTAssertNil(ring2.load(key) as String?)
+        
+        XCTAssertEqual(ring1.accessGroup!, "test")
+        XCTAssertEqual(ring2.accessGroup!, "test.dummy")
     }
     
     func testDefaultAccessGroup() {
         XCTAssertTrue(KeyClip.defaultAccessGroup() == "test")
+    }
+    
+    func testError() {
+        var hasError = false
+        let ring = KeyClip.Builder()
+            .printError(true)
+            .onError({ error in
+                hasError = true
+                XCTAssertEqual(error.code, -25243)
+            })
+            .accessGroup("test.dummy")
+            .build()
+        
+        ring.save("hoge", string: "bar")
+        
+        XCTAssertTrue(hasError)
     }
     
     func testUsage() {
@@ -197,6 +219,14 @@ class KeyClipTests: XCTestCase {
             
             // kSecAttrAccessible, default is kSecAttrAccessibleWhenUnlocked
             .accessible(kSecAttrAccessibleWhenUnlocked)
+            
+            // Casual Debug
+            .printError(true)
+            
+            // Error Handler
+            .onError({ (error: NSError) in
+                let status: OSStatus = Int32(error.code)
+            })
             
             // update for default instance
             .buildDefault()

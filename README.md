@@ -56,7 +56,11 @@ KeyClip.delete("access_token") // Remove the data
 KeyClip.clear() // Remove all the data
 ```
 
-### NSDictionary (compatible to NSJSONSerialization)
+### NSDictionary
+
+Must be compatible to NSJSONSerialization.
+
+Valid JSON elements are Dictionary, Array, String, Number, Boolean and null.
 
 ```swift
 KeyClip.save("account", dictionary: ["name": "aska", "token": "******"]) // -> Bool
@@ -75,14 +79,12 @@ let data = KeyClip.load("access_token") as NSData?
 ### Usuful
 
 ```swift
-let key = "account"
-
 func save(account: Account) -> Bool {
-    return KeyClip.save(key, account.dictionaryValue)
+    return KeyClip.save("account", account.dictionaryValue)
 }
 
 func load() -> Account? {
-    if let dictionary = KeyClip.load(key) as NSDictionary? {
+    if let dictionary = KeyClip.load("account") as NSDictionary? {
         return Account(dictionary)
     } else {
         return nil
@@ -90,25 +92,39 @@ func load() -> Account? {
 }
 
 class Account {
-
-    struct Constants {
-        static let name = "name"
-        static let password = "password"
-    }
-
     let name: String
     let password: String
 
     init(_ dictionary: NSDictionary) {
-        self.name = dictionary[Constants.name] as String
-        self.password = dictionary[Constants.password] as String
+        self.name = dictionary["name"] as String
+        self.password = dictionary["password"] as String
     }
 
     var dictionaryValue: [String: String] {
-        return [Constants.name: name, Constants.password: password]
+        return ["name": name, "password": password]
     }
-
 }
+```
+
+### Error Handling
+
+`errSecItemNotFound` is ignored.
+
+```swift
+KeyClip.Builder()
+
+    // Debug print
+    .printError(true)
+
+    // Error Handler
+    .onError({ (error: NSError) in
+        let status = error.code // OSStatus
+        // Send crash report
+        // Display of Alert ..etc
+    })
+
+    // apply to default settings
+    .buildDefault()
 ```
 
 ### Single Instance Settings
@@ -120,30 +136,30 @@ class Account {
 ```swift
 KeyClip.Builder()
 
-        // kSecAttrAccessGroup, default is nil
-        .accessGroup("XXXX23F3DC53.com.example")
+    // kSecAttrAccessGroup, default is nil
+    .accessGroup("XXXX23F3DC53.com.example")
 
-        // kSecAttrService, default is NSBundle.mainBundle().bundleIdentifier
-        .service("Service")
+    // kSecAttrService, default is NSBundle.mainBundle().bundleIdentifier
+    .service("Service")
 
-        // kSecAttrAccessible, default is kSecAttrAccessibleWhenUnlocked
-        .accessible(kSecAttrAccessibleWhenUnlocked)
+    // kSecAttrAccessible, default is kSecAttrAccessibleWhenUnlocked
+    .accessible(kSecAttrAccessibleWhenUnlocked)
 
-        // update for default instance
-        .buildDefault()
+    // Casual Debug
+    .printError(true)
+
+    // Error Handler
+    .onError({ (error: NSError) in
+        let status = error.code // OSStatus
+    })
+
+    // update for default instance
+    .buildDefault()
 ```
 
 ### Multi Instance Settings
 
 ```swift
-let ring = KeyClip.Builder()
-                .accessGroup("XXXX23F3DC53.com.example")
-                .service("Service")
-                .accessible(kSecAttrAccessibleWhenUnlocked)
-                .build()
-
-
-// eg.
 let background = KeyClip.Builder()
                 .service("BackgroundService")
                 .accessible(kSecAttrAccessibleAfterFirstUnlock)

@@ -12,73 +12,59 @@ import Security
 public class KeyClip {
     
     private struct Singleton {
-        private static var defaultRing = Builder().build()
-    }
-    
-    public class func setService(service: String) {
-        Singleton.defaultRing = Ring(accessGroup: Singleton.defaultRing.accessGroup, service: service, accessible: Singleton.defaultRing.accessible)
-    }
-    
-    public class func setAccessible(accessible: String) {
-        Singleton.defaultRing = Ring(accessGroup: Singleton.defaultRing.accessGroup, service: Singleton.defaultRing.service, accessible: accessible)
-    }
-    
-    public class func setAccessGroup(accessGroup: String) {
-        Singleton.defaultRing = Ring(accessGroup: accessGroup, service: Singleton.defaultRing.service, accessible: Singleton.defaultRing.accessible)
+        private static var instance = Builder().build()
     }
     
     public class func save(key: String, data: NSData) -> Bool {
-        return Singleton.defaultRing.save(key, data: data)
+        return Singleton.instance.save(key, data: data)
     }
     
     public class func save(key: String, string: String) -> Bool {
-        return Singleton.defaultRing.save(key, string: string)
+        return Singleton.instance.save(key, string: string)
     }
     
     public class func save(key: String, dictionary: NSDictionary) -> Bool {
-        return Singleton.defaultRing.save(key, dictionary: dictionary)
+        return Singleton.instance.save(key, dictionary: dictionary)
     }
     
     public class func load(key: String) -> NSData? {
-        return Singleton.defaultRing.load(key)
+        return Singleton.instance.load(key)
     }
     
     public class func load(key: String) -> NSDictionary? {
-        return Singleton.defaultRing.load(key)
+        return Singleton.instance.load(key)
     }
     
     public class func load(key: String) -> String? {
-        return Singleton.defaultRing.load(key)
+        return Singleton.instance.load(key)
     }
     
     public class func delete(key: String) -> Bool {
-        return Singleton.defaultRing.delete(key)
+        return Singleton.instance.delete(key)
     }
     
     public class func clear() -> Bool {
-        return Singleton.defaultRing.clear()
+        return Singleton.instance.clear()
     }
     
-    // for DEBUG
+    // for debug
     public class func defaultAccessGroup() -> String {
         var query: [String: AnyObject] = [
             kSecClass            : kSecClassGenericPassword,
-            kSecAttrAccount      : "application-identifier-check",
+            kSecAttrAccount      : "pw.aska.KeyClip.application-identifier-check",
             kSecReturnAttributes : kCFBooleanTrue ]
         
-        var dataTypeRef :Unmanaged<AnyObject>?
-        var status: OSStatus = SecItemCopyMatching(query as CFDictionaryRef, &dataTypeRef)
+        var result: AnyObject?
+        var status = withUnsafeMutablePointer(&result) { SecItemCopyMatching(query, UnsafeMutablePointer($0)) }
         
         if status == errSecItemNotFound {
-            status = SecItemAdd(query as CFDictionaryRef, &dataTypeRef);
+            status = withUnsafeMutablePointer(&result) { SecItemAdd(query, UnsafeMutablePointer($0)) }
         }
         
-        if status == noErr {
-            if let op = dataTypeRef?.toOpaque() {
-                let resultDict: NSDictionary = Unmanaged<NSDictionary>.fromOpaque(op).takeUnretainedValue()
-                
-                if let accessGroup = resultDict[kSecAttrAccessGroup as NSString] as? NSString {
-                    remove("application-identifier-check")
+        if status == errSecSuccess {
+            if let dictionary = result as? NSDictionary {
+                if let accessGroup = dictionary[kSecAttrAccessGroup as NSString] as? NSString {
+                    SecItemDelete(query as CFDictionaryRef)
                     return accessGroup
                 }
             }
@@ -88,9 +74,12 @@ public class KeyClip {
     }
     
     public class Builder {
+        
         var accessGroup: String?
         var service: String = NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
         var accessible: String = kSecAttrAccessibleWhenUnlocked
+        var printError = false
+        var onError: ((NSError) -> ())? = nil
         
         public init() {}
         
@@ -105,16 +94,26 @@ public class KeyClip {
         }
         
         public func accessible(accessible: String) -> Builder {
-            self.service = accessible
+            self.accessible = accessible
+            return self
+        }
+        
+        public func printError(printError: Bool) -> Builder {
+            self.printError = printError
+            return self
+        }
+        
+        public func onError(onError: ((NSError) -> ())?) -> Builder {
+            self.onError = onError
             return self
         }
         
         public func build() -> Ring {
-            return Ring(accessGroup: accessGroup, service: service, accessible: accessible)
+            return Ring(accessGroup: accessGroup, service: service, accessible: accessible, printError: printError, onError: onError)
         }
         
         public func buildDefault() {
-            Singleton.defaultRing = build()
+            Singleton.instance = build()
         }
     }
     
@@ -123,31 +122,44 @@ public class KeyClip {
         let accessGroup: String?
         let service: String
         let accessible: String
+        let printError = false
+        let onError: ((NSError) -> ())? = nil
         
-        init(accessGroup: String?, service: String, accessible: String) {
+        init(accessGroup: String?, service: String, accessible: String, printError: Bool, onError: ((NSError) -> ())?) {
             self.accessGroup = accessGroup
             self.service = service
             self.accessible = accessible
+            self.printError = printError
+            self.onError = onError
         }
         
         public func save(key: String, data: NSData) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService    : self.service,
-                kSecAttrAccessible : self.accessible,
                 kSecClass          : kSecClassGenericPassword,
                 kSecAttrAccount    : key,
-                kSecAttrGeneric    : key,
-                kSecValueData      : data ]
+                kSecAttrGeneric    : key ]
             
             if let accessGroup = self.accessGroup {
                 query[kSecAttrAccessGroup] = accessGroup
             }
             
-            SecItemDelete(query as CFDictionaryRef)
+            var status = SecItemCopyMatching(query, nil)
             
-            let status: OSStatus = SecItemAdd(query as CFDictionaryRef, nil)
+            if status == errSecSuccess {
+                status = SecItemUpdate(query, [kSecValueData as String: data])
+            } else if status == errSecItemNotFound {
+                query[kSecAttrAccessible] = self.accessible
+                query[kSecValueData] = data
+                status = SecItemAdd(query as CFDictionaryRef, nil)
+            }
             
-            return status == noErr
+            if status == errSecSuccess {
+                return true
+            } else {
+                failure(error(status))
+            }
+            return false
         }
         
         public func save(key: String, string: String) -> Bool {
@@ -158,7 +170,11 @@ public class KeyClip {
         }
         
         public func save(key: String, dictionary: NSDictionary) -> Bool {
-            if let data = NSJSONSerialization.dataWithJSONObject(dictionary, options: nil, error: nil) {
+            var error: NSError?
+            if let data = NSJSONSerialization.dataWithJSONObject(dictionary, options: nil, error: &error) {
+                if let e = error {
+                    failure(e)
+                }
                 return save(key, data: data)
             }
             return false
@@ -177,15 +193,17 @@ public class KeyClip {
                 query[kSecAttrAccessGroup] = accessGroup
             }
             
-            var dataTypeRef :Unmanaged<AnyObject>?
+            var result: AnyObject?
+            var status = withUnsafeMutablePointer(&result) { SecItemCopyMatching(query, UnsafeMutablePointer($0)) }
             
-            let status: OSStatus = SecItemCopyMatching(query, &dataTypeRef)
-            
-            if status == noErr {
-                return (dataTypeRef!.takeRetainedValue() as NSData)
-            } else {
-                return nil
+            if status == errSecSuccess {
+                if let data = result as? NSData {
+                    return data
+                }
+            } else if status != errSecItemNotFound {
+                failure(error(status))
             }
+            return nil
         }
         
         public func load(key: String) -> NSDictionary? {
@@ -217,9 +235,14 @@ public class KeyClip {
                 query[kSecAttrAccessGroup] = accessGroup
             }
             
-            let status: OSStatus = SecItemDelete(query as CFDictionaryRef)
+            let status = SecItemDelete(query as CFDictionaryRef)
             
-            return status == noErr
+            if status == errSecSuccess {
+                return true
+            } else  if status != errSecItemNotFound {
+                failure(error(status))
+            }
+            return false
         }
         
         public func clear() -> Bool {
@@ -232,9 +255,26 @@ public class KeyClip {
                 query[kSecAttrAccessGroup] = accessGroup
             }
             
-            let status: OSStatus = SecItemDelete(query as CFDictionaryRef)
+            let status = SecItemDelete(query as CFDictionaryRef)
             
-            return status == noErr
+            if status == errSecSuccess {
+                return true
+            } else {
+                failure(error(status))
+            }
+            return false
+        }
+        
+        func error(status: OSStatus) -> NSError {
+            return NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: nil)
+        }
+        
+        func failure(error: NSError, function: String = __FUNCTION__, line: Int = __LINE__) {
+            onError?(error)
+            
+            if printError {
+                NSLog("[KeyClip] function:\(function) line:\(line) \(error.debugDescription)")
+            }
         }
     }
 }
