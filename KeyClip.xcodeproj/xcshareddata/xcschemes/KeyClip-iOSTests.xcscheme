@@ -9,28 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6A61271E1A299E6400C18E1D"
-               BuildableName = "KeyClip.framework"
-               BlueprintName = "KeyClip"
-               ReferencedContainer = "container:KeyClip.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "6A6127291A299E6400C18E1D"
-               BuildableName = "KeyClipTests.xctest"
-               BlueprintName = "KeyClipTests"
+               BuildableName = "KeyClip-iOSTests.xctest"
+               BlueprintName = "KeyClip-iOSTests"
                ReferencedContainer = "container:KeyClip.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,23 +28,13 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6A6127291A299E6400C18E1D"
-               BuildableName = "KeyClipTests.xctest"
-               BlueprintName = "KeyClipTests"
-               ReferencedContainer = "container:KeyClip.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6A61271E1A299E6400C18E1D"
-            BuildableName = "KeyClip.framework"
-            BlueprintName = "KeyClip"
+            BlueprintIdentifier = "6A6127291A299E6400C18E1D"
+            BuildableName = "KeyClip-iOSTests.xctest"
+            BlueprintName = "KeyClip-iOSTests"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -75,9 +51,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6A61271E1A299E6400C18E1D"
-            BuildableName = "KeyClip.framework"
-            BlueprintName = "KeyClip"
+            BlueprintIdentifier = "6A6127291A299E6400C18E1D"
+            BuildableName = "KeyClip-iOSTests.xctest"
+            BlueprintName = "KeyClip-iOSTests"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -90,15 +66,6 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6A61271E1A299E6400C18E1D"
-            BuildableName = "KeyClip.framework"
-            BlueprintName = "KeyClip"
-            ReferencedContainer = "container:KeyClip.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

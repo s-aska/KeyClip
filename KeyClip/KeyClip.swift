@@ -79,7 +79,8 @@ public class KeyClip {
             }
         }
         
-        assertionFailure("failure get application-identifier")
+        return ""
+//        assertionFailure("failure get application-identifier")
     }
     
     public class Builder {

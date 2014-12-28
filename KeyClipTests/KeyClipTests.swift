@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Shinichiro Aska. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import XCTest
 import KeyClip
 
@@ -151,6 +151,7 @@ class KeyClipTests: XCTestCase {
     }
     
     func testAccessGroup() {
+        #if os(iOS)
         let key = "testSetServiceKey"
         let val1 = "testSetServiceVal1"
         let val2 = "testSetServiceVal2"
@@ -170,22 +171,27 @@ class KeyClipTests: XCTestCase {
             .save(key, string: val1)
         
         XCTAssertTrue(ring1.load(key) == val1)
+        
         XCTAssertNil(ring2.load(key) as String?)
         
         XCTAssertEqual(ring1.accessGroup!, "test")
         XCTAssertEqual(ring2.accessGroup!, "test.dummy")
+        #endif
     }
     
     func testDefaultAccessGroup() {
+        #if os(iOS)
         XCTAssertTrue(KeyClip.defaultAccessGroup() == "test")
+        #endif
     }
     
-    func testError() {
+    func testAccessGroupError() {
+        #if os(iOS)
         var errorCount = 0
         let ring = KeyClip.Builder()
             .accessGroup("test.dummy")
             .build()
-
+        
         ring
             .handleError({ error in
                 errorCount++
@@ -197,21 +203,6 @@ class KeyClipTests: XCTestCase {
             .save("hoge", string: "bar")
         
         XCTAssertTrue(errorCount == 1)
-    }
-    
-    func testUsage() {
-        KeyClip.save("account_data", data: NSData()) // Bool
-        KeyClip.save("access_token", string: "********") // Bool
-        KeyClip.save("account", dictionary: ["name": "Aska"]) // Bool
-        
-        let data: NSData? = KeyClip.load("account_data")
-        let access_token: String? = KeyClip.load("access_token")
-        let account: NSDictionary? = KeyClip.load("account")
-        
-        let ring = KeyClip.Builder()
-            .accessGroup("test") // kSecAttrAccessGroup
-            .service("Service1") // kSecAttrService
-            .accessible(kSecAttrAccessibleAfterFirstUnlock) // kSecAttrAccessible
-            .build()
+        #endif
     }
 }
