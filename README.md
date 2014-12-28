@@ -17,7 +17,6 @@ See http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-
 - [x] Multi Types ( String / NSDictionary / NSData )
 - [x] Error Handling
 - [x] Settings ( kSecAttrAccessGroup / kSecAttrService / kSecAttrAccessible )
-- [x] Instance
 - [ ] The Release Optimization level to `Fastest [-O]` when resolved Swift compiler bugs.
 
 ## Requirements
@@ -120,7 +119,7 @@ if !success {
 }
 ```
 
-### By Temporary specifies
+### By Specifies
 
 handleError is possible to change the error message by OSStatus.
 
@@ -133,66 +132,29 @@ KeyClip
     .save("hoge", string: "bar")
 ```
 
-### By Settings
-
-Always enable. (eg. Send crash report.)
-
-Instances's settings and temporary specifies can be combined.
+### Debug print
 
 ```swift
-KeyClip.Builder()
-
-    // Debug print
-    .printError(true)
-
-    // Error Handler
-    .handleError({ error in
-        let status = error.code // OSStatus
-    })
-
-    // apply to default settings
-    .buildDefault()
+KeyClip.printError(true)
 ```
+
 
 ## Settings
 
-### For class methods
-
-Setting of class methods.
-
-`KeyClip.save()` `KeyClip.load()` `KeyClip.delete()` `KeyClip.clear()`
-
 ```swift
-KeyClip.Builder()
+let clip = KeyClip.Builder()
 
-    // kSecAttrAccessGroup, default is nil
-    .accessGroup("XXXX23F3DC53.com.example")
+                // kSecAttrService, default is NSBundle.mainBundle().bundleIdentifier
+                .service(NSBundle.mainBundle().bundleIdentifier)
 
-    // kSecAttrService, default is NSBundle.mainBundle().bundleIdentifier
-    .service("Service")
+                // kSecAttrAccessible, default is kSecAttrAccessibleAfterFirstUnlock
+                .accessible(kSecAttrAccessibleAfterFirstUnlock)
 
-    // kSecAttrAccessible, default is kSecAttrAccessibleWhenUnlocked
-    .accessible(kSecAttrAccessibleWhenUnlocked)
+                // kSecAttrAccessGroup, default is nil
+                .accessGroup("XXXX23F3DC53.com.example.share")
 
-    // Debug print
-    .printError(true)
+                .build()
 
-    // Error Handler
-    .handleError({ error in
-        let status = error.code // OSStatus
-    })
-
-    // update for default instance
-    .buildDefault()
-```
-
-### Get Instance
-
-Setting of instance methods.
-
-`clip.save()` `clip.load()` `clip.delete()` `clip.clear()`
-
-```swift
 let background = KeyClip.Builder()
                 .service("BackgroundService")
                 .accessible(kSecAttrAccessibleAfterFirstUnlock)
@@ -204,21 +166,12 @@ let foreground = KeyClip.Builder()
                 .build()
 
 let shared = KeyClip.Builder()
-                .printError(true)
-                .handleError({ error in
-                    let status = error.code // OSStatus
-
-                    // Entitlement.plist's keychain-access-groups or App Identifier.
-                    let defaultAccessGroup = KeyClip.defaultAccessGroup()
-
-                    NSLog("[KeyClip] Error status:\(status) defaultAccessGroup:\(defaultAccessGroup)")
-                })
                 .service("ShearedService")
                 .accessGroup("XXXX23F3DC53.com.example.share")
                 .build()
 ```
 
-### kSecAttrAccessGroup
+### Note to accessGroup
 
 :warning: iOS Simulator's keychain implementation does not support kSecAttrAccessGroup. (always "test")
 

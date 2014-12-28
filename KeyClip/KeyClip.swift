@@ -11,44 +11,49 @@ import Security
 
 public class KeyClip {
     
-    private struct Singleton {
-        private static var instance = Builder().build()
+    private struct Static {
+        private static let instance = Builder().build()
+        private static var printError = false
     }
     
     public class func save(key: String, data: NSData) -> Bool {
-        return Singleton.instance.save(key, data: data)
+        return Static.instance.save(key, data: data)
     }
     
     public class func save(key: String, string: String) -> Bool {
-        return Singleton.instance.save(key, string: string)
+        return Static.instance.save(key, string: string)
     }
     
     public class func save(key: String, dictionary: NSDictionary) -> Bool {
-        return Singleton.instance.save(key, dictionary: dictionary)
+        return Static.instance.save(key, dictionary: dictionary)
     }
     
     public class func load(key: String) -> NSData? {
-        return Singleton.instance.load(key)
+        return Static.instance.load(key)
     }
     
     public class func load(key: String) -> NSDictionary? {
-        return Singleton.instance.load(key)
+        return Static.instance.load(key)
     }
     
     public class func load(key: String) -> String? {
-        return Singleton.instance.load(key)
+        return Static.instance.load(key)
     }
     
     public class func delete(key: String) -> Bool {
-        return Singleton.instance.delete(key)
+        return Static.instance.delete(key)
     }
     
     public class func clear() -> Bool {
-        return Singleton.instance.clear()
+        return Static.instance.clear()
     }
     
     public class func handleError(handleError: ((NSError) -> Void)) -> Ring {
-        return Singleton.instance.handleError(handleError)
+        return Static.instance.handleError(handleError)
+    }
+    
+    public class func printError(printError: Bool) {
+        Static.printError = printError
     }
     
     // for debug
@@ -81,9 +86,7 @@ public class KeyClip {
         
         var accessGroup: String?
         var service: String = NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
-        var accessible: String = kSecAttrAccessibleWhenUnlocked
-        var printError = false
-        var handleErrors: [(NSError) -> Void] = []
+        var accessible: String = kSecAttrAccessibleAfterFirstUnlock
         
         public init() {}
         
@@ -102,22 +105,8 @@ public class KeyClip {
             return self
         }
         
-        public func printError(printError: Bool) -> Builder {
-            self.printError = printError
-            return self
-        }
-        
-        public func handleError(handleError: ((NSError) -> Void)) -> Builder {
-            self.handleErrors.append(handleError)
-            return self
-        }
-        
         public func build() -> Ring {
-            return Ring(accessGroup: accessGroup, service: service, accessible: accessible, printError: printError, handleErrors: handleErrors)
-        }
-        
-        public func buildDefault() {
-            Singleton.instance = build()
+            return Ring(accessGroup: accessGroup, service: service, accessible: accessible)
         }
     }
     
@@ -126,19 +115,17 @@ public class KeyClip {
         let accessGroup: String?
         let service: String
         let accessible: String
-        let printError = false
-        let handleErrors: [(NSError) -> Void]
+        let handleError: ((NSError) -> Void)?
         
-        init(accessGroup: String?, service: String, accessible: String, printError: Bool, handleErrors: [((NSError) -> Void)]) {
+        init(accessGroup: String?, service: String, accessible: String, handleError: ((NSError) -> Void)? = nil) {
             self.accessGroup = accessGroup
             self.service = service
             self.accessible = accessible
-            self.printError = printError
-            self.handleErrors = handleErrors
+            self.handleError = handleError
         }
         
-        public func handleError(handleError: ((NSError) -> Void)) -> Ring {
-            return Ring(accessGroup: accessGroup, service: service, accessible: accessible, printError: printError, handleErrors: handleErrors + [handleError])
+        public func handleError(handler: ((NSError) -> Void)) -> Ring {
+            return Ring(accessGroup: accessGroup, service: service, accessible: accessible, handleError: handler)
         }
         
         public func save(key: String, data: NSData) -> Bool {
@@ -165,14 +152,14 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else {
-                failure(status: status)
+                self.failure(status: status)
             }
             return false
         }
         
         public func save(key: String, string: String) -> Bool {
             if let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
-                return save(key, data: data)
+                return self.save(key, data: data)
             }
             return false
         }
@@ -181,9 +168,9 @@ public class KeyClip {
             var error: NSError?
             if let data = NSJSONSerialization.dataWithJSONObject(dictionary, options: nil, error: &error) {
                 if let e = error {
-                    failure(error: e)
+                    self.failure(error: e)
                 }
-                return save(key, data: data)
+                return self.save(key, data: data)
             }
             return false
         }
@@ -209,17 +196,17 @@ public class KeyClip {
                     return data
                 }
             } else if status != errSecItemNotFound {
-                failure(status: status)
+                self.failure(status: status)
             }
             return nil
         }
         
         public func load(key: String) -> NSDictionary? {
             var error: NSError?
-            if let data: NSData = load(key) {
+            if let data: NSData = self.load(key) {
                 if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
                     if let e = error {
-                        failure(error: e)
+                        self.failure(error: e)
                     }
                     return json as? NSDictionary
                 }
@@ -228,7 +215,7 @@ public class KeyClip {
         }
         
         public func load(key: String) -> String? {
-            if let data: NSData = load(key) {
+            if let data: NSData = self.load(key) {
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
                     return string
                 }
@@ -252,7 +239,7 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else  if status != errSecItemNotFound {
-                failure(status: status)
+                self.failure(status: status)
             }
             return false
         }
@@ -271,21 +258,19 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else {
-                failure(status: status)
+                self.failure(status: status)
             }
             return false
         }
         
         private func failure(#status: OSStatus, function: String = __FUNCTION__, line: Int = __LINE__) {
-            failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: nil), function: function, line: line)
+            self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: nil), function: function, line: line)
         }
         
         private func failure(#error: NSError, function: String = __FUNCTION__, line: Int = __LINE__) {
-            for handle in handleErrors {
-                handle(error)
-            }
+            self.handleError?(error)
             
-            if printError {
+            if Static.printError {
                 NSLog("[KeyClip] function:\(function) line:\(line) \(error.debugDescription)")
             }
         }
