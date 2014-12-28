@@ -144,31 +144,16 @@ KeyClip.printError(true)
 ```swift
 let clip = KeyClip.Builder()
 
-                // kSecAttrService, default is NSBundle.mainBundle().bundleIdentifier
-                .service(NSBundle.mainBundle().bundleIdentifier)
+    // kSecAttrService ( default is NSBundle.mainBundle().bundleIdentifier )
+    .service(NSBundle.mainBundle().bundleIdentifier)
 
-                // kSecAttrAccessible, default is kSecAttrAccessibleAfterFirstUnlock
-                .accessible(kSecAttrAccessibleAfterFirstUnlock)
+    // kSecAttrAccessible ( default is kSecAttrAccessibleAfterFirstUnlock )
+    .accessible(kSecAttrAccessibleAfterFirstUnlock)
 
-                // kSecAttrAccessGroup, default is nil
-                .accessGroup("XXXX23F3DC53.com.example.share")
+    // kSecAttrAccessGroup ( default is nil )
+    .accessGroup("XXXX23F3DC53.com.example.share")
 
-                .build()
-
-let background = KeyClip.Builder()
-                .service("BackgroundService")
-                .accessible(kSecAttrAccessibleAfterFirstUnlock)
-                .build()
-
-let foreground = KeyClip.Builder()
-                .service("ForegroundService")
-                .accessible(kSecAttrAccessibleWhenUnlocked)
-                .build()
-
-let shared = KeyClip.Builder()
-                .service("ShearedService")
-                .accessGroup("XXXX23F3DC53.com.example.share")
-                .build()
+    .build()
 ```
 
 ### Note to accessGroup
