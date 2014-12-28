@@ -10,6 +10,10 @@
 		6A61272B1A299E6400C18E1D /* KeyClip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A61271F1A299E6400C18E1D /* KeyClip.framework */; };
 		6A6127321A299E6400C18E1D /* KeyClipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6127311A299E6400C18E1D /* KeyClipTests.swift */; };
 		6A61273C1A299EDB00C18E1D /* KeyClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A61273B1A299EDB00C18E1D /* KeyClip.swift */; };
+		6AB293051A509298009B628E /* KeyClip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB292FA1A509297009B628E /* KeyClip.framework */; };
+		6AB293131A509499009B628E /* KeyClipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6127311A299E6400C18E1D /* KeyClipTests.swift */; };
+		6AB293141A5094D3009B628E /* KeyClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A61273B1A299EDB00C18E1D /* KeyClip.swift */; };
+		6AB293151A5094D3009B628E /* KeyClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A61273B1A299EDB00C18E1D /* KeyClip.swift */; };
 		6AEEB8ED1A2B58A50035010F /* KeyClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A61273B1A299EDB00C18E1D /* KeyClip.swift */; };
 /* End PBXBuildFile section */
 
@@ -21,6 +25,13 @@
 			remoteGlobalIDString = 6A61271E1A299E6400C18E1D;
 			remoteInfo = KeyClip;
 		};
+		6AB293061A509298009B628E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A6127161A299E6400C18E1D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AB292F91A509297009B628E;
+			remoteInfo = KeyClip;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +41,8 @@
 		6A6127301A299E6400C18E1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A6127311A299E6400C18E1D /* KeyClipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyClipTests.swift; sourceTree = "<group>"; };
 		6A61273B1A299EDB00C18E1D /* KeyClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyClip.swift; sourceTree = "<group>"; };
+		6AB292FA1A509297009B628E /* KeyClip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KeyClip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AB293041A509297009B628E /* KeyClipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeyClipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +58,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A61272B1A299E6400C18E1D /* KeyClip.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AB292F61A509297009B628E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AB293011A509297009B628E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AB293051A509298009B628E /* KeyClip.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +93,8 @@
 			children = (
 				6A61271F1A299E6400C18E1D /* KeyClip.framework */,
 				6A61272A1A299E6400C18E1D /* KeyClipTests.xctest */,
+				6AB292FA1A509297009B628E /* KeyClip.framework */,
+				6AB293041A509297009B628E /* KeyClipTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,12 +143,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6AB292F71A509297009B628E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		6A61271E1A299E6400C18E1D /* KeyClip */ = {
+		6A61271E1A299E6400C18E1D /* KeyClip-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6A6127351A299E6400C18E1D /* Build configuration list for PBXNativeTarget "KeyClip" */;
+			buildConfigurationList = 6A6127351A299E6400C18E1D /* Build configuration list for PBXNativeTarget "KeyClip-iOS" */;
 			buildPhases = (
 				6A61271A1A299E6400C18E1D /* Sources */,
 				6A61271B1A299E6400C18E1D /* Frameworks */,
@@ -129,14 +166,14 @@
 			);
 			dependencies = (
 			);
-			name = KeyClip;
+			name = "KeyClip-iOS";
 			productName = KeyClip;
 			productReference = 6A61271F1A299E6400C18E1D /* KeyClip.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		6A6127291A299E6400C18E1D /* KeyClipTests */ = {
+		6A6127291A299E6400C18E1D /* KeyClip-iOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6A6127381A299E6400C18E1D /* Build configuration list for PBXNativeTarget "KeyClipTests" */;
+			buildConfigurationList = 6A6127381A299E6400C18E1D /* Build configuration list for PBXNativeTarget "KeyClip-iOSTests" */;
 			buildPhases = (
 				6A6127261A299E6400C18E1D /* Sources */,
 				6A6127271A299E6400C18E1D /* Frameworks */,
@@ -147,9 +184,45 @@
 			dependencies = (
 				6A61272D1A299E6400C18E1D /* PBXTargetDependency */,
 			);
-			name = KeyClipTests;
+			name = "KeyClip-iOSTests";
 			productName = KeyClipTests;
 			productReference = 6A61272A1A299E6400C18E1D /* KeyClipTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6AB292F91A509297009B628E /* KeyClip-Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6AB2930D1A509298009B628E /* Build configuration list for PBXNativeTarget "KeyClip-Mac" */;
+			buildPhases = (
+				6AB292F51A509297009B628E /* Sources */,
+				6AB292F61A509297009B628E /* Frameworks */,
+				6AB292F71A509297009B628E /* Headers */,
+				6AB292F81A509297009B628E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "KeyClip-Mac";
+			productName = KeyClip;
+			productReference = 6AB292FA1A509297009B628E /* KeyClip.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		6AB293031A509297009B628E /* KeyClip-MacTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6AB293101A509298009B628E /* Build configuration list for PBXNativeTarget "KeyClip-MacTests" */;
+			buildPhases = (
+				6AB293001A509297009B628E /* Sources */,
+				6AB293011A509297009B628E /* Frameworks */,
+				6AB293021A509297009B628E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6AB293071A509298009B628E /* PBXTargetDependency */,
+			);
+			name = "KeyClip-MacTests";
+			productName = KeyClipTests;
+			productReference = 6AB293041A509297009B628E /* KeyClipTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -167,6 +240,12 @@
 					6A6127291A299E6400C18E1D = {
 						CreatedOnToolsVersion = 6.1;
 					};
+					6AB292F91A509297009B628E = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					6AB293031A509297009B628E = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
 				};
 			};
 			buildConfigurationList = 6A6127191A299E6400C18E1D /* Build configuration list for PBXProject "KeyClip" */;
@@ -181,8 +260,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6A61271E1A299E6400C18E1D /* KeyClip */,
-				6A6127291A299E6400C18E1D /* KeyClipTests */,
+				6A61271E1A299E6400C18E1D /* KeyClip-iOS */,
+				6A6127291A299E6400C18E1D /* KeyClip-iOSTests */,
+				6AB292F91A509297009B628E /* KeyClip-Mac */,
+				6AB293031A509297009B628E /* KeyClip-MacTests */,
 			);
 		};
 /* End PBXProject section */
@@ -196,6 +277,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6A6127281A299E6400C18E1D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AB292F81A509297009B628E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AB293021A509297009B628E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -222,13 +317,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6AB292F51A509297009B628E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AB293141A5094D3009B628E /* KeyClip.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AB293001A509297009B628E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AB293131A509499009B628E /* KeyClipTests.swift in Sources */,
+				6AB293151A5094D3009B628E /* KeyClip.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		6A61272D1A299E6400C18E1D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6A61271E1A299E6400C18E1D /* KeyClip */;
+			target = 6A61271E1A299E6400C18E1D /* KeyClip-iOS */;
 			targetProxy = 6A61272C1A299E6400C18E1D /* PBXContainerItemProxy */;
+		};
+		6AB293071A509298009B628E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6AB292F91A509297009B628E /* KeyClip-Mac */;
+			targetProxy = 6AB293061A509298009B628E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -329,7 +446,7 @@
 				INFOPLIST_FILE = KeyClip/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -346,7 +463,7 @@
 				INFOPLIST_FILE = KeyClip/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -382,6 +499,86 @@
 			};
 			name = Release;
 		};
+		6AB2930E1A509298009B628E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = KeyClip/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		6AB2930F1A509298009B628E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = KeyClip/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		6AB293111A509298009B628E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = KeyClipTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		6AB293121A509298009B628E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = KeyClipTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -394,7 +591,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6A6127351A299E6400C18E1D /* Build configuration list for PBXNativeTarget "KeyClip" */ = {
+		6A6127351A299E6400C18E1D /* Build configuration list for PBXNativeTarget "KeyClip-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6A6127361A299E6400C18E1D /* Debug */,
@@ -403,7 +600,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6A6127381A299E6400C18E1D /* Build configuration list for PBXNativeTarget "KeyClipTests" */ = {
+		6A6127381A299E6400C18E1D /* Build configuration list for PBXNativeTarget "KeyClip-iOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6A6127391A299E6400C18E1D /* Debug */,
@@ -411,6 +608,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		6AB2930D1A509298009B628E /* Build configuration list for PBXNativeTarget "KeyClip-Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AB2930E1A509298009B628E /* Debug */,
+				6AB2930F1A509298009B628E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6AB293101A509298009B628E /* Build configuration list for PBXNativeTarget "KeyClip-MacTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AB293111A509298009B628E /* Debug */,
+				6AB293121A509298009B628E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

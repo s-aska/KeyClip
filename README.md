@@ -1,4 +1,4 @@
-# KeyClip [![Build Status](https://travis-ci.org/s-aska/KeyClip.svg)](https://travis-ci.org/s-aska/KeyClip)
+# KeyClip [![Build Status](https://travis-ci.org/s-aska/KeyClip.svg)](https://travis-ci.org/s-aska/KeyClip) [![](http://img.shields.io/badge/iOS-8.1%2B-brightgreen.svg)]() [![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg)]()
 
 KeyClip is yet another Keychain library written in Swift.
 
@@ -21,7 +21,7 @@ See http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-
 
 ## Requirements
 
-- iOS 8+
+- iOS 8.1+ / Mac OS X 10.10+
 - Xcode 6.1
 
 
