@@ -64,7 +64,7 @@ class KeyClipTests: XCTestCase {
         
         let key1 = "testSaveLoadKey1"
         let key2 = "testSaveLoadKey2"
-        let saveAccount = Account(["name": "aska", "password": "********"])
+        let saveAccount = Account([Account.Constants.name: "aska", Account.Constants.password: "********"])
         
         XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
         XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
@@ -164,11 +164,10 @@ class KeyClipTests: XCTestCase {
             .build()
         
         ring1.save(key, string: val1)
-        ring2
-            .handleError { error in
-                XCTAssertTrue(error.code == -25243) // errSecNoAccessForItem
+        
+        ring2.save(key, string: val2) { (error) -> Void in
+            XCTAssertTrue(error.code == -25243) // errSecNoAccessForItem
         }
-            .save(key, string: val1)
         
         XCTAssertTrue(ring1.load(key) == val1)
         
@@ -192,15 +191,13 @@ class KeyClipTests: XCTestCase {
             .accessGroup("test.dummy")
             .build()
         
-        ring
-            .handleError({ error in
-                errorCount++
-                XCTAssertEqual(error.code, -25243)
-                let status = error.code // OSStatus
-                let defaultAccessGroup = KeyClip.defaultAccessGroup()
-                NSLog("[KeyClip] Error status:\(status) App Identifier:\(defaultAccessGroup)")
-            })
-            .save("hoge", string: "bar")
+        ring.save("hoge", string: "bar") { error -> Void in
+            errorCount++
+            XCTAssertEqual(error.code, -25243)
+            let status = error.code // OSStatus
+            let defaultAccessGroup = KeyClip.defaultAccessGroup()
+            NSLog("[KeyClip] Error status:\(status) App Identifier:\(defaultAccessGroup)")
+        }
         
         XCTAssertTrue(errorCount == 1)
         #endif

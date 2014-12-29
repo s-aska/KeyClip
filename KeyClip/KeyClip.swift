@@ -11,52 +11,53 @@ import Security
 
 public class KeyClip {
     
+    // MARK: Types
+    
     private struct Static {
         private static let instance = Builder().build()
         private static var printError = false
     }
     
-    public class func save(key: String, data: NSData) -> Bool {
-        return Static.instance.save(key, data: data)
+    // MARK: Public Methods
+    
+    public class func save(key: String, data: NSData, failure: ((NSError) -> Void)?) -> Bool {
+        return Static.instance.save(key, data: data, failure: failure)
     }
     
-    public class func save(key: String, string: String) -> Bool {
-        return Static.instance.save(key, string: string)
+    public class func save(key: String, string: String, failure: ((NSError) -> Void)?) -> Bool {
+        return Static.instance.save(key, string: string, failure: failure)
     }
     
-    public class func save(key: String, dictionary: NSDictionary) -> Bool {
-        return Static.instance.save(key, dictionary: dictionary)
+    public class func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)?) -> Bool {
+        return Static.instance.save(key, dictionary: dictionary, failure: failure)
     }
     
-    public class func load(key: String) -> NSData? {
-        return Static.instance.load(key)
+    public class func load(key: String, failure: ((NSError) -> Void)?) -> NSData? {
+        return Static.instance.load(key, failure: failure)
     }
     
-    public class func load(key: String) -> NSDictionary? {
-        return Static.instance.load(key)
+    public class func load(key: String, failure: ((NSError) -> Void)?) -> NSDictionary? {
+        return Static.instance.load(key, failure: failure)
     }
     
-    public class func load(key: String) -> String? {
-        return Static.instance.load(key)
+    public class func load(key: String, failure: ((NSError) -> Void)?) -> String? {
+        return Static.instance.load(key, failure: failure)
     }
     
-    public class func delete(key: String) -> Bool {
-        return Static.instance.delete(key)
+    public class func delete(key: String, failure: ((NSError) -> Void)?) -> Bool {
+        return Static.instance.delete(key, failure: failure)
     }
     
-    public class func clear() -> Bool {
-        return Static.instance.clear()
-    }
-    
-    public class func handleError(handleError: ((NSError) -> Void)) -> Ring {
-        return Static.instance.handleError(handleError)
+    public class func clear(failure: ((NSError) -> Void)?) -> Bool {
+        return Static.instance.clear(failure: failure)
     }
     
     public class func printError(printError: Bool) {
         Static.printError = printError
     }
     
-    // for debug
+    // MARK: Debug Methods
+    
     public class func defaultAccessGroup() -> String {
         var query: [String: AnyObject] = [
             kSecClass            : kSecClassGenericPassword,
@@ -79,10 +80,13 @@ public class KeyClip {
             }
         }
         
-        return ""
-//        assertionFailure("failure get application-identifier")
+        assertionFailure("failure get application-identifier")
     }
-    
+}
+
+// MARK: - Builder
+
+public extension KeyClip {
     public class Builder {
         
         var accessGroup: String?
@@ -110,26 +114,28 @@ public class KeyClip {
             return Ring(accessGroup: accessGroup, service: service, accessible: accessible)
         }
     }
-    
+}
+
+// MARK: - Ring
+
+public extension KeyClip {
     public class Ring {
         
         let accessGroup: String?
         let service: String
         let accessible: String
-        let handleError: ((NSError) -> Void)?
         
-        init(accessGroup: String?, service: String, accessible: String, handleError: ((NSError) -> Void)? = nil) {
+        // MARK: Initializer
+        
+        init(accessGroup: String?, service: String, accessible: String) {
             self.accessGroup = accessGroup
             self.service = service
             self.accessible = accessible
-            self.handleError = handleError
         }
         
-        public func handleError(handler: ((NSError) -> Void)) -> Ring {
-            return Ring(accessGroup: accessGroup, service: service, accessible: accessible, handleError: handler)
-        }
+        // MARK: Public Methods
         
-        public func save(key: String, data: NSData) -> Bool {
+        public func save(key: String, data: NSData, failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService    : self.service,
                 kSecClass          : kSecClassGenericPassword,
@@ -153,30 +159,30 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else {
-                self.failure(status: status)
+                self.failure(status: status, failure: failure)
             }
             return false
         }
         
-        public func save(key: String, string: String) -> Bool {
+        public func save(key: String, string: String, failure: ((NSError) -> Void)?) -> Bool {
             if let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
-                return self.save(key, data: data)
+                return self.save(key, data: data, failure: failure)
             }
             return false
         }
         
-        public func save(key: String, dictionary: NSDictionary) -> Bool {
+        public func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)?) -> Bool {
             var error: NSError?
             if let data = NSJSONSerialization.dataWithJSONObject(dictionary, options: nil, error: &error) {
                 if let e = error {
-                    self.failure(error: e)
+                    self.failure(error: e, failure: failure)
                 }
-                return self.save(key, data: data)
+                return self.save(key, data: data, failure: failure)
             }
             return false
         }
         
-        public func load(key: String) -> NSData? {
+        public func load(key: String, failure: ((NSError) -> Void)?) -> NSData? {
             var query: [String: AnyObject] = [
                 kSecAttrService : self.service,
                 kSecClass       : kSecClassGenericPassword,
@@ -197,17 +203,17 @@ public class KeyClip {
                     return data
                 }
             } else if status != errSecItemNotFound {
-                self.failure(status: status)
+                self.failure(status: status, failure: failure)
             }
             return nil
         }
         
-        public func load(key: String) -> NSDictionary? {
+        public func load(key: String, failure: ((NSError) -> Void)?) -> NSDictionary? {
             var error: NSError?
-            if let data: NSData = self.load(key) {
+            if let data: NSData = self.load(key, failure: failure) {
                 if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
                     if let e = error {
-                        self.failure(error: e)
+                        self.failure(error: e, failure: failure)
                     }
                     return json as? NSDictionary
                 }
@@ -215,8 +221,8 @@ public class KeyClip {
             return nil
         }
         
-        public func load(key: String) -> String? {
-            if let data: NSData = self.load(key) {
+        public func load(key: String, failure: ((NSError) -> Void)?) -> String? {
+            if let data: NSData = self.load(key, failure: failure) {
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
                     return string
                 }
@@ -224,7 +230,7 @@ public class KeyClip {
             return nil
         }
         
-        public func delete(key: String) -> Bool {
+        public func delete(key: String, failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService : self.service,
                 kSecClass       : kSecClassGenericPassword,
@@ -240,12 +246,12 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else  if status != errSecItemNotFound {
-                self.failure(status: status)
+                self.failure(status: status, failure: failure)
             }
             return false
         }
         
-        public func clear() -> Bool {
+        public func clear(#failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService : self.service,
                 kSecClass       : kSecClassGenericPassword ]
@@ -259,21 +265,93 @@ public class KeyClip {
             if status == errSecSuccess {
                 return true
             } else {
-                self.failure(status: status)
+                self.failure(status: status, failure: failure)
             }
             return false
         }
         
-        private func failure(#status: OSStatus, function: String = __FUNCTION__, line: Int = __LINE__) {
-            self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: nil), function: function, line: line)
+        // MARK: Private Methods
+        
+        private func failure(#status: OSStatus, failure: ((NSError) -> Void)?, function: String = __FUNCTION__, line: Int = __LINE__) {
+            self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: nil), failure: failure, function: function, line: line)
         }
         
-        private func failure(#error: NSError, function: String = __FUNCTION__, line: Int = __LINE__) {
-            self.handleError?(error)
+        private func failure(#error: NSError, failure: ((NSError) -> Void)?, function: String = __FUNCTION__, line: Int = __LINE__) {
+            failure?(error)
             
             if Static.printError {
                 NSLog("[KeyClip] function:\(function) line:\(line) \(error.debugDescription)")
             }
         }
+    }
+}
+
+// MARK: - Public Methods for Xcode suggest
+
+public extension KeyClip {
+    public class func save(key: String, data: NSData) -> Bool {
+        return Static.instance.save(key, data: data, failure: nil)
+    }
+    
+    public class func save(key: String, string: String) -> Bool {
+        return Static.instance.save(key, string: string, failure: nil)
+    }
+    
+    public class func save(key: String, dictionary: NSDictionary) -> Bool {
+        return Static.instance.save(key, dictionary: dictionary, failure: nil)
+    }
+    
+    public class func load(key: String) -> NSData? {
+        return Static.instance.load(key, failure: nil)
+    }
+    
+    public class func load(key: String) -> NSDictionary? {
+        return Static.instance.load(key, failure: nil)
+    }
+    
+    public class func load(key: String) -> String? {
+        return Static.instance.load(key, failure: nil)
+    }
+    
+    public class func delete(key: String) -> Bool {
+        return Static.instance.delete(key, failure: nil)
+    }
+    
+    public class func clear() -> Bool {
+        return Static.instance.clear(failure: nil)
+    }
+}
+
+public extension KeyClip.Ring {
+    public func save(key: String, data: NSData) -> Bool {
+        return self.save(key, data: data, failure: nil)
+    }
+    
+    public func save(key: String, string: String) -> Bool {
+        return self.save(key, string: string, failure: nil)
+    }
+    
+    public func save(key: String, dictionary: NSDictionary) -> Bool {
+        return self.save(key, dictionary: dictionary, failure: nil)
+    }
+    
+    public func load(key: String) -> NSData? {
+        return self.load(key, failure: nil)
+    }
+    
+    public func load(key: String) -> NSDictionary? {
+        return self.load(key, failure: nil)
+    }
+    
+    public func load(key: String) -> String? {
+        return self.load(key, failure: nil)
+    }
+    
+    public func delete(key: String) -> Bool {
+        return self.delete(key, failure: nil)
+    }
+    
+    public func clear() -> Bool {
+        return self.clear(failure: nil)
     }
 }

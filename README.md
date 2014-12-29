@@ -124,12 +124,10 @@ if !success {
 handleError is possible to change the error message by OSStatus.
 
 ```swift
-KeyClip
-    .handleError { error in
-        let status = error.code // OSStatus
-        // Show Alert "failed to save to KeyChain code:\(error.code)"
-    }
-    .save("hoge", string: "bar")
+KeyClip.save("hoge", string: "bar") { error in
+    let status = error.code // OSStatus
+    // Show Alert "failed to save to KeyChain code:\(error.code)"
+}
 ```
 
 ### Debug print

@@ -37,12 +37,12 @@
 /* Begin PBXFileReference section */
 		6A61271F1A299E6400C18E1D /* KeyClip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KeyClip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6127231A299E6400C18E1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6A61272A1A299E6400C18E1D /* KeyClipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeyClipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A61272A1A299E6400C18E1D /* KeyClip-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KeyClip-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6127301A299E6400C18E1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A6127311A299E6400C18E1D /* KeyClipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyClipTests.swift; sourceTree = "<group>"; };
 		6A61273B1A299EDB00C18E1D /* KeyClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyClip.swift; sourceTree = "<group>"; };
 		6AB292FA1A509297009B628E /* KeyClip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KeyClip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6AB293041A509297009B628E /* KeyClipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeyClipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AB293041A509297009B628E /* KeyClip-MacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KeyClip-MacTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,9 +92,9 @@
 			isa = PBXGroup;
 			children = (
 				6A61271F1A299E6400C18E1D /* KeyClip.framework */,
-				6A61272A1A299E6400C18E1D /* KeyClipTests.xctest */,
+				6A61272A1A299E6400C18E1D /* KeyClip-iOSTests.xctest */,
 				6AB292FA1A509297009B628E /* KeyClip.framework */,
-				6AB293041A509297009B628E /* KeyClipTests.xctest */,
+				6AB293041A509297009B628E /* KeyClip-MacTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -186,7 +186,7 @@
 			);
 			name = "KeyClip-iOSTests";
 			productName = KeyClipTests;
-			productReference = 6A61272A1A299E6400C18E1D /* KeyClipTests.xctest */;
+			productReference = 6A61272A1A299E6400C18E1D /* KeyClip-iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		6AB292F91A509297009B628E /* KeyClip-Mac */ = {
@@ -222,7 +222,7 @@
 			);
 			name = "KeyClip-MacTests";
 			productName = KeyClipTests;
-			productReference = 6AB293041A509297009B628E /* KeyClipTests.xctest */;
+			productReference = 6AB293041A509297009B628E /* KeyClip-MacTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -616,6 +616,7 @@
 				6AB2930F1A509298009B628E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6AB293101A509298009B628E /* Build configuration list for PBXNativeTarget "KeyClip-MacTests" */ = {
 			isa = XCConfigurationList;
@@ -624,6 +625,7 @@
 				6AB293121A509298009B628E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
