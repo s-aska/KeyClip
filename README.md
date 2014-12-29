@@ -108,9 +108,7 @@ class Account {
 
 ## Error Handling
 
-### By Return value
-
-Usually this is enough.
+### Return value
 
 ```swift
 let success = KeyClip.save("hoge", string: "bar")
@@ -119,9 +117,7 @@ if !success {
 }
 ```
 
-### By Specifies
-
-handleError is possible to change the error message by OSStatus.
+### Clojure
 
 ```swift
 KeyClip.save("hoge", string: "bar") { error in
