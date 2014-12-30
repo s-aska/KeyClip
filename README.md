@@ -132,14 +132,14 @@ KeyClip.printError(true)
 ```swift
 let clip = KeyClip.Builder()
 
-    // kSecAttrService ( default is NSBundle.mainBundle().bundleIdentifier )
-    .service(NSBundle.mainBundle().bundleIdentifier)
+    // kSecAttrService
+    .service(NSBundle.mainBundle().bundleIdentifier) // default
 
-    // kSecAttrAccessible ( default is kSecAttrAccessibleAfterFirstUnlock )
-    .accessible(kSecAttrAccessibleAfterFirstUnlock)
+    // kSecAttrAccessible
+    .accessible(kSecAttrAccessibleAfterFirstUnlock) // default
 
-    // kSecAttrAccessGroup ( default is nil )
-    .accessGroup("XXXX23F3DC53.com.example.share")
+    // kSecAttrAccessGroup
+    .accessGroup("XXXX23F3DC53.com.example.share") // default is nil
 
     .build()
 ```
