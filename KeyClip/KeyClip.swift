@@ -159,7 +159,7 @@ public extension KeyClip {
                 query[kSecValueData] = data
                 status = SecItemAdd(query as CFDictionaryRef, nil)
             }
-            
+        
             if status == errSecSuccess {
                 return true
             } else {
@@ -275,7 +275,7 @@ public extension KeyClip {
             
             if status == errSecSuccess {
                 return true
-            } else {
+            } else  if status != errSecItemNotFound {
                 self.failure(status: status, failure: failure)
             }
             return false
@@ -284,7 +284,8 @@ public extension KeyClip {
         // MARK: Private Methods
         
         private func failure(#status: OSStatus, failure: ((NSError) -> Void)?, function: String = __FUNCTION__, line: Int = __LINE__) {
-            self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: nil), failure: failure, function: function, line: line)
+            let userInfo = [ NSLocalizedDescriptionKey : statusMessage(status) ]
+            self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: userInfo), failure: failure, function: function, line: line)
         }
         
         private func failure(#error: NSError, failure: ((NSError) -> Void)?, function: String = __FUNCTION__, line: Int = __LINE__) {
@@ -293,6 +294,38 @@ public extension KeyClip {
             if Static.printError {
                 NSLog("[KeyClip] function:\(function) line:\(line) \(error.debugDescription)")
             }
+        }
+        
+        // /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework/Headers/SecBase.h
+        private func statusMessage(status: OSStatus) -> String {
+            #if os(iOS)
+            switch status {
+            case errSecUnimplemented:
+                return "Function or operation not implemented."
+            case errSecParam:
+                return "One or more parameters passed to a function where not valid."
+            case errSecAllocate:
+                return "Failed to allocate memory."
+            case errSecNotAvailable:
+                return "No keychain is available. You may need to restart your computer."
+            case errSecDuplicateItem:
+                return "The specified item already exists in the keychain."
+            case errSecItemNotFound:
+                return "The specified item could not be found in the keychain."
+            case errSecInteractionNotAllowed:
+                return "User interaction is not allowed."
+            case errSecDecode:
+                return "Unable to decode the provided data."
+            case errSecAuthFailed:
+                return "The user name or passphrase you entered is not correct."
+            case -25243: // errSecNoAccessForItem https://developer.apple.com/library/ios/samplecode/GenericKeychain/Listings/Classes_KeychainItemWrapper_m.html
+                return "Ignore the access group if running on the iPhone simulator."
+            default:
+                return "Refer to SecBase.h for description (status:\(status))"
+            }
+            #elseif os(OSX)
+                return SecCopyErrorMessageString(status, nil).takeUnretainedValue()
+            #endif
         }
     }
 }

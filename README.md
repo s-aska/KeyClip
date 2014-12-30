@@ -116,7 +116,7 @@ if !success {
 ```swift
 KeyClip.save("hoge", string: "bar") { error in
     let status = error.code // OSStatus
-    // Show Alert "failed to save to KeyChain code:\(error.code)"
+    // Show Alert "failed to save to KeyChain description:\(error.localizedDescription) code:\(error.code)"
 }
 ```
 

@@ -15,6 +15,7 @@ class KeyClipTests: XCTestCase {
     override func setUp() {
         super.setUp()
         KeyClip.clear()
+        KeyClip.printError(true)
     }
     
     override func tearDown() {
@@ -163,6 +164,7 @@ class KeyClipTests: XCTestCase {
         
         ring2.save(key, string: val2) { (error) -> Void in
             XCTAssertTrue(error.code == -25243) // errSecNoAccessForItem
+            XCTAssertEqual(error.localizedDescription, "Ignore the access group if running on the iPhone simulator.")
         }
         
         XCTAssertTrue(ring1.load(key) == val1)
