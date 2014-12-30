@@ -74,13 +74,9 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
         XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
         
-        let loadAccount: Account? = {
-            if let dictionary = KeyClip.load(key1) as NSDictionary? {
-                return Account(dictionary)
-            } else {
-                return nil
-            }
-            }()
+        let loadAccount = KeyClip.load(key1) { (dictionary) -> Account in
+            return Account(dictionary)
+        }
         
         XCTAssertEqual(loadAccount!.name, saveAccount.name)
     }

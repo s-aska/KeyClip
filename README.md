@@ -79,16 +79,12 @@ let data = KeyClip.load("access_token") as NSData?
 ### Your Class
 
 ```swift
-func save(account: Account) -> Bool {
-    return KeyClip.save("account", account.dictionaryValue)
-}
+// save
+KeyClip.save("account", account.dictionaryValue)
 
-func load() -> Account? {
-    if let dictionary = KeyClip.load("account") as NSDictionary? {
-        return Account(dictionary)
-    } else {
-        return nil
-    }
+// load
+let account = KeyClip.load(key1) { (dictionary) -> Account in
+    return Account(dictionary)
 }
 
 class Account {

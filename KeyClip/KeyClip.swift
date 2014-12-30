@@ -44,6 +44,10 @@ public class KeyClip {
         return Static.instance.load(key, failure: failure)
     }
     
+    public class func load<T>(key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)?) -> T? {
+        return Static.instance.load(key, success: success, failure: failure)
+    }
+    
     public class func delete(key: String, failure: ((NSError) -> Void)?) -> Bool {
         return Static.instance.delete(key, failure: failure)
     }
@@ -230,6 +234,13 @@ public extension KeyClip {
             return nil
         }
         
+        public func load<T>(key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)?) -> T? {
+            if let dictionary: NSDictionary = self.load(key) {
+                return success(dictionary)
+            }
+            return nil
+        }
+        
         public func delete(key: String, failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService : self.service,
@@ -313,6 +324,10 @@ public extension KeyClip {
         return Static.instance.load(key, failure: nil)
     }
     
+    public class func load<T>(key: String, success: (NSDictionary) -> T) -> T? {
+        return Static.instance.load(key, success: success, failure: nil)
+    }
+    
     public class func delete(key: String) -> Bool {
         return Static.instance.delete(key, failure: nil)
     }
@@ -345,6 +360,10 @@ public extension KeyClip.Ring {
     
     public func load(key: String) -> String? {
         return self.load(key, failure: nil)
+    }
+    
+    public func load<T>(key: String, success: (NSDictionary) -> T) -> T? {
+        return self.load(key, success: success, failure: nil)
     }
     
     public func delete(key: String) -> Bool {
