@@ -65,15 +65,15 @@ Valid JSON elements are Dictionary, Array, String, Number, Boolean and null.
 ```swift
 KeyClip.save("account", dictionary: ["name": "aska", "token": "******"]) // -> Bool
 
-let dictionary = KeyClip.load("access_token") as NSDictionary?
+let dictionary = KeyClip.load("account") as NSDictionary?
 ```
 
 ### NSData
 
 ```swift
-KeyClip.save("account", data: NSData()) // -> Bool
+KeyClip.save("data", data: NSData()) // -> Bool
 
-let data = KeyClip.load("access_token") as NSData?
+let data = KeyClip.load("data") as NSData?
 ```
 
 ### Your Class
