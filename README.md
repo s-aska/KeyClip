@@ -105,18 +105,18 @@ class Account {
 ### Return value
 
 ```swift
-let success = KeyClip.save("hoge", string: "bar")
+let success = KeyClip.save("password", string: "********")
 if !success {
-    // Show Alert "failed to save to KeyChain"
+    // Show Alert "Saving password to keychain failed"
 }
 ```
 
 ### Clojure
 
 ```swift
-KeyClip.save("hoge", string: "bar") { error in
+KeyClip.save("password", string: "********") { error in
     let status = error.code // OSStatus
-    // Show Alert "failed to save to KeyChain description:\(error.localizedDescription) code:\(error.code)"
+    // Show Alert "Saving failed \(error.localizedDescription)(\(error.code))"
 }
 ```
 
