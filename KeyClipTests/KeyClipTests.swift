@@ -10,6 +10,26 @@ import Foundation
 import XCTest
 import KeyClip
 
+class Account {
+    
+    struct Constants {
+        static let name = "name"
+        static let password = "password"
+    }
+    
+    let name: String
+    let password: String
+    
+    init(_ dictionary: NSDictionary) {
+        self.name = dictionary[Constants.name] as String
+        self.password = dictionary[Constants.password] as String
+    }
+    
+    var dictionaryValue: [String: String] {
+        return [Constants.name: name, Constants.password: password]
+    }
+}
+
 class KeyClipTests: XCTestCase {
     
     override func setUp() {
@@ -42,27 +62,6 @@ class KeyClipTests: XCTestCase {
     }
     
     func testDictionary() {
-        
-        class Account {
-            
-            struct Constants {
-                static let name = "name"
-                static let password = "password"
-            }
-            
-            let name: String
-            let password: String
-            
-            init(_ dictionary: NSDictionary) {
-                self.name = dictionary[Constants.name] as String
-                self.password = dictionary[Constants.password] as String
-            }
-            
-            var dictionaryValue: [String: String] {
-                return [Constants.name: name, Constants.password: password]
-            }
-        }
-        
         let key1 = "testSaveLoadKey1"
         let key2 = "testSaveLoadKey2"
         let saveAccount = Account([Account.Constants.name: "aska", Account.Constants.password: "********"])

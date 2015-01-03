@@ -2,22 +2,13 @@
 
 KeyClip is yet another Keychain library written in Swift.
 
-### !!! warning !!!
-
-Swift compiler can't read correctly the data of Keychain when Optimization Level is `Fastest`.
-
-So, [Optimization Level for the Carthage](https://github.com/s-aska/KeyClip/blob/master/KeyClip.xcodeproj/project.pbxproj#L351) is `None`.
-
-However, Optimization Level for the your application usable the `Fastest`.
-
-See http://stackoverflow.com/questions/26355630/swift-keychain-and-provisioning-profiles
-
 ## Features
 
 - [x] Multi Types ( String / NSDictionary / NSData )
 - [x] Error Handling
 - [x] Settings ( kSecAttrAccessGroup / kSecAttrService / kSecAttrAccessible )
-- [ ] The Release Optimization level to `Fastest [-O]` when resolved Swift compiler bugs.
+- [x] [Works fine with release ( Fastest \[-O\] ) build.](http://stackoverflow.com/questions/24145838/querying-ios-keychain-using-swift/27721328?stw=2#27721328)
+
 
 ## Requirements
 
@@ -39,7 +30,7 @@ Run `carthage update`
 carthage update
 ```
 
-On your application targets’ “General” settings tab, in the “Embedded Binaries” section, drag and drop each framework you want to use from the Carthage.build folder on disk.
+On your application targets’ “General” settings tab, in the “Embedded Binaries” section, drag and drop each framework you want to use from the Carthage/Build/(iOS|Mac) folder on disk.
 
 
 ## Usage
