@@ -20,6 +20,10 @@ public class KeyClip {
     
     // MARK: Public Methods
     
+    public class func exists(key: String, failure: ((NSError) -> Void)?) -> Bool {
+        return Static.instance.exists(key, failure: failure)
+    }
+    
     public class func save(key: String, data: NSData, failure: ((NSError) -> Void)?) -> Bool {
         return Static.instance.save(key, data: data, failure: failure)
     }
@@ -139,7 +143,7 @@ public extension KeyClip {
         
         // MARK: Public Methods
         
-        public func save(key: String, data: NSData, failure: ((NSError) -> Void)?) -> Bool {
+        public func exists(key: String, failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService    : self.service,
                 kSecClass          : kSecClassGenericPassword,
@@ -152,9 +156,33 @@ public extension KeyClip {
             
             var status = SecItemCopyMatching(query, nil)
             
-            if status == errSecSuccess {
+            switch status {
+            case errSecSuccess:
+                return true
+            case errSecItemNotFound:
+                return false
+            default:
+                self.failure(status: status, failure: failure)
+                return false
+            }
+        }
+        
+        public func save(key: String, data: NSData, failure: ((NSError) -> Void)?) -> Bool {
+            var query: [String: AnyObject] = [
+                kSecAttrService    : self.service,
+                kSecClass          : kSecClassGenericPassword,
+                kSecAttrAccount    : key,
+                kSecAttrGeneric    : key ]
+            
+            if let accessGroup = self.accessGroup {
+                query[kSecAttrAccessGroup] = accessGroup
+            }
+            
+            var status: OSStatus
+            
+            if self.exists(key, failure: failure) {
                 status = SecItemUpdate(query, [kSecValueData as String: data])
-            } else if status == errSecItemNotFound {
+            } else {
                 query[kSecAttrAccessible] = self.accessible
                 query[kSecValueData] = data
                 status = SecItemAdd(query as CFDictionaryRef, nil)
@@ -333,6 +361,10 @@ public extension KeyClip {
 // MARK: - Public Methods for Xcode suggest
 
 public extension KeyClip {
+    public class func exists(key: String) -> Bool {
+        return Static.instance.exists(key, failure: nil)
+    }
+    
     public class func save(key: String, data: NSData) -> Bool {
         return Static.instance.save(key, data: data, failure: nil)
     }
@@ -371,6 +403,10 @@ public extension KeyClip {
 }
 
 public extension KeyClip.Ring {
+    public func exists(key: String) -> Bool {
+        return self.exists(key, failure: nil)
+    }
+    
     public func save(key: String, data: NSData) -> Bool {
         return self.save(key, data: data, failure: nil)
     }

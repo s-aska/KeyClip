@@ -98,6 +98,23 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue((KeyClip.load(key2) as String?) != nil)
     }
     
+    func testExists() {
+        let key1 = "testDeleteKey1"
+        let key2 = "testDeleteKey2"
+        let saveData = "testDeleteData"
+        
+        XCTAssertTrue(KeyClip.save(key1, string: saveData))
+        XCTAssertTrue(KeyClip.save(key2, string: saveData))
+        
+        XCTAssertTrue(KeyClip.exists(key1))
+        XCTAssertTrue(KeyClip.exists(key2))
+        
+        XCTAssertTrue(KeyClip.delete(key1))
+        
+        XCTAssertTrue(!KeyClip.exists(key1))
+        XCTAssertTrue(KeyClip.exists(key2))
+    }
+    
     func testClear() {
         let key = "testClearKey"
         let saveData = "testClearData"
@@ -165,6 +182,8 @@ class KeyClipTests: XCTestCase {
             XCTAssertTrue(error.code == -25243) // errSecNoAccessForItem
             XCTAssertEqual(error.localizedDescription, "Ignore the access group if running on the iPhone simulator.")
         }
+        
+        XCTAssertTrue(ring1.exists(key))
         
         XCTAssertTrue(ring1.load(key) == val1)
         

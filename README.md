@@ -7,7 +7,7 @@ KeyClip is yet another Keychain library written in Swift.
 - [x] Multi Types ( String / NSDictionary / NSData )
 - [x] Error Handling
 - [x] Settings ( kSecAttrAccessGroup / kSecAttrService / kSecAttrAccessible )
-- [ ] [Works fine with release ( Fastest \[-O\] ) build.](http://stackoverflow.com/questions/24145838/querying-ios-keychain-using-swift/27721328?stw=2#27721328)
+- [x] [Works fine with release ( Fastest \[-O\] ) build.](http://stackoverflow.com/questions/24145838/querying-ios-keychain-using-swift/27721328?stw=2#27721328)
 
 
 ## Requirements
@@ -45,6 +45,8 @@ let token = KeyClip.load("access_token") as String?
 KeyClip.delete("access_token") // Remove the data
 
 KeyClip.clear() // Remove all the data
+
+KeyClip.exists("access_token") // -> Bool
 ```
 
 ### NSDictionary
