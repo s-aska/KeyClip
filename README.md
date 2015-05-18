@@ -1,4 +1,4 @@
-# KeyClip [![Build Status](https://travis-ci.org/s-aska/KeyClip.svg)](https://travis-ci.org/s-aska/KeyClip) [![](http://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]() [![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
+# KeyClip [![Circle CI](https://circleci.com/gh/s-aska/EventBox.svg?style=svg)](https://circleci.com/gh/s-aska/EventBox) [![](http://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]() [![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
 
 KeyClip is yet another Keychain library written in Swift.
 
