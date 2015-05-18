@@ -68,9 +68,9 @@ public class KeyClip {
     
     public class func defaultAccessGroup() -> String {
         var query: [String: AnyObject] = [
-            kSecClass            : kSecClassGenericPassword,
-            kSecAttrAccount      : "pw.aska.KeyClip.application-identifier-check",
-            kSecReturnAttributes : kCFBooleanTrue ]
+            kSecClass            as String : kSecClassGenericPassword,
+            kSecAttrAccount      as String : "pw.aska.KeyClip.application-identifier-check",
+            kSecReturnAttributes as String : kCFBooleanTrue ]
         
         var result: AnyObject?
         var status = withUnsafeMutablePointer(&result) { SecItemCopyMatching(query, UnsafeMutablePointer($0)) }
@@ -83,12 +83,14 @@ public class KeyClip {
             if let dictionary = result as? NSDictionary {
                 if let accessGroup = dictionary[kSecAttrAccessGroup as NSString] as? NSString {
                     SecItemDelete(query as CFDictionaryRef)
-                    return accessGroup
+                    return accessGroup as String
                 }
             }
         }
         
         assertionFailure("failure get application-identifier")
+        
+        return ""
     }
 }
 
@@ -99,7 +101,7 @@ public extension KeyClip {
         
         var accessGroup: String?
         var service: String = NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
-        var accessible: String = kSecAttrAccessibleAfterFirstUnlock
+        var accessible: String = kSecAttrAccessibleAfterFirstUnlock as String
         
         public init() {}
         
@@ -145,13 +147,13 @@ public extension KeyClip {
         
         public func exists(key: String, failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
-                kSecAttrService    : self.service,
-                kSecClass          : kSecClassGenericPassword,
-                kSecAttrAccount    : key,
-                kSecAttrGeneric    : key ]
+                kSecAttrService as String : self.service,
+                kSecClass       as String : kSecClassGenericPassword,
+                kSecAttrAccount as String : key,
+                kSecAttrGeneric as String : key ]
             
             if let accessGroup = self.accessGroup {
-                query[kSecAttrAccessGroup] = accessGroup
+                query[kSecAttrAccessGroup as String] = accessGroup
             }
             
             var status = SecItemCopyMatching(query, nil)
@@ -169,13 +171,13 @@ public extension KeyClip {
         
         public func save(key: String, data: NSData, failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
-                kSecAttrService    : self.service,
-                kSecClass          : kSecClassGenericPassword,
-                kSecAttrAccount    : key,
-                kSecAttrGeneric    : key ]
+                kSecAttrService as String : self.service,
+                kSecClass       as String : kSecClassGenericPassword,
+                kSecAttrAccount as String : key,
+                kSecAttrGeneric as String : key ]
             
             if let accessGroup = self.accessGroup {
-                query[kSecAttrAccessGroup] = accessGroup
+                query[kSecAttrAccessGroup as String] = accessGroup
             }
             
             var status: OSStatus
@@ -183,8 +185,8 @@ public extension KeyClip {
             if self.exists(key, failure: failure) {
                 status = SecItemUpdate(query, [kSecValueData as String: data])
             } else {
-                query[kSecAttrAccessible] = self.accessible
-                query[kSecValueData] = data
+                query[kSecAttrAccessible as String] = self.accessible
+                query[kSecValueData as String] = data
                 status = SecItemAdd(query as CFDictionaryRef, nil)
             }
         
@@ -216,15 +218,15 @@ public extension KeyClip {
         
         public func load(key: String, failure: ((NSError) -> Void)?) -> NSData? {
             var query: [String: AnyObject] = [
-                kSecAttrService : self.service,
-                kSecClass       : kSecClassGenericPassword,
-                kSecAttrAccount : key,
-                kSecAttrGeneric : key,
-                kSecReturnData  : kCFBooleanTrue,
-                kSecMatchLimit  : kSecMatchLimitOne ]
+                kSecAttrService as String : self.service,
+                kSecClass       as String : kSecClassGenericPassword,
+                kSecAttrAccount as String : key,
+                kSecAttrGeneric as String : key,
+                kSecReturnData  as String : kCFBooleanTrue,
+                kSecMatchLimit  as String : kSecMatchLimitOne ]
             
             if let accessGroup = self.accessGroup {
-                query[kSecAttrAccessGroup] = accessGroup
+                query[kSecAttrAccessGroup as String] = accessGroup
             }
             
             var result: AnyObject?
@@ -256,7 +258,7 @@ public extension KeyClip {
         public func load(key: String, failure: ((NSError) -> Void)?) -> String? {
             if let data: NSData = self.load(key, failure: failure) {
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
-                    return string
+                    return string as String
                 }
             }
             return nil
@@ -271,13 +273,13 @@ public extension KeyClip {
         
         public func delete(key: String, failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
-                kSecAttrService : self.service,
-                kSecClass       : kSecClassGenericPassword,
-                kSecAttrAccount : key,
-                kSecAttrGeneric : key ]
+                kSecAttrService as String : self.service,
+                kSecClass       as String : kSecClassGenericPassword,
+                kSecAttrAccount as String : key,
+                kSecAttrGeneric as String : key ]
             
             if let accessGroup = self.accessGroup {
-                query[kSecAttrAccessGroup] = accessGroup
+                query[kSecAttrAccessGroup as String] = accessGroup
             }
             
             let status = SecItemDelete(query as CFDictionaryRef)
@@ -292,11 +294,11 @@ public extension KeyClip {
         
         public func clear(#failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
-                kSecAttrService : self.service,
-                kSecClass       : kSecClassGenericPassword ]
+                kSecAttrService as String : self.service,
+                kSecClass       as String : kSecClassGenericPassword ]
             
             if let accessGroup = self.accessGroup {
-                query[kSecAttrAccessGroup] = accessGroup
+                query[kSecAttrAccessGroup as String] = accessGroup
             }
             
             let status = SecItemDelete(query as CFDictionaryRef)
@@ -311,12 +313,12 @@ public extension KeyClip {
         
         // MARK: Private Methods
         
-        private func failure(#status: OSStatus, failure: ((NSError) -> Void)?, function: String = __FUNCTION__, line: Int = __LINE__) {
+        private func failure(#status: OSStatus, function: String = __FUNCTION__, line: Int = __LINE__, failure: ((NSError) -> Void)?) {
             let userInfo = [ NSLocalizedDescriptionKey : statusMessage(status) ]
-            self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: userInfo), failure: failure, function: function, line: line)
+            self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: userInfo), function: function, line: line, failure: failure)
         }
         
-        private func failure(#error: NSError, failure: ((NSError) -> Void)?, function: String = __FUNCTION__, line: Int = __LINE__) {
+        private func failure(#error: NSError, function: String = __FUNCTION__, line: Int = __LINE__, failure: ((NSError) -> Void)?) {
             failure?(error)
             
             if Static.printError {
@@ -352,7 +354,7 @@ public extension KeyClip {
                 return "Refer to SecBase.h for description (status:\(status))"
             }
             #elseif os(OSX)
-                return SecCopyErrorMessageString(status, nil).takeUnretainedValue()
+                return SecCopyErrorMessageString(status, nil).takeUnretainedValue() as String
             #endif
         }
     }

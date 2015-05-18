@@ -21,8 +21,8 @@ class Account {
     let password: String
     
     init(_ dictionary: NSDictionary) {
-        self.name = dictionary[Constants.name] as String
-        self.password = dictionary[Constants.password] as String
+        self.name = dictionary[Constants.name] as! String
+        self.password = dictionary[Constants.password] as! String
     }
     
     var dictionaryValue: [String: String] {
@@ -148,19 +148,19 @@ class KeyClipTests: XCTestCase {
         let key = "testSetServiceKey"
         let val = "testSetServiceVal"
         
-        let ring = KeyClip.Builder().accessible(kSecAttrAccessibleAfterFirstUnlock).build()
+        let ring = KeyClip.Builder().accessible(kSecAttrAccessibleAfterFirstUnlock as String).build()
         
         ring.save(key, string: val)
         
         XCTAssertTrue(ring.load(key) == val)
         
-        XCTAssertEqual(ring.accessible, kSecAttrAccessibleAfterFirstUnlock)
+        XCTAssertEqual(ring.accessible, kSecAttrAccessibleAfterFirstUnlock as String)
         
-        let foreground = KeyClip.Builder().accessible(kSecAttrAccessibleWhenUnlocked).build()
-        let always = KeyClip.Builder().accessible(kSecAttrAccessibleAlways).build()
+        let foreground = KeyClip.Builder().accessible(kSecAttrAccessibleWhenUnlocked as String).build()
+        let always = KeyClip.Builder().accessible(kSecAttrAccessibleAlways as String).build()
         
-        XCTAssertEqual(foreground.accessible, kSecAttrAccessibleWhenUnlocked)
-        XCTAssertEqual(always.accessible, kSecAttrAccessibleAlways)
+        XCTAssertEqual(foreground.accessible, kSecAttrAccessibleWhenUnlocked as String)
+        XCTAssertEqual(always.accessible, kSecAttrAccessibleAlways as String)
     }
     
     func testAccessGroup() {
