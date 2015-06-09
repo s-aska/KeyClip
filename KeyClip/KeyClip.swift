@@ -67,7 +67,7 @@ public class KeyClip {
     // MARK: Debug Methods
     
     public class func defaultAccessGroup() -> String {
-        var query: [String: AnyObject] = [
+        let query: [String: AnyObject] = [
             kSecClass            as String : kSecClassGenericPassword,
             kSecAttrAccount      as String : "pw.aska.KeyClip.application-identifier-check",
             kSecReturnAttributes as String : kCFBooleanTrue ]
@@ -156,7 +156,7 @@ public extension KeyClip {
                 query[kSecAttrAccessGroup as String] = accessGroup
             }
             
-            var status = SecItemCopyMatching(query, nil)
+            let status = SecItemCopyMatching(query, nil)
             
             switch status {
             case errSecSuccess:
@@ -207,11 +207,14 @@ public extension KeyClip {
         
         public func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)?) -> Bool {
             var error: NSError?
-            if let data = NSJSONSerialization.dataWithJSONObject(dictionary, options: nil, error: &error) {
+            do {
+                let data = try NSJSONSerialization.dataWithJSONObject(dictionary, options: [])
                 if let e = error {
                     self.failure(error: e, failure: failure)
                 }
                 return self.save(key, data: data, failure: failure)
+            } catch let error1 as NSError {
+                error = error1
             }
             return false
         }
@@ -230,7 +233,7 @@ public extension KeyClip {
             }
             
             var result: AnyObject?
-            var status = withUnsafeMutablePointer(&result) { SecItemCopyMatching(query, UnsafeMutablePointer($0)) }
+            let status = withUnsafeMutablePointer(&result) { SecItemCopyMatching(query, UnsafeMutablePointer($0)) }
             
             if status == errSecSuccess {
                 if let data = result as? NSData {
@@ -245,11 +248,14 @@ public extension KeyClip {
         public func load(key: String, failure: ((NSError) -> Void)?) -> NSDictionary? {
             var error: NSError?
             if let data: NSData = self.load(key, failure: failure) {
-                if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
+                do {
+                    let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
                     if let e = error {
                         self.failure(error: e, failure: failure)
                     }
                     return json as? NSDictionary
+                } catch let error1 as NSError {
+                    error = error1
                 }
             }
             return nil
@@ -292,7 +298,7 @@ public extension KeyClip {
             return false
         }
         
-        public func clear(#failure: ((NSError) -> Void)?) -> Bool {
+        public func clear(failure failure: ((NSError) -> Void)?) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword ]
@@ -313,12 +319,12 @@ public extension KeyClip {
         
         // MARK: Private Methods
         
-        private func failure(#status: OSStatus, function: String = __FUNCTION__, line: Int = __LINE__, failure: ((NSError) -> Void)?) {
+        private func failure(status status: OSStatus, function: String = __FUNCTION__, line: Int = __LINE__, failure: ((NSError) -> Void)?) {
             let userInfo = [ NSLocalizedDescriptionKey : statusMessage(status) ]
             self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: userInfo), function: function, line: line, failure: failure)
         }
         
-        private func failure(#error: NSError, function: String = __FUNCTION__, line: Int = __LINE__, failure: ((NSError) -> Void)?) {
+        private func failure(error error: NSError, function: String = __FUNCTION__, line: Int = __LINE__, failure: ((NSError) -> Void)?) {
             failure?(error)
             
             if Static.printError {

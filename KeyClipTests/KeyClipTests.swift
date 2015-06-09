@@ -168,10 +168,9 @@ class KeyClipTests: XCTestCase {
         let key = "testSetServiceKey"
         let val1 = "testSetServiceVal1"
         let val2 = "testSetServiceVal2"
-        let val3 = "testSetServiceVal3"
         
-        // kSecAttrAccessGroup is always "test" on simulator's keychain
-        let ring1 = KeyClip.Builder().accessGroup("test").build()
+        // kSecAttrAccessGroup is always "" on iOS 9 simulator's keychain
+        let ring1 = KeyClip.Builder().accessGroup("").build()
         let ring2 = KeyClip.Builder()
             .accessGroup("test.dummy") // always failure
             .build()
@@ -189,14 +188,14 @@ class KeyClipTests: XCTestCase {
         
         XCTAssertNil(ring2.load(key) as String?)
         
-        XCTAssertEqual(ring1.accessGroup!, "test")
+        XCTAssertEqual(ring1.accessGroup!, "")
         XCTAssertEqual(ring2.accessGroup!, "test.dummy")
         #endif
     }
     
     func testDefaultAccessGroup() {
         #if os(iOS)
-        XCTAssertTrue(KeyClip.defaultAccessGroup() == "test")
+        XCTAssertTrue(KeyClip.defaultAccessGroup() == "")
         #endif
     }
     
