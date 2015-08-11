@@ -360,7 +360,7 @@ public extension KeyClip {
                 return "Refer to SecBase.h for description (status:\(status))"
             }
             #elseif os(OSX)
-                return SecCopyErrorMessageString(status, nil).takeUnretainedValue() as String
+                return "Refer to MacErrors.h for description (status:\(status))"
             #endif
         }
     }
