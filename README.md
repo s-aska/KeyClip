@@ -1,4 +1,4 @@
-# KeyClip [![Circle CI](https://circleci.com/gh/s-aska/EventBox.svg?style=svg)](https://circleci.com/gh/s-aska/EventBox) [![](http://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]() [![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
+# KeyClip [![Circle CI](https://circleci.com/gh/s-aska/KeyClip.svg?style=svg)](https://circleci.com/gh/s-aska/KeyClip) [![](http://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]() [![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
 
 KeyClip is yet another Keychain library written in Swift.
 
@@ -20,8 +20,16 @@ KeyClip is yet another Keychain library written in Swift.
 
 Create a Cartfile that lists the frameworks you’d like to use in your project.
 
+### for Xcode 7 (Swift 2.0)
+
 ```bash
 echo 'github "s-aska/KeyClip"' >> Cartfile
+```
+
+### for Xcode 6.3, 6.4 (Swift 1.2)
+
+```bash
+echo 'github "s-aska/KeyClip" "feature/swift-1.2"' >> Cartfile
 ```
 
 Run `carthage update`
