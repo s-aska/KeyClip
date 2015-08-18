@@ -13,20 +13,38 @@ KeyClip is yet another Keychain library written in Swift.
 ## Requirements
 
 - iOS 8.0+ / Mac OS X 10.10+
-- Xcode 6.1
+- Xcode 6.6
 
 
 ## Installation
 
-Create a Cartfile that lists the frameworks you’d like to use in your project.
+### CocoaPods
 
-### for Xcode 7 (Swift 2.0)
+#### for Xcode 7 (Swift 2.0)
 
-```bash
-echo 'github "s-aska/KeyClip"' >> Cartfile
+```
+use_frameworks!
+pod 'KeyClip', :git => 'git@github.com:s-aska/KeyClip.git', :branch => 'feature/swift-2.0'
 ```
 
-### for Xcode 6.3, 6.4 (Swift 1.2)
+#### for Xcode 6.4 (Swift 1.2)
+
+```
+use_frameworks!
+pod 'KeyClip', :git => 'git@github.com:s-aska/KeyClip.git', :branch => 'feature/swift-1.2'
+```
+
+### Carthage
+
+Create a Cartfile that lists the frameworks you’d like to use in your project.
+
+#### for Xcode 7 (Swift 2.0)
+
+```bash
+echo 'github "s-aska/KeyClip" "feature/swift-2.0"' >> Cartfile
+```
+
+#### for Xcode 6.4 (Swift 1.2)
 
 ```bash
 echo 'github "s-aska/KeyClip" "feature/swift-1.2"' >> Cartfile
