@@ -1,4 +1,4 @@
-# KeyClip [![Build Status](https://www.bitrise.io/app/d2d9c5391e2b248d.svg?token=jmhk4irrQcqN20iMM_iU-g&branch=master)](https://www.bitrise.io/app/d2d9c5391e2b248d) [![](http://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]() [![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
+# KeyClip [![Build Status](https://www.bitrise.io/app/8ab98cb35d63d2a8.svg?token=bPKUkQrsCZT8SlQaflgdOA&branch=master)](https://www.bitrise.io/app/8ab98cb35d63d2a8) [![](http://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]() [![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
 
 KeyClip is yet another Keychain library written in Swift.
 
