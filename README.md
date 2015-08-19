@@ -13,7 +13,7 @@ KeyClip is yet another Keychain library written in Swift.
 ## Requirements
 
 - iOS 8.0+ / Mac OS X 10.10+
-- Xcode 6.6
+- Xcode 6.4+
 
 
 ## Installation
