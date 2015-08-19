@@ -4,3 +4,4 @@ env:
     - XCODE_SCHEME=KeyClip-iOSTests XCODE_SDK=iphonesimulator
     - XCODE_SCHEME=KeyClip-MacTests XCODE_SDK=macosx
 script: xctool -project KeyClip.xcodeproj -scheme $XCODE_SCHEME -sdk $XCODE_SDK -configuration Release build test
+osx_image: xcode6.4
