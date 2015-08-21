@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-import KeyClip
+@testable import KeyClip
 
 class Account {
     
