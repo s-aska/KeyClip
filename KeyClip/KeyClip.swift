@@ -20,43 +20,43 @@ public class KeyClip {
     
     // MARK: Public Methods
     
-    public class func exists(key: String, failure: ((NSError) -> Void)?) -> Bool {
+    public class func exists(key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.exists(key, failure: failure)
     }
     
-    public class func save(key: String, data: NSData, failure: ((NSError) -> Void)?) -> Bool {
+    public class func save(key: String, data: NSData, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.save(key, data: data, failure: failure)
     }
     
-    public class func save(key: String, string: String, failure: ((NSError) -> Void)?) -> Bool {
+    public class func save(key: String, string: String, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.save(key, string: string, failure: failure)
     }
     
-    public class func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)?) -> Bool {
+    public class func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.save(key, dictionary: dictionary, failure: failure)
     }
     
-    public class func load(key: String, failure: ((NSError) -> Void)?) -> NSData? {
+    public class func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSData? {
         return Static.instance.load(key, failure: failure)
     }
     
-    public class func load(key: String, failure: ((NSError) -> Void)?) -> NSDictionary? {
+    public class func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSDictionary? {
         return Static.instance.load(key, failure: failure)
     }
     
-    public class func load(key: String, failure: ((NSError) -> Void)?) -> String? {
+    public class func load(key: String, failure: ((NSError) -> Void)? = nil) -> String? {
         return Static.instance.load(key, failure: failure)
     }
     
-    public class func load<T>(key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)?) -> T? {
+    public class func load<T>(key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)? = nil) -> T? {
         return Static.instance.load(key, success: success, failure: failure)
     }
     
-    public class func delete(key: String, failure: ((NSError) -> Void)?) -> Bool {
+    public class func delete(key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.delete(key, failure: failure)
     }
     
-    public class func clear(failure: ((NSError) -> Void)?) -> Bool {
+    public class func clear(failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.clear(failure: failure)
     }
     
@@ -145,7 +145,7 @@ public extension KeyClip {
         
         // MARK: Public Methods
         
-        public func exists(key: String, failure: ((NSError) -> Void)?) -> Bool {
+        public func exists(key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword,
@@ -169,7 +169,7 @@ public extension KeyClip {
             }
         }
         
-        public func save(key: String, data: NSData, failure: ((NSError) -> Void)?) -> Bool {
+        public func save(key: String, data: NSData, failure: ((NSError) -> Void)? = nil) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword,
@@ -198,14 +198,14 @@ public extension KeyClip {
             return false
         }
         
-        public func save(key: String, string: String, failure: ((NSError) -> Void)?) -> Bool {
+        public func save(key: String, string: String, failure: ((NSError) -> Void)? = nil) -> Bool {
             if let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
                 return self.save(key, data: data, failure: failure)
             }
             return false
         }
         
-        public func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)?) -> Bool {
+        public func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)? = nil) -> Bool {
             var error: NSError?
             do {
                 let data = try NSJSONSerialization.dataWithJSONObject(dictionary, options: [])
@@ -219,7 +219,7 @@ public extension KeyClip {
             return false
         }
         
-        public func load(key: String, failure: ((NSError) -> Void)?) -> NSData? {
+        public func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSData? {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword,
@@ -245,7 +245,7 @@ public extension KeyClip {
             return nil
         }
         
-        public func load(key: String, failure: ((NSError) -> Void)?) -> NSDictionary? {
+        public func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSDictionary? {
             var error: NSError?
             if let data: NSData = self.load(key, failure: failure) {
                 do {
@@ -261,7 +261,7 @@ public extension KeyClip {
             return nil
         }
         
-        public func load(key: String, failure: ((NSError) -> Void)?) -> String? {
+        public func load(key: String, failure: ((NSError) -> Void)? = nil) -> String? {
             if let data: NSData = self.load(key, failure: failure) {
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
                     return string as String
@@ -270,14 +270,14 @@ public extension KeyClip {
             return nil
         }
         
-        public func load<T>(key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)?) -> T? {
+        public func load<T>(key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)? = nil) -> T? {
             if let dictionary: NSDictionary = self.load(key) {
                 return success(dictionary)
             }
             return nil
         }
         
-        public func delete(key: String, failure: ((NSError) -> Void)?) -> Bool {
+        public func delete(key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword,
@@ -298,7 +298,7 @@ public extension KeyClip {
             return false
         }
         
-        public func clear(failure failure: ((NSError) -> Void)?) -> Bool {
+        public func clear(failure failure: ((NSError) -> Void)? = nil) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword ]
@@ -369,85 +369,7 @@ public extension KeyClip {
 // MARK: - Public Methods for Xcode suggest
 
 public extension KeyClip {
-    public class func exists(key: String) -> Bool {
-        return Static.instance.exists(key, failure: nil)
-    }
-    
-    public class func save(key: String, data: NSData) -> Bool {
-        return Static.instance.save(key, data: data, failure: nil)
-    }
-    
-    public class func save(key: String, string: String) -> Bool {
-        return Static.instance.save(key, string: string, failure: nil)
-    }
-    
-    public class func save(key: String, dictionary: NSDictionary) -> Bool {
-        return Static.instance.save(key, dictionary: dictionary, failure: nil)
-    }
-    
-    public class func load(key: String) -> NSData? {
-        return Static.instance.load(key, failure: nil)
-    }
-    
-    public class func load(key: String) -> NSDictionary? {
-        return Static.instance.load(key, failure: nil)
-    }
-    
-    public class func load(key: String) -> String? {
-        return Static.instance.load(key, failure: nil)
-    }
-    
     public class func load<T>(key: String, success: (NSDictionary) -> T) -> T? {
-        return Static.instance.load(key, success: success, failure: nil)
-    }
-    
-    public class func delete(key: String) -> Bool {
-        return Static.instance.delete(key, failure: nil)
-    }
-    
-    public class func clear() -> Bool {
-        return Static.instance.clear(failure: nil)
-    }
-}
-
-public extension KeyClip.Ring {
-    public func exists(key: String) -> Bool {
-        return self.exists(key, failure: nil)
-    }
-    
-    public func save(key: String, data: NSData) -> Bool {
-        return self.save(key, data: data, failure: nil)
-    }
-    
-    public func save(key: String, string: String) -> Bool {
-        return self.save(key, string: string, failure: nil)
-    }
-    
-    public func save(key: String, dictionary: NSDictionary) -> Bool {
-        return self.save(key, dictionary: dictionary, failure: nil)
-    }
-    
-    public func load(key: String) -> NSData? {
-        return self.load(key, failure: nil)
-    }
-    
-    public func load(key: String) -> NSDictionary? {
-        return self.load(key, failure: nil)
-    }
-    
-    public func load(key: String) -> String? {
-        return self.load(key, failure: nil)
-    }
-    
-    public func load<T>(key: String, success: (NSDictionary) -> T) -> T? {
-        return self.load(key, success: success, failure: nil)
-    }
-    
-    public func delete(key: String) -> Bool {
-        return self.delete(key, failure: nil)
-    }
-    
-    public func clear() -> Bool {
-        return self.clear(failure: nil)
+        return Static.instance.load(key, success: success)
     }
 }
