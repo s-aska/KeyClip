@@ -77,8 +77,20 @@ class KeyClipTests: XCTestCase {
         let loadAccount = KeyClip.load(key1) { (dictionary) -> Account in
             return Account(dictionary)
         }
-        
         XCTAssertEqual(loadAccount!.name, saveAccount.name)
+        
+        let ring = KeyClip.Builder().service("Service1").build()
+        let loadAccount2 = ring.load(key1) { (dictionary) -> Account in
+            return Account(dictionary)
+        }
+        XCTAssertEqual(loadAccount2!.name, saveAccount.name)
+
+        let success = { (dictionary) -> Account in
+            return Account(dictionary)
+        }
+        let loadAccount3 = ring.load(key1, success: success)
+        XCTAssertEqual(loadAccount3!.name, saveAccount.name)
+        
     }
     
     func testDelete() {
