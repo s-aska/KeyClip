@@ -79,7 +79,7 @@ class KeyClipTests: XCTestCase {
         }
         XCTAssertEqual(loadAccount!.name, saveAccount.name)
         
-        let ring = KeyClip.Builder().service("Service1").build()
+        let ring = KeyClip.Builder().build()
         let loadAccount2 = ring.load(key1) { (dictionary) -> Account in
             return Account(dictionary)
         }
