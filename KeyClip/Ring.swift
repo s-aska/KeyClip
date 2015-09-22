@@ -243,7 +243,7 @@ public extension KeyClip {
                 default:
                     return "Refer to SecBase.h for description (status:\(status))"
                 }
-                #elseif os(OSX)
+            #elseif os(OSX)
                 return "Refer to MacErrors.h for description (status:\(status))"
             #endif
         }
