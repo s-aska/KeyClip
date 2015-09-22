@@ -1,4 +1,9 @@
-# KeyClip [![Build Status](https://www.bitrise.io/app/8ab98cb35d63d2a8.svg?token=bPKUkQrsCZT8SlQaflgdOA&branch=master)](https://www.bitrise.io/app/8ab98cb35d63d2a8) [![](http://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]() [![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
+# KeyClip
+
+[![Build Status](https://www.bitrise.io/app/8ab98cb35d63d2a8.svg?token=bPKUkQrsCZT8SlQaflgdOA&branch=master)](https://www.bitrise.io/app/8ab98cb35d63d2a8)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![](http://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]()
+[![](http://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
 
 KeyClip is yet another Keychain library written in Swift.
 
@@ -8,38 +13,6 @@ KeyClip is yet another Keychain library written in Swift.
 - [x] Error Handling
 - [x] Settings ( kSecAttrAccessGroup / kSecAttrService / kSecAttrAccessible )
 - [x] [Works fine with release ( Fastest \[-O\] ) build.](http://stackoverflow.com/questions/24145838/querying-ios-keychain-using-swift/27721328?stw=2#27721328)
-
-
-## Requirements
-
-- iOS 8.0+ / Mac OS X 10.10+
-- Xcode 7.0+
-
-
-## Installation
-
-### CocoaPods
-
-```
-use_frameworks!
-pod 'KeyClip'
-```
-
-### Carthage
-
-Create a Cartfile that lists the frameworks you’d like to use in your project.
-
-```bash
-echo 'github "s-aska/KeyClip"' >> Cartfile
-```
-
-Run `carthage update`
-
-```bash
-carthage update
-```
-
-On your application targets’ “General” settings tab, in the “Embedded Binaries” section, drag and drop each framework you want to use from the Carthage/Build/(iOS|Mac) folder on disk.
 
 
 ## Usage
@@ -158,6 +131,31 @@ Entitlement.plist's keychain-access-groups or App Identifier.
 
 ```swift
 KeyClip.defaultAccessGroup() // -> String (eg. XXXX23F3DC53.*)
+```
+
+
+## Requirements
+
+- iOS 8.0+ / Mac OS X 10.10+
+- Xcode 7.0+
+
+
+## Installation
+
+#### Carthage
+
+Add the following line to your [Cartfile](https://github.com/carthage/carthage)
+
+```
+github "s-aska/KeyClip"
+```
+
+#### CocoaPods
+
+Add the following line to your [Podfile](https://guides.cocoapods.org/)
+
+```
+pod 'KeyClip'
 ```
 
 
