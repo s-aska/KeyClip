@@ -77,8 +77,20 @@ class KeyClipTests: XCTestCase {
         let loadAccount = KeyClip.load(key1) { (dictionary) -> Account in
             return Account(dictionary)
         }
-        
         XCTAssertEqual(loadAccount!.name, saveAccount.name)
+        
+        let ring = KeyClip.Builder().build()
+        let loadAccount2 = ring.load(key1) { (dictionary) -> Account in
+            return Account(dictionary)
+        }
+        XCTAssertEqual(loadAccount2!.name, saveAccount.name)
+
+        let success = { (dictionary) -> Account in
+            return Account(dictionary)
+        }
+        let loadAccount3 = ring.load(key1, success: success)
+        XCTAssertEqual(loadAccount3!.name, saveAccount.name)
+        
     }
     
     func testDelete() {
@@ -168,10 +180,9 @@ class KeyClipTests: XCTestCase {
         let key = "testSetServiceKey"
         let val1 = "testSetServiceVal1"
         let val2 = "testSetServiceVal2"
-        let val3 = "testSetServiceVal3"
         
-        // kSecAttrAccessGroup is always "test" on simulator's keychain
-        let ring1 = KeyClip.Builder().accessGroup("test").build()
+        // kSecAttrAccessGroup is always "" on iOS 9 simulator's keychain
+        let ring1 = KeyClip.Builder().accessGroup("").build()
         let ring2 = KeyClip.Builder()
             .accessGroup("test.dummy") // always failure
             .build()
@@ -189,14 +200,14 @@ class KeyClipTests: XCTestCase {
         
         XCTAssertNil(ring2.load(key) as String?)
         
-        XCTAssertEqual(ring1.accessGroup!, "test")
+        XCTAssertEqual(ring1.accessGroup!, "")
         XCTAssertEqual(ring2.accessGroup!, "test.dummy")
         #endif
     }
     
     func testDefaultAccessGroup() {
         #if os(iOS)
-        XCTAssertTrue(KeyClip.defaultAccessGroup() == "test")
+        XCTAssertTrue(KeyClip.defaultAccessGroup() == "")
         #endif
     }
     

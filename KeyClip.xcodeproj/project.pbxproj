@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38DA2D411B8D27070090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D431B8D27260090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D441B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D451B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D461B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D471B8D27970090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D481B8D27970090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D491B8D27980090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; settings = {ASSET_TAGS = (); }; };
 		6A61272B1A299E6400C18E1D /* KeyClip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A61271F1A299E6400C18E1D /* KeyClip.framework */; };
 		6A6127321A299E6400C18E1D /* KeyClipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6127311A299E6400C18E1D /* KeyClipTests.swift */; };
 		6A61273C1A299EDB00C18E1D /* KeyClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A61273B1A299EDB00C18E1D /* KeyClip.swift */; };
@@ -35,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38DA2D401B8D27070090CBDD /* Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
+		38DA2D421B8D27260090CBDD /* Ring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
 		6A61271F1A299E6400C18E1D /* KeyClip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KeyClip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6127231A299E6400C18E1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A61272A1A299E6400C18E1D /* KeyClip-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KeyClip-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +113,8 @@
 			isa = PBXGroup;
 			children = (
 				6A61273B1A299EDB00C18E1D /* KeyClip.swift */,
+				38DA2D421B8D27260090CBDD /* Ring.swift */,
+				38DA2D401B8D27070090CBDD /* Builder.swift */,
 				6A6127221A299E6400C18E1D /* Supporting Files */,
 			);
 			path = KeyClip;
@@ -231,7 +243,8 @@
 		6A6127161A299E6400C18E1D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Shinichiro Aska";
 				TargetAttributes = {
 					6A61271E1A299E6400C18E1D = {
@@ -305,6 +318,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A61273C1A299EDB00C18E1D /* KeyClip.swift in Sources */,
+				38DA2D431B8D27260090CBDD /* Ring.swift in Sources */,
+				38DA2D411B8D27070090CBDD /* Builder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,7 +328,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A6127321A299E6400C18E1D /* KeyClipTests.swift in Sources */,
+				38DA2D441B8D27940090CBDD /* Ring.swift in Sources */,
 				6AEEB8ED1A2B58A50035010F /* KeyClip.swift in Sources */,
+				38DA2D471B8D27970090CBDD /* Builder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +339,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6AB293141A5094D3009B628E /* KeyClip.swift in Sources */,
+				38DA2D451B8D27940090CBDD /* Ring.swift in Sources */,
+				38DA2D481B8D27970090CBDD /* Builder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +349,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6AB293131A509499009B628E /* KeyClipTests.swift in Sources */,
+				38DA2D461B8D27940090CBDD /* Ring.swift in Sources */,
 				6AB293151A5094D3009B628E /* KeyClip.swift in Sources */,
+				38DA2D491B8D27980090CBDD /* Builder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +392,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -446,7 +468,9 @@
 				INFOPLIST_FILE = KeyClip/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -462,7 +486,9 @@
 				INFOPLIST_FILE = KeyClip/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -480,7 +506,9 @@
 				);
 				INFOPLIST_FILE = KeyClipTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -493,7 +521,9 @@
 				);
 				INFOPLIST_FILE = KeyClipTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
@@ -514,6 +544,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -534,6 +565,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -556,6 +588,7 @@
 				INFOPLIST_FILE = KeyClipTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -573,6 +606,7 @@
 				INFOPLIST_FILE = KeyClipTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
