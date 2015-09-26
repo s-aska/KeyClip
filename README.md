@@ -155,6 +155,7 @@ github "s-aska/KeyClip"
 Add the following line to your [Podfile](https://guides.cocoapods.org/)
 
 ```
+use_frameworks!
 pod 'KeyClip'
 ```
 
