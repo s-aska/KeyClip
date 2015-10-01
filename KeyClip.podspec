@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "KeyClip"
-  s.version          = "1.3.1"
+  s.version          = "1.3.3"
   s.summary          = "KeyClip is yet another Keychain library written in Swift."
   s.description      = <<-DESC
                          KeyClip is yet another Keychain library written in Swift.
