@@ -1,7 +1,7 @@
 language: objective-c
 env:
     matrix:
-    - XCODE_SCHEME=KeyClip-iOSTests XCODE_SDK=iphonesimulator
-    - XCODE_SCHEME=KeyClip-MacTests XCODE_SDK=macosx
+    - XCODE_SCHEME="KeyClip iOS Tests" XCODE_SDK=iphonesimulator
+    - XCODE_SCHEME="KeyClip Mac Tests" XCODE_SDK=macosx
 script: xctool -project KeyClip.xcodeproj -scheme $XCODE_SCHEME -sdk $XCODE_SDK -configuration Release build test
 osx_image: xcode7

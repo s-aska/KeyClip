@@ -3,5 +3,5 @@ machine:
     version: "7.0"
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) xctool -project KeyClip.xcodeproj -scheme KeyClip-iOSTests -sdk iphonesimulator -configuration Release build test ;; 1) xctool -project KeyClip.xcodeproj -scheme KeyClip-MacTests -sdk macosx -configuration Release build test ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) xctool -project KeyClip.xcodeproj -scheme "KeyClip iOS Tests" -sdk iphonesimulator -configuration Release build test ;; 1) xctool -project KeyClip.xcodeproj -scheme "KeyClip Mac Tests" -sdk macosx -configuration Release build test ;; esac:
         parallel: true
