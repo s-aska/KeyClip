@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6A6127291A299E6400C18E1D"
-               BuildableName = "KeyClip-iOSTests.xctest"
-               BlueprintName = "KeyClip-iOSTests"
+               BlueprintIdentifier = "6AB293031A509297009B628E"
+               BuildableName = "KeyClip Mac Tests.xctest"
+               BlueprintName = "KeyClip Mac Tests"
                ReferencedContainer = "container:KeyClip.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,13 +28,23 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6AB293031A509297009B628E"
+               BuildableName = "KeyClip Mac Tests.xctest"
+               BlueprintName = "KeyClip Mac Tests"
+               ReferencedContainer = "container:KeyClip.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6A6127291A299E6400C18E1D"
-            BuildableName = "KeyClip-iOSTests.xctest"
-            BlueprintName = "KeyClip-iOSTests"
+            BlueprintIdentifier = "6AB293031A509297009B628E"
+            BuildableName = "KeyClip Mac Tests.xctest"
+            BlueprintName = "KeyClip Mac Tests"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -54,9 +64,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6A6127291A299E6400C18E1D"
-            BuildableName = "KeyClip-iOSTests.xctest"
-            BlueprintName = "KeyClip-iOSTests"
+            BlueprintIdentifier = "6AB293031A509297009B628E"
+            BuildableName = "KeyClip Mac Tests.xctest"
+            BlueprintName = "KeyClip Mac Tests"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -69,6 +79,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "6AB293031A509297009B628E"
+            BuildableName = "KeyClip Mac Tests.xctest"
+            BlueprintName = "KeyClip Mac Tests"
+            ReferencedContainer = "container:KeyClip.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

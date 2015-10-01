@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6A61271E1A299E6400C18E1D"
                BuildableName = "KeyClip.framework"
-               BlueprintName = "KeyClip-iOS"
+               BlueprintName = "KeyClip iOS"
                ReferencedContainer = "container:KeyClip.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6A6127291A299E6400C18E1D"
-               BuildableName = "KeyClip-iOSTests.xctest"
-               BlueprintName = "KeyClip-iOSTests"
+               BuildableName = "KeyClip iOS Tests.xctest"
+               BlueprintName = "KeyClip iOS Tests"
                ReferencedContainer = "container:KeyClip.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,8 +47,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6A6127291A299E6400C18E1D"
-               BuildableName = "KeyClip-iOSTests.xctest"
-               BlueprintName = "KeyClip-iOSTests"
+               BuildableName = "KeyClip iOS Tests.xctest"
+               BlueprintName = "KeyClip iOS Tests"
                ReferencedContainer = "container:KeyClip.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -58,7 +58,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6A61271E1A299E6400C18E1D"
             BuildableName = "KeyClip.framework"
-            BlueprintName = "KeyClip-iOS"
+            BlueprintName = "KeyClip iOS"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -80,7 +80,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6A61271E1A299E6400C18E1D"
             BuildableName = "KeyClip.framework"
-            BlueprintName = "KeyClip-iOS"
+            BlueprintName = "KeyClip iOS"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -98,7 +98,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6A61271E1A299E6400C18E1D"
             BuildableName = "KeyClip.framework"
-            BlueprintName = "KeyClip-iOS"
+            BlueprintName = "KeyClip iOS"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

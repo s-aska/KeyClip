@@ -9,14 +9,28 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6AB292F91A509297009B628E"
+               BuildableName = "KeyClip.framework"
+               BlueprintName = "KeyClip Mac"
+               ReferencedContainer = "container:KeyClip.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6AB293031A509297009B628E"
-               BuildableName = "KeyClip-MacTests.xctest"
-               BlueprintName = "KeyClip-MacTests"
+               BuildableName = "KeyClip Mac Tests.xctest"
+               BlueprintName = "KeyClip Mac Tests"
                ReferencedContainer = "container:KeyClip.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +47,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6AB293031A509297009B628E"
-               BuildableName = "KeyClip-MacTests.xctest"
-               BlueprintName = "KeyClip-MacTests"
+               BuildableName = "KeyClip Mac Tests.xctest"
+               BlueprintName = "KeyClip Mac Tests"
                ReferencedContainer = "container:KeyClip.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,9 +56,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6AB293031A509297009B628E"
-            BuildableName = "KeyClip-MacTests.xctest"
-            BlueprintName = "KeyClip-MacTests"
+            BlueprintIdentifier = "6AB292F91A509297009B628E"
+            BuildableName = "KeyClip.framework"
+            BlueprintName = "KeyClip Mac"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,9 +78,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6AB293031A509297009B628E"
-            BuildableName = "KeyClip-MacTests.xctest"
-            BlueprintName = "KeyClip-MacTests"
+            BlueprintIdentifier = "6AB292F91A509297009B628E"
+            BuildableName = "KeyClip.framework"
+            BlueprintName = "KeyClip Mac"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -82,9 +96,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6AB293031A509297009B628E"
-            BuildableName = "KeyClip-MacTests.xctest"
-            BlueprintName = "KeyClip-MacTests"
+            BlueprintIdentifier = "6AB292F91A509297009B628E"
+            BuildableName = "KeyClip.framework"
+            BlueprintName = "KeyClip Mac"
             ReferencedContainer = "container:KeyClip.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
