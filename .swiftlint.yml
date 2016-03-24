@@ -1,0 +1,4 @@
+included:
+- KeyClip
+disabled_rules:
+- line_length

@@ -219,7 +219,7 @@ class KeyClipTests: XCTestCase {
             .build()
         
         ring.save("hoge", string: "bar") { error -> Void in
-            errorCount++
+            errorCount += 1
             XCTAssertEqual(error.code, -25243)
             let status = error.code // OSStatus
             let defaultAccessGroup = KeyClip.defaultAccessGroup()

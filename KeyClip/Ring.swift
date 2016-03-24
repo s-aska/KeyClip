@@ -10,34 +10,34 @@ import Foundation
 
 public extension KeyClip {
     public class Ring {
-        
+
         let accessGroup: String?
         let service: String
         let accessible: String
-        
+
         // MARK: Initializer
-        
+
         init(accessGroup: String?, service: String, accessible: String) {
             self.accessGroup = accessGroup
             self.service = service
             self.accessible = accessible
         }
-        
+
         // MARK: Public Methods
-        
+
         public func exists(key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword,
                 kSecAttrAccount as String : key,
                 kSecAttrGeneric as String : key ]
-            
+
             if let accessGroup = self.accessGroup {
                 query[kSecAttrAccessGroup as String] = accessGroup
             }
-            
+
             let status = SecItemCopyMatching(query, nil)
-            
+
             switch status {
             case errSecSuccess:
                 return true
@@ -48,20 +48,20 @@ public extension KeyClip {
                 return false
             }
         }
-        
+
         public func save(key: String, data: NSData, failure: ((NSError) -> Void)? = nil) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword,
                 kSecAttrAccount as String : key,
                 kSecAttrGeneric as String : key ]
-            
+
             if let accessGroup = self.accessGroup {
                 query[kSecAttrAccessGroup as String] = accessGroup
             }
-            
+
             var status: OSStatus
-            
+
             if self.exists(key, failure: failure) {
                 status = SecItemUpdate(query, [kSecValueData as String: data])
             } else {
@@ -69,7 +69,7 @@ public extension KeyClip {
                 query[kSecValueData as String] = data
                 status = SecItemAdd(query as CFDictionaryRef, nil)
             }
-            
+
             if status == errSecSuccess {
                 return true
             } else {
@@ -77,14 +77,14 @@ public extension KeyClip {
             }
             return false
         }
-        
+
         public func save(key: String, string: String, failure: ((NSError) -> Void)? = nil) -> Bool {
             if let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
                 return self.save(key, data: data, failure: failure)
             }
             return false
         }
-        
+
         public func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)? = nil) -> Bool {
             var error: NSError?
             do {
@@ -98,7 +98,7 @@ public extension KeyClip {
             }
             return false
         }
-        
+
         public func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSData? {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
@@ -107,14 +107,14 @@ public extension KeyClip {
                 kSecAttrGeneric as String : key,
                 kSecReturnData  as String : kCFBooleanTrue,
                 kSecMatchLimit  as String : kSecMatchLimitOne ]
-            
+
             if let accessGroup = self.accessGroup {
                 query[kSecAttrAccessGroup as String] = accessGroup
             }
-            
+
             var result: AnyObject?
             let status = withUnsafeMutablePointer(&result) { SecItemCopyMatching(query, UnsafeMutablePointer($0)) }
-            
+
             if status == errSecSuccess {
                 if let data = result as? NSData {
                     return data
@@ -124,7 +124,7 @@ public extension KeyClip {
             }
             return nil
         }
-        
+
         public func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSDictionary? {
             var error: NSError?
             if let data: NSData = self.load(key, failure: failure) {
@@ -140,7 +140,7 @@ public extension KeyClip {
             }
             return nil
         }
-        
+
         public func load(key: String, failure: ((NSError) -> Void)? = nil) -> String? {
             if let data: NSData = self.load(key, failure: failure) {
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
@@ -149,31 +149,31 @@ public extension KeyClip {
             }
             return nil
         }
-        
+
         public func load<T>(key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)?) -> T? {
             if let dictionary: NSDictionary = self.load(key) {
                 return success(dictionary)
             }
             return nil
         }
-        
+
         public func load<T>(key: String, success: (NSDictionary) -> T) -> T? {
             return self.load(key, success: success, failure: nil)
         }
-        
+
         public func delete(key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword,
                 kSecAttrAccount as String : key,
                 kSecAttrGeneric as String : key ]
-            
+
             if let accessGroup = self.accessGroup {
                 query[kSecAttrAccessGroup as String] = accessGroup
             }
-            
+
             let status = SecItemDelete(query as CFDictionaryRef)
-            
+
             if status == errSecSuccess {
                 return true
             } else  if status != errSecItemNotFound {
@@ -181,18 +181,18 @@ public extension KeyClip {
             }
             return false
         }
-        
+
         public func clear(failure failure: ((NSError) -> Void)? = nil) -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service,
                 kSecClass       as String : kSecClassGenericPassword ]
-            
+
             if let accessGroup = self.accessGroup {
                 query[kSecAttrAccessGroup as String] = accessGroup
             }
-            
+
             let status = SecItemDelete(query as CFDictionaryRef)
-            
+
             if status == errSecSuccess {
                 return true
             } else  if status != errSecItemNotFound {
@@ -200,23 +200,24 @@ public extension KeyClip {
             }
             return false
         }
-        
+
         // MARK: Private Methods
-        
-        private func failure(status status: OSStatus, function: String = __FUNCTION__, line: Int = __LINE__, failure: ((NSError) -> Void)?) {
+
+        private func failure(status status: OSStatus, function: String = #function, line: Int = #line, failure: ((NSError) -> Void)?) {
             let userInfo = [ NSLocalizedDescriptionKey : statusMessage(status) ]
             self.failure(error: NSError(domain: "pw.aska.KeyClip", code: Int(status), userInfo: userInfo), function: function, line: line, failure: failure)
         }
-        
-        private func failure(error error: NSError, function: String = __FUNCTION__, line: Int = __LINE__, failure: ((NSError) -> Void)?) {
+
+        private func failure(error error: NSError, function: String = #function, line: Int = #line, failure: ((NSError) -> Void)?) {
             failure?(error)
-            
+
             if KeyClip.printError {
                 NSLog("[KeyClip] function:\(function) line:\(line) \(error.debugDescription)")
             }
         }
-        
+
         // /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework/Headers/SecBase.h
+        // swiftlint:disable:next cyclomatic_complexity
         private func statusMessage(status: OSStatus) -> String {
             #if os(iOS)
                 switch status {
