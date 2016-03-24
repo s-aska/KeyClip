@@ -2,7 +2,7 @@
 
 [![Build Status](https://www.bitrise.io/app/8ab98cb35d63d2a8.svg?token=bPKUkQrsCZT8SlQaflgdOA&branch=master)](https://www.bitrise.io/app/8ab98cb35d63d2a8)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![](https://img.shields.io/badge/Xcode-7.0%2B-brightgreen.svg?style=flat)]()
+[![](https://img.shields.io/badge/Xcode-7.3%2B-brightgreen.svg?style=flat)]()
 [![](https://img.shields.io/badge/iOS-8.0%2B-brightgreen.svg?style=flat)]()
 [![](https://img.shields.io/badge/OS%20X-10.10%2B-brightgreen.svg?style=flat)]()
 
