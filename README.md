@@ -138,7 +138,7 @@ KeyClip.defaultAccessGroup() // -> String (eg. XXXX23F3DC53.*)
 ## Requirements
 
 - iOS 8.0+ / Mac OS X 10.10+
-- Xcode 7.0+
+- Xcode 7.3+
 
 
 ## Installation
