@@ -70,12 +70,13 @@ public extension KeyClip {
                 status = SecItemAdd(query as CFDictionaryRef, nil)
             }
 
-            if status == errSecSuccess {
+            switch status {
+            case errSecSuccess:
                 return true
-            } else {
+            default:
                 self.failure(status: status, failure: failure)
+                return false
             }
-            return false
         }
 
         public func save(key: String, string: String, failure: ((NSError) -> Void)? = nil) -> Bool {
@@ -86,15 +87,11 @@ public extension KeyClip {
         }
 
         public func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)? = nil) -> Bool {
-            var error: NSError?
             do {
                 let data = try NSJSONSerialization.dataWithJSONObject(dictionary, options: [])
-                if let e = error {
-                    self.failure(error: e, failure: failure)
-                }
                 return self.save(key, data: data, failure: failure)
-            } catch let error1 as NSError {
-                error = error1
+            } catch let error as NSError {
+                self.failure(error: error, failure: failure)
             }
             return false
         }
@@ -115,27 +112,27 @@ public extension KeyClip {
             var result: AnyObject?
             let status = withUnsafeMutablePointer(&result) { SecItemCopyMatching(query, UnsafeMutablePointer($0)) }
 
-            if status == errSecSuccess {
+            switch status {
+            case errSecSuccess:
                 if let data = result as? NSData {
                     return data
                 }
-            } else if status != errSecItemNotFound {
+                return nil
+            case errSecItemNotFound:
+                return nil
+            default:
                 self.failure(status: status, failure: failure)
+                return nil
             }
-            return nil
         }
 
         public func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSDictionary? {
-            var error: NSError?
             if let data: NSData = self.load(key, failure: failure) {
                 do {
                     let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
-                    if let e = error {
-                        self.failure(error: e, failure: failure)
-                    }
                     return json as? NSDictionary
-                } catch let error1 as NSError {
-                    error = error1
+                } catch let error as NSError {
+                    self.failure(error: error, failure: failure)
                 }
             }
             return nil
@@ -174,12 +171,15 @@ public extension KeyClip {
 
             let status = SecItemDelete(query as CFDictionaryRef)
 
-            if status == errSecSuccess {
+            switch status {
+            case errSecSuccess:
                 return true
-            } else  if status != errSecItemNotFound {
+            case errSecItemNotFound:
+                return false
+            default:
                 self.failure(status: status, failure: failure)
+                return false
             }
-            return false
         }
 
         public func clear(failure failure: ((NSError) -> Void)? = nil) -> Bool {
@@ -193,12 +193,15 @@ public extension KeyClip {
 
             let status = SecItemDelete(query as CFDictionaryRef)
 
-            if status == errSecSuccess {
+            switch status {
+            case errSecSuccess:
                 return true
-            } else  if status != errSecItemNotFound {
+            case errSecItemNotFound:
+                return false
+            default:
                 self.failure(status: status, failure: failure)
+                return false
             }
-            return false
         }
 
         // MARK: Private Methods

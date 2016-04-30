@@ -1,4 +1,5 @@
 included:
 - KeyClip
+- KeyClipTests
 disabled_rules:
 - line_length
