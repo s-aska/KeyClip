@@ -3,8 +3,5 @@ env:
     matrix:
     - XCODE_SCHEME="KeyClip iOS" XCODE_SDK=iphonesimulator
     - XCODE_SCHEME="KeyClip Mac" XCODE_SDK=macosx
-before_install:
-    - brew update
-    - brew uninstall xctool && brew install --HEAD xctool
-script: xctool -project KeyClip.xcodeproj -scheme "$XCODE_SCHEME" -sdk $XCODE_SDK -configuration Release build test
+script: xcodebuild -project KeyClip.xcodeproj -scheme "$XCODE_SCHEME" -sdk $XCODE_SDK -configuration Release build test
 osx_image: xcode7.3

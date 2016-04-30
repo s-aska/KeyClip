@@ -121,7 +121,7 @@ public extension KeyClip {
             case errSecItemNotFound:
                 return nil
             default:
-                self.failure(status: status, failure: failure)
+                // self.failure(status: status, failure: failure)
                 return nil
             }
         }

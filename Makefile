@@ -4,8 +4,13 @@ XCODE_SDK_IOS = iphonesimulator
 XCODE_SCHEME_MAC = KeyClip Mac
 XCODE_SDK_MAC = macosx
 
-XCTOOL_ARGS = -project KeyClip.xcodeproj -configuration Release build test -parallelize
+TEST_ARGS = -project KeyClip.xcodeproj -configuration Release build test
+CLEAN_ARGS = -project KeyClip.xcodeproj -configuration Release clean
 
 test:
-	xctool -scheme "$(XCODE_SCHEME_IOS)" -sdk "$(XCODE_SDK_IOS)" $(XCTOOL_ARGS)
-	xctool -scheme "$(XCODE_SCHEME_MAC)" -sdk "$(XCODE_SDK_MAC)" $(XCTOOL_ARGS)
+	xcodebuild -scheme "$(XCODE_SCHEME_IOS)" -sdk "$(XCODE_SDK_IOS)" $(TEST_ARGS)
+	xcodebuild -scheme "$(XCODE_SCHEME_MAC)" -sdk "$(XCODE_SDK_MAC)" $(TEST_ARGS)
+
+clean:
+	xcodebuild -scheme "$(XCODE_SCHEME_IOS)" -sdk "$(XCODE_SDK_IOS)" $(CLEAN_ARGS)
+	xcodebuild -scheme "$(XCODE_SCHEME_MAC)" -sdk "$(XCODE_SDK_MAC)" $(CLEAN_ARGS)
