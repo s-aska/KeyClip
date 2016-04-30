@@ -1,8 +1,8 @@
 language: objective-c
 env:
     matrix:
-    - XCODE_SCHEME="KeyClip iOS Tests" XCODE_SDK=iphonesimulator
-    - XCODE_SCHEME="KeyClip Mac Tests" XCODE_SDK=macosx
+    - XCODE_SCHEME="KeyClip iOS" XCODE_SDK=iphonesimulator
+    - XCODE_SCHEME="KeyClip Mac" XCODE_SDK=macosx
 before_install:
     - brew update
     - brew uninstall xctool && brew install --HEAD xctool
