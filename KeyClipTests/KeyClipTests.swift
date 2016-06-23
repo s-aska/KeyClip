@@ -34,12 +34,12 @@ class KeyClipTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        KeyClip.clear()
+        let _ = KeyClip.clear()
         KeyClip.printError(true)
     }
 
     override func tearDown() {
-        KeyClip.clear()
+        let _ = KeyClip.clear()
         super.tearDown()
     }
 
@@ -91,7 +91,7 @@ class KeyClipTests: XCTestCase {
         let loadAccount3 = ring.load(key1, success: success)
         XCTAssertEqual(loadAccount3!.name, saveAccount.name)
 
-        KeyClip.save(key1, string: "dummy")
+        XCTAssertTrue(KeyClip.save(key1, string: "dummy"))
         var hasError = false
         let data: NSDictionary? = KeyClip.load(key1, failure: { (error: NSError) in
             hasError = true
@@ -139,10 +139,10 @@ class KeyClipTests: XCTestCase {
         let key = "testClearKey"
         let saveData = "testClearData"
 
-        KeyClip.save(key, string: saveData)
+        XCTAssertTrue(KeyClip.save(key, string: saveData))
         XCTAssertTrue((KeyClip.load(key) as String?) != nil)
 
-        KeyClip.clear()
+        XCTAssertTrue(KeyClip.clear())
         XCTAssertTrue((KeyClip.load(key) as String?) == nil)
     }
 
@@ -154,8 +154,8 @@ class KeyClipTests: XCTestCase {
         let ring1 = KeyClip.Builder().service("Service1").build()
         let ring2 = KeyClip.Builder().service("Service2").build()
 
-        ring1.save(key, string: val1)
-        ring2.save(key, string: val2)
+        XCTAssertTrue(ring1.save(key, string: val1))
+        XCTAssertTrue(ring2.save(key, string: val2))
 
         XCTAssertTrue(ring1.load(key) == val1)
         XCTAssertTrue(ring2.load(key) == val2)
@@ -170,7 +170,7 @@ class KeyClipTests: XCTestCase {
 
         let ring = KeyClip.Builder().accessible(kSecAttrAccessibleAfterFirstUnlock as String).build()
 
-        ring.save(key, string: val)
+        XCTAssertTrue(ring.save(key, string: val))
 
         XCTAssertTrue(ring.load(key) == val)
 
@@ -189,18 +189,16 @@ class KeyClipTests: XCTestCase {
             let val1 = "testSetServiceVal1"
             let val2 = "testSetServiceVal2"
 
-            // kSecAttrAccessGroup is always "" on iOS 9 simulator's keychain
-            let ring1 = KeyClip.Builder().accessGroup("").build()
+            // kSecAttrAccessGroup is always "com.apple.token" on iOS 10 simulator's keychain
+            let defaultAccessGroup = KeyClip.defaultAccessGroup()
+            let ring1 = KeyClip.Builder().accessGroup(defaultAccessGroup).build()
             let ring2 = KeyClip.Builder()
                 .accessGroup("test.dummy") // always failure
             .build()
 
-            ring1.save(key, string: val1)
+            XCTAssertTrue(ring1.save(key, string: val1))
 
-            ring2.save(key, string: val2) { (error) -> Void in
-                XCTAssertTrue(error.code == -25243) // errSecNoAccessForItem
-                XCTAssertEqual(error.localizedDescription, "Ignore the access group if running on the iPhone simulator.")
-            }
+            XCTAssertFalse(ring2.save(key, string: val2))
 
             XCTAssertTrue(ring1.exists(key))
 
@@ -208,14 +206,14 @@ class KeyClipTests: XCTestCase {
 
             XCTAssertNil(ring2.load(key) as String?)
 
-            XCTAssertEqual(ring1.accessGroup!, "")
+            XCTAssertEqual(ring1.accessGroup!, defaultAccessGroup)
             XCTAssertEqual(ring2.accessGroup!, "test.dummy")
         #endif
     }
 
     func testDefaultAccessGroup() {
         #if os(iOS)
-            XCTAssertTrue(KeyClip.defaultAccessGroup() == "")
+            XCTAssertEqual(KeyClip.defaultAccessGroup(), "com.apple.token")
         #endif
     }
 
@@ -226,13 +224,13 @@ class KeyClipTests: XCTestCase {
                 .accessGroup("test.dummy")
                 .build()
 
-            ring.save("hoge", string: "bar") { error -> Void in
+            let ret = ring.save("hoge", string: "bar") { error -> Void in
                 errorCount += 1
-                XCTAssertEqual(error.code, -25243)
                 let status = error.code // OSStatus
                 let defaultAccessGroup = KeyClip.defaultAccessGroup()
                 NSLog("[KeyClip] Error status:\(status) App Identifier:\(defaultAccessGroup)")
             }
+            XCTAssertFalse(ret)
 
             XCTAssertTrue(errorCount == 1)
         #endif

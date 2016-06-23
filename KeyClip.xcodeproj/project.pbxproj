@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		38DA2D411B8D27070090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; settings = {ASSET_TAGS = (); }; };
-		38DA2D431B8D27260090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; settings = {ASSET_TAGS = (); }; };
-		38DA2D441B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; settings = {ASSET_TAGS = (); }; };
-		38DA2D451B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; settings = {ASSET_TAGS = (); }; };
-		38DA2D461B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; settings = {ASSET_TAGS = (); }; };
-		38DA2D471B8D27970090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; settings = {ASSET_TAGS = (); }; };
-		38DA2D481B8D27970090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; settings = {ASSET_TAGS = (); }; };
-		38DA2D491B8D27980090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D411B8D27070090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; };
+		38DA2D431B8D27260090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; };
+		38DA2D441B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; };
+		38DA2D451B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; };
+		38DA2D461B8D27940090CBDD /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D421B8D27260090CBDD /* Ring.swift */; };
+		38DA2D471B8D27970090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; };
+		38DA2D481B8D27970090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; };
+		38DA2D491B8D27980090CBDD /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D401B8D27070090CBDD /* Builder.swift */; };
 		6A61272B1A299E6400C18E1D /* KeyClip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A61271F1A299E6400C18E1D /* KeyClip.framework */; };
 		6A6127321A299E6400C18E1D /* KeyClipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6127311A299E6400C18E1D /* KeyClipTests.swift */; };
 		6A61273C1A299EDB00C18E1D /* KeyClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A61273B1A299EDB00C18E1D /* KeyClip.swift */; };
@@ -244,20 +244,28 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Shinichiro Aska";
 				TargetAttributes = {
 					6A61271E1A299E6400C18E1D = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = ERYSSE5R77;
+						DevelopmentTeamName = "Shinichiro Aska";
+						ProvisioningStyle = Automatic;
 					};
 					6A6127291A299E6400C18E1D = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = ERYSSE5R77;
+						DevelopmentTeamName = "Shinichiro Aska";
+						ProvisioningStyle = Automatic;
 					};
 					6AB292F91A509297009B628E = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0800;
 					};
 					6AB293031A509297009B628E = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -388,13 +396,14 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -435,12 +444,13 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -461,6 +471,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -470,6 +481,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(PROJECT_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
@@ -479,6 +491,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -488,14 +501,17 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(PROJECT_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
 		6A6127391A299E6400C18E1D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -508,6 +524,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -515,6 +532,7 @@
 		6A61273A1A299E6400C18E1D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -523,13 +541,16 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
 		6AB2930E1A509298009B628E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -548,12 +569,14 @@
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		6AB2930F1A509298009B628E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -569,13 +592,15 @@
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		6AB293111A509298009B628E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -591,12 +616,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		6AB293121A509298009B628E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -609,6 +636,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

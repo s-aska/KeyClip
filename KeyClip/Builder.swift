@@ -12,22 +12,22 @@ public extension KeyClip {
     public class Builder {
 
         var accessGroup: String?
-        var service: String = NSBundle.mainBundle().bundleIdentifier ?? "pw.aska.KeyClip"
+        var service: String = Bundle.main().bundleIdentifier ?? "pw.aska.KeyClip"
         var accessible: String = kSecAttrAccessibleAfterFirstUnlock as String
 
         public init() {}
 
-        public func accessGroup(accessGroup: String) -> Builder {
+        public func accessGroup(_ accessGroup: String) -> Builder {
             self.accessGroup = accessGroup
             return self
         }
 
-        public func service(service: String) -> Builder {
+        public func service(_ service: String) -> Builder {
             self.service = service
             return self
         }
 
-        public func accessible(accessible: String) -> Builder {
+        public func accessible(_ accessible: String) -> Builder {
             self.accessible = accessible
             return self
         }
