@@ -1,7 +1,7 @@
 language: objective-c
 env:
     matrix:
-    - XCODE_SCHEME="KeyClip iOS" XCODE_DESTINATION="platform=iOS Simulator,name=iPhone 6"
-    - XCODE_SCHEME="KeyClip Mac" XCODE_DESTINATION="platform=OS X,arch=x86_64"
-script: ./pretty.sh -project KeyClip.xcodeproj -scheme "$XCODE_SCHEME" -destination "$XCODE_DESTINATION" -configuration Release build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+    - XCODE_SCHEME="KeyClip iOS" XCODE_DESTINATION="platform=iOS Simulator,name=iPhone 6" CODE_SIGNING_REQUIRED=YES
+    - XCODE_SCHEME="KeyClip Mac" XCODE_DESTINATION="platform=OS X,arch=x86_64" CODE_SIGNING_REQUIRED=NO
+script: ./pretty.sh -project KeyClip.xcodeproj -scheme "$XCODE_SCHEME" -destination "$XCODE_DESTINATION" -configuration Release build test CODE_SIGNING_REQUIRED=$CODE_SIGNING_REQUIRED
 osx_image: xcode8
