@@ -365,8 +365,7 @@
 				TargetAttributes = {
 					38E53E0E1D880BF800D7F626 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = ERYSSE5R77;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -602,9 +601,9 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_ENTITLEMENTS = "TestApp iOS/TestApp iOS.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = ERYSSE5R77;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "TestApp iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -624,10 +623,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_ENTITLEMENTS = "TestApp iOS/TestApp iOS.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = ERYSSE5R77;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "TestApp iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -972,6 +971,7 @@
 				38E53E201D880BF800D7F626 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		38E53E301D880C1400D7F626 /* Build configuration list for PBXNativeTarget "TestApp Mac" */ = {
 			isa = XCConfigurationList;
@@ -980,6 +980,7 @@
 				38E53E321D880C1400D7F626 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6A6127191A299E6400C18E1D /* Build configuration list for PBXProject "KeyClip" */ = {
 			isa = XCConfigurationList;
