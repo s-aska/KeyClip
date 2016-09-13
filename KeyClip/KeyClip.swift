@@ -9,94 +9,94 @@
 import Foundation
 import Security
 
-open class KeyClip {
+public class KeyClip {
 
     // MARK: Types
 
-    fileprivate struct Static {
-        fileprivate static let instance = KeyClip.Builder().build()
-        fileprivate static var printError = false
+    private struct Static {
+        private static let instance = KeyClip.Builder().build()
+        private static var printError = false
     }
 
-    open class var printError: Bool {
+    public class var printError: Bool {
         return Static.printError
     }
 
     // MARK: Public Methods
 
-    open class func exists(_ key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
+    public class func exists(key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.exists(key, failure: failure)
     }
 
-    open class func save(_ key: String, data: Data, failure: ((NSError) -> Void)? = nil) -> Bool {
+    public class func save(key: String, data: NSData, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.save(key, data: data, failure: failure)
     }
 
-    open class func save(_ key: String, string: String, failure: ((NSError) -> Void)? = nil) -> Bool {
+    public class func save(key: String, string: String, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.save(key, string: string, failure: failure)
     }
 
-    open class func save(_ key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)? = nil) -> Bool {
+    public class func save(key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.save(key, dictionary: dictionary, failure: failure)
     }
 
-    open class func load(_ key: String, failure: ((NSError) -> Void)? = nil) -> Data? {
+    public class func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSData? {
         return Static.instance.load(key, failure: failure)
     }
 
-    open class func load(_ key: String, failure: ((NSError) -> Void)? = nil) -> NSDictionary? {
+    public class func load(key: String, failure: ((NSError) -> Void)? = nil) -> NSDictionary? {
         return Static.instance.load(key, failure: failure)
     }
 
-    open class func load(_ key: String, failure: ((NSError) -> Void)? = nil) -> String? {
+    public class func load(key: String, failure: ((NSError) -> Void)? = nil) -> String? {
         return Static.instance.load(key, failure: failure)
     }
 
-    open class func load<T>(_ key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)?) -> T? {
+    public class func load<T>(key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)?) -> T? {
         return Static.instance.load(key, success: success, failure: failure)
     }
 
-    open class func load<T>(_ key: String, success: (NSDictionary) -> T) -> T? {
+    public class func load<T>(key: String, success: (NSDictionary) -> T) -> T? {
         return Static.instance.load(key, success: success, failure: nil)
     }
 
-    open class func delete(_ key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
+    public class func delete(key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
         return Static.instance.delete(key, failure: failure)
     }
 
-    open class func clear(_ failure: ((NSError) -> Void)? = nil) -> Bool {
-        return Static.instance.clear(failure)
+    public class func clear(failure: ((NSError) -> Void)? = nil) -> Bool {
+        return Static.instance.clear(failure: failure)
     }
 
-    open class func printError(_ printError: Bool) {
+    public class func printError(printError: Bool) {
         Static.printError = printError
     }
 
     // MARK: Debug Methods
 
-    open class func defaultAccessGroup() -> String {
+    public class func defaultAccessGroup() -> String {
         let query: [String: AnyObject] = [
             kSecClass            as String : kSecClassGenericPassword,
-            kSecAttrAccount      as String : "pw.aska.KeyClip.application-identifier-check" as AnyObject,
+            kSecAttrAccount      as String : "pw.aska.KeyClip.application-identifier-check",
             kSecReturnAttributes as String : kCFBooleanTrue ]
 
         var result: AnyObject?
-        var status = withUnsafeMutablePointer(to: &result) { SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0)) }
+        var status = withUnsafeMutablePointer(&result) { SecItemCopyMatching(query, UnsafeMutablePointer($0)) }
 
         if status == errSecItemNotFound {
-            status = withUnsafeMutablePointer(to: &result) { SecItemAdd(query as CFDictionary, UnsafeMutablePointer($0)) }
+            status = withUnsafeMutablePointer(&result) { SecItemAdd(query, UnsafeMutablePointer($0)) }
         }
 
         if status == errSecSuccess {
             if let dictionary = result as? NSDictionary {
                 if let accessGroup = dictionary[kSecAttrAccessGroup as NSString] as? NSString {
-                    SecItemDelete(query as CFDictionary)
+                    SecItemDelete(query as CFDictionaryRef)
                     return accessGroup as String
                 }
             }
         }
 
-        // assertionFailure("failure get application-identifier")
+        assertionFailure("failure get application-identifier")
 
         return ""
     }
