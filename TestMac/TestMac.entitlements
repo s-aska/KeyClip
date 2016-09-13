@@ -5,7 +5,6 @@
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)pw.aska.TestMac</string>
-		<string>$(AppIdentifierPrefix)shared</string>
 	</array>
 </dict>
 </plist>
