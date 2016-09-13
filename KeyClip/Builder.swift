@@ -12,27 +12,27 @@ public extension KeyClip {
     public class Builder {
 
         var accessGroup: String?
-        var service: String = Bundle.main().bundleIdentifier ?? "pw.aska.KeyClip"
+        var service: String = Bundle.main.bundleIdentifier ?? "pw.aska.KeyClip"
         var accessible: String = kSecAttrAccessibleAfterFirstUnlock as String
 
         public init() {}
 
-        public func accessGroup(_ accessGroup: String) -> Builder {
+        open func accessGroup(_ accessGroup: String) -> Builder {
             self.accessGroup = accessGroup
             return self
         }
 
-        public func service(_ service: String) -> Builder {
+        open func service(_ service: String) -> Builder {
             self.service = service
             return self
         }
 
-        public func accessible(_ accessible: String) -> Builder {
+        open func accessible(_ accessible: String) -> Builder {
             self.accessible = accessible
             return self
         }
 
-        public func build() -> Ring {
+        open func build() -> Ring {
             return Ring(accessGroup: accessGroup, service: service, accessible: accessible)
         }
     }

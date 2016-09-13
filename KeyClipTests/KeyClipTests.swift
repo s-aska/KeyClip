@@ -48,6 +48,9 @@ class KeyClipTests: XCTestCase {
         let key2 = "testSaveLoadKey2"
         let saveData = "data"
 
+        let prefix = Bundle.main.object(forInfoDictionaryKey: "AppIdentifierPrefix")
+        print(prefix)
+
         XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
         XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
 
@@ -69,7 +72,7 @@ class KeyClipTests: XCTestCase {
         XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
         XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
 
-        XCTAssertTrue(KeyClip.save(key1, dictionary: saveAccount.dictionaryValue))
+        XCTAssertTrue(KeyClip.save(key1, dictionary: saveAccount.dictionaryValue as NSDictionary))
 
         XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
         XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
@@ -189,7 +192,7 @@ class KeyClipTests: XCTestCase {
             let val1 = "testSetServiceVal1"
             let val2 = "testSetServiceVal2"
 
-            // kSecAttrAccessGroup is always "com.apple.token" on iOS 10 simulator's keychain
+            // kSecAttrAccessGroup is always "com.apple.token" on iOS 9 simulator's keychain
             let defaultAccessGroup = KeyClip.defaultAccessGroup()
             let ring1 = KeyClip.Builder().accessGroup(defaultAccessGroup).build()
             let ring2 = KeyClip.Builder()
@@ -213,7 +216,7 @@ class KeyClipTests: XCTestCase {
 
     func testDefaultAccessGroup() {
         #if os(iOS)
-            XCTAssertEqual(KeyClip.defaultAccessGroup(), "com.apple.token")
+            XCTAssertEqual(KeyClip.defaultAccessGroup(), "ERYSSE5R77.pw.aska.TestApp")
         #endif
     }
 
