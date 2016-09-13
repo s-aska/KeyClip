@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  TestMac
+//  TestApp Mac
 //
 //  Created by Shinichiro Aska on 9/13/16.
 //  Copyright © 2016 Shinichiro Aska. All rights reserved.

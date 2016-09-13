@@ -4,8 +4,7 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)pw.aska.TestMac</string>
-		<string>$(AppIdentifierPrefix)shared</string>
+		<string>$(AppIdentifierPrefix)pw.aska.TestApp-Mac</string>
 	</array>
 </dict>
 </plist>
