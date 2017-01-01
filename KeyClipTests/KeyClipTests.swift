@@ -48,9 +48,6 @@ class KeyClipTests: XCTestCase {
         let key2 = "testSaveLoadKey2"
         let saveData = "data"
 
-        let prefix = Bundle.main.object(forInfoDictionaryKey: "AppIdentifierPrefix")
-        print(prefix)
-
         XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
         XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
 
