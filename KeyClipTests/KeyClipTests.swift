@@ -20,12 +20,12 @@ class Account {
     let name: String
     let password: String
 
-    init(_ dictionary: NSDictionary) {
+    init(_ dictionary: [AnyHashable: Any]) {
         self.name = dictionary[Constants.name] as! String
         self.password = dictionary[Constants.password] as! String
     }
 
-    var dictionaryValue: [String: String] {
+    var dictionaryValue: [AnyHashable: String] {
         return [Constants.name: name, Constants.password: password]
     }
 }
@@ -34,12 +34,13 @@ class KeyClipTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let _ = KeyClip.clear()
-        KeyClip.printError(true)
+        
+        try! KeyClip.clear()
     }
 
     override func tearDown() {
-        let _ = KeyClip.clear()
+        try! KeyClip.clear()
+        
         super.tearDown()
     }
 
@@ -48,102 +49,125 @@ class KeyClipTests: XCTestCase {
         let key2 = "testSaveLoadKey2"
         let saveData = "data"
 
-        XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
-        XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
+        do {
+            XCTAssertTrue(try KeyClip.string(forKey: key1) == nil)
+            XCTAssertTrue(try KeyClip.string(forKey: key2) == nil)
 
-        XCTAssertTrue(KeyClip.save(key1, string: saveData))
+            try KeyClip.save(string: saveData, forKey: key1)
 
-        XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
-        XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
+            XCTAssertFalse(try KeyClip.string(forKey: key1) == nil)
+            XCTAssertTrue(try KeyClip.string(forKey: key2) == nil)
 
-        let loadData = KeyClip.load(key1) ?? ""
+            let loadData = try KeyClip.string(forKey: key1)
 
-        XCTAssertEqual(loadData, saveData)
+            XCTAssertEqual(loadData, saveData)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testDictionary() {
         let key1 = "testSaveLoadKey1"
         let key2 = "testSaveLoadKey2"
         let saveAccount = Account([Account.Constants.name: "aska", Account.Constants.password: "********"])
+        
+        do {
+            XCTAssertTrue(try KeyClip.string(forKey: key1) == nil)
+            XCTAssertTrue(try KeyClip.string(forKey: key2) == nil)
 
-        XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
-        XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
+            try KeyClip.save(dictionary: saveAccount.dictionaryValue, forKey: key1)
 
-        XCTAssertTrue(KeyClip.save(key1, dictionary: saveAccount.dictionaryValue as NSDictionary))
+            XCTAssertFalse(try KeyClip.string(forKey: key1) == nil)
+            XCTAssertTrue(try KeyClip.string(forKey: key2) == nil)
 
-        XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
-        XCTAssertTrue((KeyClip.load(key2) as String?) == nil)
+            let loadAccount = try KeyClip.load(key1) { (dictionary) -> Account in
+                return Account(dictionary)
+            }
+            XCTAssertEqual(loadAccount!.name, saveAccount.name)
 
-        let loadAccount = KeyClip.load(key1) { (dictionary) -> Account in
-            return Account(dictionary)
+            let ring = KeyClip.Builder().build()
+            let loadAccount2 = try ring.load(key1) { (dictionary) -> Account in
+                return Account(dictionary)
+            }
+            XCTAssertEqual(loadAccount2!.name, saveAccount.name)
+
+            let success = { (dictionary) -> Account in
+                return Account(dictionary)
+            }
+            let loadAccount3 = try ring.load(key1, success: success)
+            XCTAssertEqual(loadAccount3!.name, saveAccount.name)
+
+            try KeyClip.save(string: "dummy", forKey: key1)
+            
+            do {
+                let _ = try KeyClip.dictionary(forKey: key1)
+                
+                XCTFail("JSON parsing should throw error")
+            } catch {
+                // Do nothing
+            }
+        } catch {
+            XCTFail("\(error)")
         }
-        XCTAssertEqual(loadAccount!.name, saveAccount.name)
-
-        let ring = KeyClip.Builder().build()
-        let loadAccount2 = ring.load(key1) { (dictionary) -> Account in
-            return Account(dictionary)
-        }
-        XCTAssertEqual(loadAccount2!.name, saveAccount.name)
-
-        let success = { (dictionary) -> Account in
-            return Account(dictionary)
-        }
-        let loadAccount3 = ring.load(key1, success: success)
-        XCTAssertEqual(loadAccount3!.name, saveAccount.name)
-
-        XCTAssertTrue(KeyClip.save(key1, string: "dummy"))
-        var hasError = false
-        let data: NSDictionary? = KeyClip.load(key1, failure: { (error: NSError) in
-            hasError = true
-        })
-
-        XCTAssertEqual(data, nil)
-        XCTAssertTrue(hasError)
     }
 
     func testDelete() {
         let key1 = "testDeleteKey1"
         let key2 = "testDeleteKey2"
         let saveData = "testDeleteData"
+        
+        do {
+            try KeyClip.save(string: saveData, forKey: key1)
+            try KeyClip.save(string: saveData, forKey: key2)
 
-        XCTAssertTrue(KeyClip.save(key1, string: saveData))
-        XCTAssertTrue(KeyClip.save(key2, string: saveData))
+            XCTAssertFalse(try KeyClip.string(forKey: key1) == nil)
+            XCTAssertFalse(try KeyClip.string(forKey: key2) == nil)
 
-        XCTAssertTrue((KeyClip.load(key1) as String?) != nil)
-        XCTAssertTrue((KeyClip.load(key2) as String?) != nil)
+            XCTAssertTrue(try KeyClip.delete(key1))
 
-        XCTAssertTrue(KeyClip.delete(key1))
-
-        XCTAssertTrue((KeyClip.load(key1) as String?) == nil)
-        XCTAssertTrue((KeyClip.load(key2) as String?) != nil)
+            XCTAssertTrue(try KeyClip.string(forKey: key1) == nil)
+            XCTAssertFalse(try KeyClip.string(forKey: key2) == nil)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testExists() {
         let key1 = "testDeleteKey1"
         let key2 = "testDeleteKey2"
         let saveData = "testDeleteData"
+        
+        do {
+            try KeyClip.save(string: saveData, forKey: key1)
+            try KeyClip.save(string: saveData, forKey: key2)
 
-        XCTAssertTrue(KeyClip.save(key1, string: saveData))
-        XCTAssertTrue(KeyClip.save(key2, string: saveData))
+            XCTAssertTrue(try KeyClip.exists(key1))
+            XCTAssertTrue(try KeyClip.exists(key2))
 
-        XCTAssertTrue(KeyClip.exists(key1))
-        XCTAssertTrue(KeyClip.exists(key2))
+            XCTAssertTrue(try KeyClip.delete(key1))
 
-        XCTAssertTrue(KeyClip.delete(key1))
-
-        XCTAssertTrue(!KeyClip.exists(key1))
-        XCTAssertTrue(KeyClip.exists(key2))
+            XCTAssertFalse(try KeyClip.exists(key1))
+            XCTAssertTrue(try KeyClip.exists(key2))
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testClear() {
         let key = "testClearKey"
         let saveData = "testClearData"
+        
+        do {
+            try KeyClip.save(string: saveData, forKey: key)
+            
+            XCTAssertFalse(try KeyClip.string(forKey: key) == nil)
 
-        XCTAssertTrue(KeyClip.save(key, string: saveData))
-        XCTAssertTrue((KeyClip.load(key) as String?) != nil)
-
-        XCTAssertTrue(KeyClip.clear())
-        XCTAssertTrue((KeyClip.load(key) as String?) == nil)
+            try KeyClip.clear()
+            
+            XCTAssertTrue(try KeyClip.string(forKey: key) == nil)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testService() {
@@ -154,11 +178,15 @@ class KeyClipTests: XCTestCase {
         let ring1 = KeyClip.Builder().service("Service1").build()
         let ring2 = KeyClip.Builder().service("Service2").build()
 
-        XCTAssertTrue(ring1.save(key, string: val1))
-        XCTAssertTrue(ring2.save(key, string: val2))
+        do {
+            try ring1.save(string: val1, forKey: key)
+            try ring2.save(string: val2, forKey: key)
 
-        XCTAssertTrue(ring1.load(key) == val1)
-        XCTAssertTrue(ring2.load(key) == val2)
+            XCTAssertTrue(try ring1.string(forKey: key) == val1)
+            XCTAssertTrue(try ring2.string(forKey: key) == val2)
+        } catch {
+            XCTFail("\(error)")
+        }
 
         XCTAssertEqual(ring1.service, "Service1")
         XCTAssertEqual(ring2.service, "Service2")
@@ -169,10 +197,14 @@ class KeyClipTests: XCTestCase {
         let val = "testSetServiceVal"
 
         let ring = KeyClip.Builder().accessible(kSecAttrAccessibleAfterFirstUnlock as String).build()
+        
+        do {
+            try ring.save(string: val, forKey: key)
 
-        XCTAssertTrue(ring.save(key, string: val))
-
-        XCTAssertTrue(ring.load(key) == val)
+            XCTAssertTrue(try ring.string(forKey: key) == val)
+        } catch {
+            XCTFail("\(error)")
+        }
 
         XCTAssertEqual(ring.accessible, kSecAttrAccessibleAfterFirstUnlock as String)
 
@@ -187,27 +219,21 @@ class KeyClipTests: XCTestCase {
         #if os(iOS)
             let key = "testSetServiceKey"
             let val1 = "testSetServiceVal1"
-            let val2 = "testSetServiceVal2"
 
             // kSecAttrAccessGroup is always "com.apple.token" on iOS 9 simulator's keychain
             let defaultAccessGroup = KeyClip.defaultAccessGroup()
             let ring1 = KeyClip.Builder().accessGroup(defaultAccessGroup).build()
-            let ring2 = KeyClip.Builder()
-                .accessGroup("test.dummy") // always failure
-            .build()
 
-            XCTAssertTrue(ring1.save(key, string: val1))
+            do {
+                try ring1.save(string: val1, forKey: key)
 
-            XCTAssertFalse(ring2.save(key, string: val2))
-
-            XCTAssertTrue(ring1.exists(key))
-
-            XCTAssertTrue(ring1.load(key) == val1)
-
-            XCTAssertNil(ring2.load(key) as String?)
+                XCTAssertTrue(try ring1.exists(key))
+                XCTAssertTrue(try ring1.string(forKey: key) == val1)
+            } catch {
+                XCTFail("\(error)")
+            }
 
             XCTAssertEqual(ring1.accessGroup!, defaultAccessGroup)
-            XCTAssertEqual(ring2.accessGroup!, "test.dummy")
         #endif
     }
 
@@ -219,20 +245,17 @@ class KeyClipTests: XCTestCase {
 
     func testAccessGroupError() {
         #if os(iOS)
-            var errorCount = 0
             let ring = KeyClip.Builder()
                 .accessGroup("test.dummy")
                 .build()
-
-            let ret = ring.save("hoge", string: "bar") { error -> Void in
-                errorCount += 1
-                let status = error.code // OSStatus
-                let defaultAccessGroup = KeyClip.defaultAccessGroup()
-                NSLog("[KeyClip] Error status:\(status) App Identifier:\(defaultAccessGroup)")
+        
+            do {
+                try ring.save(string: "bar", forKey: "foo")
+            } catch KeyClip.KeyClipError.unhandledError(let status) {
+                XCTAssertTrue(status == -34018)
+            } catch {
+                XCTFail("\(error)")
             }
-            XCTAssertFalse(ret)
-
-            XCTAssertTrue(errorCount == 1)
         #endif
     }
 }

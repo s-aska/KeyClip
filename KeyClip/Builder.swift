@@ -9,8 +9,7 @@
 import Foundation
 
 public extension KeyClip {
-    public class Builder {
-
+    class Builder {
         var accessGroup: String?
         var service: String = Bundle.main.bundleIdentifier ?? "pw.aska.KeyClip"
         var accessible: String = kSecAttrAccessibleAfterFirstUnlock as String
