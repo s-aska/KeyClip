@@ -205,6 +205,7 @@ public extension KeyClip {
         
         // MARK: - Deleting
 
+        @discardableResult
         open func delete(_ key: String) throws -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service as AnyObject,
@@ -229,6 +230,8 @@ public extension KeyClip {
             return true
         }
 
+
+        @discardableResult
         open func clear() throws -> Bool {
             var query: [String: AnyObject] = [
                 kSecAttrService as String : self.service as AnyObject,
