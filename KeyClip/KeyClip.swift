@@ -10,66 +10,50 @@ import Foundation
 import Security
 
 open class KeyClip {
-
-    // MARK: Types
-
-    fileprivate struct Static {
-        fileprivate static let instance = KeyClip.Builder().build()
-        fileprivate static var printError = false
-    }
-
-    open class var printError: Bool {
-        return Static.printError
-    }
+    fileprivate static let shared = KeyClip.Builder().build()
 
     // MARK: Public Methods
 
-    open class func exists(_ key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
-        return Static.instance.exists(key, failure: failure)
+    open class func exists(_ key: String) throws -> Bool {
+        return try KeyClip.shared.exists(key)
     }
 
-    open class func save(_ key: String, data: Data, failure: ((NSError) -> Void)? = nil) -> Bool {
-        return Static.instance.save(key, data: data, failure: failure)
+    open class func save(data: Data, forKey key: String) throws {
+        return try KeyClip.shared.save(data: data, forKey: key)
     }
 
-    open class func save(_ key: String, string: String, failure: ((NSError) -> Void)? = nil) -> Bool {
-        return Static.instance.save(key, string: string, failure: failure)
+    open class func save(string: String, forKey key: String) throws {
+        return try KeyClip.shared.save(string: string, forKey: key)
     }
 
-    open class func save(_ key: String, dictionary: NSDictionary, failure: ((NSError) -> Void)? = nil) -> Bool {
-        return Static.instance.save(key, dictionary: dictionary, failure: failure)
+    open class func save(dictionary: [AnyHashable: Any], forKey key: String) throws {
+        return try KeyClip.shared.save(dictionary: dictionary, forKey: key)
     }
 
-    open class func load(_ key: String, failure: ((NSError) -> Void)? = nil) -> Data? {
-        return Static.instance.load(key, failure: failure)
+    open class func data(forKey key: String) throws -> Data? {
+        return try KeyClip.shared.data(forKey: key)
     }
 
-    open class func load(_ key: String, failure: ((NSError) -> Void)? = nil) -> NSDictionary? {
-        return Static.instance.load(key, failure: failure)
+    open class func dictionary(forKey key: String) throws -> [AnyHashable: Any]? {
+        return try KeyClip.shared.dictionary(forKey: key)
     }
 
-    open class func load(_ key: String, failure: ((NSError) -> Void)? = nil) -> String? {
-        return Static.instance.load(key, failure: failure)
+    open class func string(forKey key: String) throws -> String? {
+        return try KeyClip.shared.string(forKey:key)
     }
 
-    open class func load<T>(_ key: String, success: (NSDictionary) -> T, failure: ((NSError) -> Void)?) -> T? {
-        return Static.instance.load(key, success: success, failure: failure)
+    open class func load<T>(_ key: String, success: ([AnyHashable: Any]) -> T) throws -> T? {
+        return try KeyClip.shared.load(key, success: success)
     }
 
-    open class func load<T>(_ key: String, success: (NSDictionary) -> T) -> T? {
-        return Static.instance.load(key, success: success, failure: nil)
+    @discardableResult
+    open class func delete(_ key: String) throws -> Bool {
+        return try KeyClip.shared.delete(key)
     }
 
-    open class func delete(_ key: String, failure: ((NSError) -> Void)? = nil) -> Bool {
-        return Static.instance.delete(key, failure: failure)
-    }
-
-    open class func clear(_ failure: ((NSError) -> Void)? = nil) -> Bool {
-        return Static.instance.clear(failure)
-    }
-
-    open class func printError(_ printError: Bool) {
-        Static.printError = printError
+    @discardableResult
+    open class func clear() throws -> Bool {
+        return try KeyClip.shared.clear()
     }
 
     // MARK: Debug Methods
